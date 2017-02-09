@@ -1,20 +1,7 @@
-#Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+#Get ready to hack!!
 
-#Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+This is the git repository for "[The Pequod](https://ts.slb.com/sites/AbTCTransformation/Hackathon/Lists/Teams/DispForm.aspx?ID=6&Source=https%3A%2F%2Fts%2Eslb%2Ecom%2Fsites%2FAbTCTransformation%2FHackathon%2FLists%2FTeams%2FDatasheet%2520view%2Easpx%23InplviewHashb2a43834-b171-4026-b8ea-187687273680%3DShowInGrid%253DTrue&ContentTypeId=0x0100C8A170B56DA44945A3DCD4C023C49794&RootFolder=%2Fsites%2FAbTCTransformation%2FHackathon%2FLists%2FTeams)".
 
-#Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+You will use Google Project [abtc-hackathon-004](https://console.cloud.google.com/appengine/services?project=abtc-hackathon-004&organizationId=980806506473&serviceId=default) which has been pre-loaded with the [Python example app](https://slb-swt.visualstudio.com/Velocitron/_git/hckthn-python-example?path=%2FREADME.md&version=GBmaster&_a=contents). There are also example apps for [node.js](https://slb-swt.visualstudio.com/Velocitron/_git/hckthn-node-example?path=%2FREADME.md&version=GBmaster&_a=contents), [golang](https://slb-swt.visualstudio.com/Velocitron/_git/hckthn-golang-example?path=%2FREADME.md&version=GBmaster&_a=contents) and [java](https://slb-swt.visualstudio.com/Velocitron/_git/hckthn-java-example?path=%2FREADME.md&version=GBmaster&_a=contents). The pre-loaded project can easily be deleted or overwritten with another app in any app engine language.
 
-#Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://www.visualstudio.com/en-us/docs/git/create-a-readme). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+Happy hacking!
