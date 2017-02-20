@@ -1,0 +1,13 @@
+grpc_google_cloud_speech_v1beta1-0.14.0-py2.7-nspkg.pth,sha256=J1__74d522a_FBsgz-w4oqWETe4kS2rc1rY1O_IgxMk,6190
+google/cloud/grpc/speech/v1beta1/__init__.py,sha256=AbpHGcgLb-kRsJGnwFEktk7uzpZOCcBY74-YBdrKVGs,1
+google/cloud/grpc/speech/v1beta1/cloud_speech_pb2.py,sha256=fQolOyWMk-Gbl4RZb5-_Ji2X3zlCK-hjB0v-7H_8IIg,45458
+grpc_google_cloud_speech_v1beta1-0.14.0.dist-info/DESCRIPTION.rst,sha256=-FPGjtlRj48g1TNAb9KC3sstr5Uu81Ca3D6WmAZ6Now,258
+grpc_google_cloud_speech_v1beta1-0.14.0.dist-info/METADATA,sha256=BXJTrBjrNdEh0NguO3hE8LbkFKThH_3lh7reCT7F37U,1279
+grpc_google_cloud_speech_v1beta1-0.14.0.dist-info/RECORD,,
+grpc_google_cloud_speech_v1beta1-0.14.0.dist-info/WHEEL,sha256=ZjEnM9ajJj3CC6PFLEd3wiDD9cvgsTK9wvIqII7XxRs,98
+grpc_google_cloud_speech_v1beta1-0.14.0.dist-info/metadata.json,sha256=ev2hwiq9MnVq2Sz9hFZJN2oOlD2vDnsgY4eRqKKbMcg,1106
+grpc_google_cloud_speech_v1beta1-0.14.0.dist-info/namespace_packages.txt,sha256=0D9XLFybNC1IYyVwoE3RDsPZXXeAAEObj8lBXWcBxBo,63
+grpc_google_cloud_speech_v1beta1-0.14.0.dist-info/top_level.txt,sha256=_1QvSJIhFAGfxb79D6DhB7SUw2X6T4rwnz_LLrbcD3c,7
+grpc_google_cloud_speech_v1beta1-0.14.0.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+google/cloud/grpc/speech/v1beta1/cloud_speech_pb2.pyc,,
+google/cloud/grpc/speech/v1beta1/__init__.pyc,,

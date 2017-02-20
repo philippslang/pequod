@@ -1,0 +1,36 @@
+GENERAL:
+- dropzone accepted file type
+- return full filename, keep other files? (PRTs)
+- file type based dispatch to corresponding analyzer in inspector 
+  one analyzer (or we provide a variable in the get call) per file type, same interpreter 
+- url/uri naming
+- error handling
+  * if no transcribe match, return trascribe and supported queries
+- tests for interpreter, more pre-uploaded files
+- tests for analyzer
+- first two recordings in session seems to always fail, do nothing for empty audio
+- pass on sample rate 
+- test sample target rate effect on accuracy
+- transcribe tonly (direct to interpreter)
+- default file fall back
+- enhance diagnostics (hint field in inspector response to display on frontend)
+- sequence seems off: output of pcm downsampling sfter pcm size, also sometimes sends last buffer - reset buffer before rec starts
+- donte interweace but average
+
+
+PRT ANALYZER:
+- elapsed time
+- peak memory consumption
+- serial/parallel/run type
+- no wells/completions
+- build date/type
+- platform
+- input/model/deck name
+- fluid_system
+- phases
+- number connections/edges & nnc
+- regions
+- time steps
+- non linears
+- linears
+-
