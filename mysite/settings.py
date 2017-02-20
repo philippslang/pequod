@@ -107,10 +107,10 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/djangorest-157719:us-central1:hackathonalpha',
+            'HOST': '/cloudsql/abtc-hackathon-004:us-east1:pequod',
             'NAME': 'pequod',
-            'USER': 'plang',
-            'PASSWORD': 'colima85',
+            'USER': 'pequod',
+            'PASSWORD': 'pequodslb',
         }
     }
 else:
@@ -126,8 +126,8 @@ else:
             'HOST': '127.0.0.1',
             'PORT': '3306',
             'NAME': 'pequod',
-            'USER': 'plang',
-            'PASSWORD': 'colima85',
+            'USER': 'pequod',
+            'PASSWORD': 'pequodslb',
         }
     }
 # [END db_setup]
