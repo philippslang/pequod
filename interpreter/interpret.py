@@ -82,6 +82,7 @@ def google_speech_json_response_pcm(base64_audio, hints, max_alternatives=1):
     # TODO we can also use raw here, see https://goo.gl/KPZn97    
     #print 'google_speech_json_response_flac got ', base64_audio
     google_speech = get_speech_service()
+    
     speech_request = google_speech.speech().syncrecognize(
         body={
             # https://cloud.google.com/speech/reference/rest/v1beta1/RecognitionConfig
@@ -91,40 +92,38 @@ def google_speech_json_response_pcm(base64_audio, hints, max_alternatives=1):
                 'maxAlternatives': max_alternatives,  
                 # See http://g.co/cloud/speech/docs/languages for a list of
                 # supported languages.
-                'languageCode': 'en-US',  
-                'speechContext': {
-                    'phrases': hints
-                  },
+                'languageCode': 'en-US'
             },
             # https://cloud.google.com/speech/reference/rest/v1beta1/RecognitionAudio
             'audio': {
                 'content': base64_audio,
                 }
             })
-
+    print speech_request.execute()
     return speech_request.execute()
 
 def interpret(base64_audio, supported_queries):
-    ##print 'interpreter got ', base64_audio
+    #print 'interpreter got ', base64_audio
     hints = supported_queries_words_flattened(supported_queries)    
 
     interpretation = {'matched query':'cell_count', 'transcript':'no transcript 0'}
 
     if base64_audio:
         speech_response = google_speech_json_response_pcm(base64_audio, hints)
+        print speech_response
         if speech_response:
             for result in speech_response.get('results', []):
                 for alternative in result['alternatives']:
                     interpretation['transcript'] = alternative['transcript']
                     print alternative['transcript']
-
+	'''
         for query in supported_queries:
             for result in speech_response.get('results', []):
                 for alternative in result['alternatives']:
                     intersection = set(trivial_singulars(alternative['transcript'].split())).intersection(query['query'].split('_'))            
                     if intersection:
                         return {'matched query':query['query'], 'transcript':alternative['transcript']}
-
+	'''
     return interpretation
 
 
