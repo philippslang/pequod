@@ -5,7 +5,7 @@ from .models import SupportedQuery
 from .serializers import SupportedQuerySerializer, QuerySerializer, ResultSerializer
 from .analysis import analyze
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def supported_queries(request, format=None):
     """
     List all supported queries.

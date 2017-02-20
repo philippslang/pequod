@@ -46,7 +46,7 @@ def rpt_upload_plain(request):
     key_name = 'rptfile'
 
     if request.FILES[key_name]:
-
+        #print 'I am in UI'
         # TODO make this a  MemoryFileUploadHandler or TemporaryFileUploadHandler 
 
         # https://googlecloudplatform.github.io/google-cloud-python/stable/storage-client.html

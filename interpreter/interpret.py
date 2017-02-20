@@ -103,7 +103,7 @@ def google_speech_json_response_pcm(base64_audio, hints, max_alternatives=1):
     return speech_request.execute()
 
 def interpret(base64_audio, supported_queries):
-	
+    print supported_queries
     hints = supported_queries_words_flattened(supported_queries)    
 
     interpretation = {'matched query':'cell_count', 'transcript':'no transcript 0'}

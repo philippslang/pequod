@@ -31,6 +31,7 @@ def request(request, format=None):
 
         # post the query and get json repr of possible matches TODO check 200
         supported_queries = requests.get(request_entry.url_analyzer)
+        print supported_queries
         supported_queries = supported_queries.json()       
        
         
