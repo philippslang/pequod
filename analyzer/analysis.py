@@ -1,6 +1,9 @@
 import queries
 import requests
 
+from timeseries import TimeSeries
+from plots import Plot
+
 import re
 
 # TODO this should be curried so that we have one for error, warning and info
@@ -124,18 +127,30 @@ def gas_in_place(rpt_content, time=0.0):
 def water_in_place(rpt_content, time=0.0):
     return fluid_in_place(rpt_content, 'water', time)
 
+def show_plot(rpt_content, item='FPR'):
+    series = TimeSeries(rpt_content) 
+    seriesData = series.getSeries(item)
+    plot = Plot()
+    plot.setTimeData(seriesData[0])
+    plot.setSeries('Pressure', seriesData[1])
+    plot.savePlot('C:/Users/DKachuma/Desktop/SCAL_COMPOSITIONAL/SCAL_COMPOSITIONAL.png')
+    
+def show_plot_pressure(rpt_content):
+    return show_plot(rpt_content, 'FPR')
+
 # map supported queries to functions
 SUPPORTED_ANALYSIS = {
-    'cell_count'        : cell_count,
-    'error_count'       : error_count,
-    'finished_normally' : finished_normally,
-    'gas_in_place'      : gas_in_place,
-    'oil_in_place'      : oil_in_place,
-    'processor_count'   : processor_count,
-    'run_time'          : run_time,
-    'simulation_time'   : simulation_time,
-    'warning_count'     : warning_count,
-    'water_in_place'    : water_in_place,
+    'cell_count'            : cell_count,
+    'error_count'           : error_count,
+    'finished_normally'     : finished_normally,
+    'gas_in_place'          : gas_in_place,
+    'oil_in_place'          : oil_in_place,
+    'processor_count'       : processor_count,
+    'run_time'              : run_time,
+    'show_plot_pressure'    : show_plot_pressure,
+    'simulation_time'       : simulation_time,
+    'warning_count'         : warning_count,
+    'water_in_place'        : water_in_place,
 }
 
 def analyze(supported_query, url_rpt):

@@ -1,11 +1,15 @@
 import re
-import sys
 
 # Analyses the time varying data in a PRT file
 
 class TimeSeries:
     def __init__(self, prt_content):
         self._all_data = self._parse_prt_file(prt_content)
+        
+    def getSeries(self, seriesName='FPR'):
+        if (seriesName not in self._all_data):
+            seriesName='FPR'
+        return (self._all_data['TIME'], self._all_data[seriesName])
         
     def _parse_prt_file(self, prt_content):
         p = re.compile(r'.+\;.+')
@@ -32,22 +36,14 @@ class TimeSeries:
         for m in p.finditer(prt_content):
             columns = m.group().split()
             for key, index in column_spec.iteritems():
-                data[key].append(float(columns[index]))
+                data[key].append(self._convert_to_number(columns[index]))
 
-        print float('N/A')
         return data
 
     def _convert_to_number(self, s):
-        
+        val = 0.0
         try:
-            float(s)
-            return True
+            val = float(s)
         except ValueError:
-            return False
-        
-def main(fileName):
-    series = TimeSeries(open(fileName).read())      ## No data check
-    
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        main(sys.argv[1])
+            val = float('nan')
+        return val

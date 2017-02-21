@@ -1,6 +1,8 @@
 Django==1.10.5
 djangorestframework==3.5.3
 requests==2.12.4
+numpy
+matplotlib
 google-cloud-storage
 google-api-python-client
 google-cloud-speech
