@@ -38,12 +38,16 @@ def request(request, format=None):
         # check for inspector errors, ie empty query
 
         # post the query to analyzer     
+        print 'Inspector gets file ' + request_entry.url_rpt
         analyzer_request = internal_requests.post(r'/analyzer/query/', data = {'query':matched_query, 'url_rpt':request_entry.url_rpt})
         
         # TODO check 202
         # make response result of analyzer query
         analyzer_request = analyzer_request.json()
-        response = analyzer_request['result']
+        try:
+            response = analyzer_request['result']
+        except KeyError:
+            response = 'Analyzer could not resolve query ' + matched_query
         
 
         # TODO for now, the response text is the posted rpt url

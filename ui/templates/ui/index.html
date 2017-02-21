@@ -109,6 +109,7 @@ Dropzone.options.rptdropzone = {
     this.on("success", function(file, responseText) {      
       // TODO check if good? no, because this only happens on success
       localStorage.setItem("url_rpt", responseText["public_url"]);
+      __logdyn("Set file rpt to ", localStorage.getItem("url_rpt"))
       file.previewTemplate.appendChild(document.createTextNode(responseText["public_url"]));
     });
   }

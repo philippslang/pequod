@@ -76,8 +76,6 @@ def rpt_upload_plain(request):
 
         report = Report(public_url=blob.public_url, file_name=blob_name)
         
-
-        report = Report(public_url="", file_name="")
         report.save()
         report_serializer = ReportSerializer(report)
 

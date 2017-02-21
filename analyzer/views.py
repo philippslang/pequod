@@ -32,9 +32,11 @@ def query(request, format=None):
     """
 
     serializer = QuerySerializer(data=request.data)
-
+    print request.data
     if serializer.is_valid():
         query_entry = serializer.save()
+
+        print 'Analyzer gets: ' + query_entry.query
 
         # TODO for now, the result text is dummy
         result = 'Inspection ' + query_entry.query + ' not possible for ' + query_entry.url_rpt + '.'
