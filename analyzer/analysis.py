@@ -155,11 +155,3 @@ def analyze(supported_query, url_rpt):
         bail_out_result = 'Analysis ' + supported_query + ' not supported, trying ' + url_rpt + '.'
  
     return bail_out_result
-
-def main(supported_query, prt_file_name):
-    content = open(prt_file_name).read()        ## No error checking whatsoever
-    print SUPPORTED_ANALYSIS[supported_query](content)
-
-if __name__ == "__main__":
-    if len(sys.argv) > 2:
-        main(sys.argv[1], sys.argv[2])
