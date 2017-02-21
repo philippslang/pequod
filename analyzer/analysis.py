@@ -2,8 +2,6 @@ import queries
 import requests
 
 import re
-import sys
-from datetime import timedelta
 
 # TODO this should be curried so that we have one for error, warning and info
 def error_count(rpt_content):
