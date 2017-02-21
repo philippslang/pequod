@@ -40,9 +40,9 @@ def query(request, format=None):
 
         # TODO for now, the result text is dummy
         result = 'Inspection ' + query_entry.query + ' not possible for ' + query_entry.url_rpt + '.'
-        result = analyze(query_entry.query, query_entry.url_rpt)
+        result, url_image = analyze(query_entry.query, query_entry.url_rpt)
 
-        result_entry = query_entry.result_set.create(result=result)
+        result_entry = query_entry.result_set.create(result=result, url_image=url_image)
 
         result_serializer = ResultSerializer(result_entry)
         return Response(result_serializer.data, status=status.HTTP_202_ACCEPTED)

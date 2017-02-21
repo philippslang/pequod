@@ -58,8 +58,6 @@ def request(request, format=None):
             # TODO make empty            
             url_image = r'na'
 
-        url_image = r'https://storage.googleapis.com/pequod/sample_plot.png'
-
         # TODO for now, the response text is the posted rpt url
         #response_entry = request_entry.response_set.create(response=response, transcript=transcript)
         response_entry = models.ResponseFly(response=response, transcript=transcript, url_image=url_image)
