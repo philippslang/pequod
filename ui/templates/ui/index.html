@@ -41,7 +41,7 @@ ul { list-style: none; }
 <p >Hold down any key to record a command.</p>
 
 
-<!-- <ul id="recordingslist"></ul> -->
+<ul id="recordingslist"></ul>
 
 <pre id="logpersistent"></pre>
 	
@@ -70,7 +70,7 @@ ul { list-style: none; }
 
 <script>
 var glevel = 3; // debug level: 0 (production) - 3 (all output)
-var autosend = true; // if true, successful recording is always posted, if false depends on debug level (ie only when glevel == 0)
+var autosend = false; // if true, successful recording is always posted, if false depends on debug level (ie only when glevel == 0)
 var pcm16_base64 = '';
 var TARGET_SAMPLE_RATE = 16000;
 var downsample = true;
@@ -109,7 +109,10 @@ Dropzone.options.rptdropzone = {
     this.on("success", function(file, responseText) {      
       // TODO check if good? no, because this only happens on success
       localStorage.setItem("url_rpt", responseText["public_url"]);
-      __logdyn("Set file rpt to ", localStorage.getItem("url_rpt"))
+      if(glevel > 2){
+        __logdyn("Set file rpt to ", localStorage.getItem("url_rpt"));
+      }
+      
       file.previewTemplate.appendChild(document.createTextNode(responseText["public_url"]));
     });
   }
@@ -119,6 +122,13 @@ Dropzone.options.rptdropzone = {
  
  
 function process_request() {
+  if(localStorage.getItem("url_rpt") == "")
+  {
+    __status("No file has been uploaded.");
+    return;
+  }
+  
+  
   __status("Posting request.");
   
   var xhttp = new XMLHttpRequest();
@@ -164,7 +174,7 @@ document.body.onkeyup = function(e){
   
 var audio_context;
 var recorder;
-var is_recording;
+var is_recording = false;
 
 
 // this is being called on startup and initializes recorder
@@ -196,6 +206,7 @@ function startRecording() {
 }
 
 
+
 function stopRecording() {
 	recorder && recorder.stop();
   
@@ -206,10 +217,12 @@ function stopRecording() {
     
 	is_recording = false;
   
+  // for buffers to catch up?
+
   forwardRecording();
   
   // wav conversion in here
-  //showRecording();	
+  showRecording();	
 	
 	recorder.clear();
 }
@@ -347,12 +360,20 @@ function forwardRecording(){
 // all init things go in here
 window.onload = function init() {
 
+  // empty default file name
+  localStorage.setItem("url_rpt", "");
+  
   // enable debug elements
   if(glevel > 0){
     document.getElementById('gpost').style.visibility = 'visible';
     __log('This is a debug version with high verbosity.');
     __log('Debug level: ', glevel);
-    __log('Autosend successful recording: ', autosend);
+    if(autosend){
+      __log('Autosend successful recording enabled');
+      }
+      else{
+      __log('Autosend successful recording disabled');
+      }
   }
   
 	try {

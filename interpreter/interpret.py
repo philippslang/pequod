@@ -110,7 +110,7 @@ def interpret(base64_audio, supported_queries):
 
     if base64_audio:
         speech_response = google_speech_json_response_pcm(base64_audio, hints)
-        print speech_response
+        print 'Interpreter got Google Speech response: ', speech_response
         if speech_response:
             for result in speech_response.get('results', []):
                 for alternative in result['alternatives']:
@@ -123,6 +123,9 @@ def interpret(base64_audio, supported_queries):
                     intersection = set(trivial_singulars(alternative['transcript'].split())).intersection(query['query'].split('_'))            
                     if intersection:
                         return {'matched query':query['query'], 'transcript':alternative['transcript']}
+
+    else:
+        print 'Interpreter got empty audio, defaulting to ', interpretation
 
     return interpretation
 
