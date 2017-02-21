@@ -56,7 +56,7 @@ ul { list-style: none; }
 
 <p id="transcript" class="results"></p>
    
-   
+<img id="resultsimg" src="{% static 'ui/placeholder.png' %}" alt="Results (optional)">
 
 
 <pre id="logdynamic"></pre>
@@ -93,6 +93,27 @@ function __response(e) {
   }
 function __status(e) {
     document.getElementById("status").innerHTML = e;
+  }
+function __image(e) {
+    var rimg = document.getElementById("resultsimg");
+    
+    if(e == "na"){
+      document.getElementById('resultsimg').style.visibility = 'hidden';
+      
+      if(glevel > 2){
+      rimg.src = "{% static 'ui/placeholder.png' %}";
+        __logdyn("Received no image to display");
+      }
+      return;
+    }
+    
+    if(glevel > 2){
+      __logdyn("Received image to be displayed", e);
+    }
+    
+    rimg.src = e;
+    rimg.height = 200;
+    document.getElementById('resultsimg').style.visibility = 'visible';
   }
   
 
@@ -140,6 +161,8 @@ function process_request() {
       var responseJSON = JSON.parse(this.responseText);
       var display_text = responseJSON["response"];
       __response(display_text);
+      display_text = responseJSON["url_image"];
+      __image(display_text);
       
       if(glevel > 2){
         display_text = responseJSON["transcript"];
@@ -375,9 +398,15 @@ window.onload = function init() {
   // empty default file name
   localStorage.setItem("url_rpt", "");
   
+  
+  document.getElementById('resultsimg').style.visibility = 'hidden';
+  
   // enable debug elements
   if(glevel > 0){
+  
+    
     document.getElementById('gpost').style.visibility = 'visible';
+    
     __log('This is a debug version with high verbosity.');
     __log('Debug level: ', glevel);
     if(autosend){

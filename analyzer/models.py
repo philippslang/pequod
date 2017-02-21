@@ -28,6 +28,7 @@ class Query(models.Model):
 class Result(models.Model):
     query = models.ForeignKey(Query, on_delete=models.CASCADE)
     result = models.CharField(max_length=200, blank=True, default='none')
+    url_image = models.CharField(max_length=250, blank=True, default='na')
 
 
     class Meta:

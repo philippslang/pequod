@@ -29,4 +29,4 @@ class ResponseFlySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ResponseFly
-        fields = ('response', 'transcript',)
+        fields = ('response', 'transcript', 'url_image',)

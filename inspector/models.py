@@ -34,3 +34,4 @@ class RequestFly(models.Model):
 class ResponseFly(models.Model):
     response = models.CharField(max_length=200, blank=True, default='')
     transcript = models.CharField(max_length=200, blank=True, default='')
+    url_image = models.CharField(max_length=250, blank=True, default='')
