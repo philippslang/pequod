@@ -2,7 +2,8 @@ import queries
 import requests
 
 from timeseries import TimeSeries
-from plots import Plot
+#from plots import Plot
+import tmpplots
 
 from google.cloud import storage
 
@@ -136,38 +137,38 @@ def gas_in_place(rpt_content, time=0.0):
 def water_in_place(rpt_content, time=0.0):
     return fluid_in_place(rpt_content, 'water', time)
     
+
 def upload_plot(plot, fname):
-    '''
-    fname like 'something.png'
-    '''
     # TODO fetch an app wide available encryption key
     client = storage.Client()
     bucket_name = PRT_BUCKET
     bucket = client.get_bucket(bucket_name)    
     blob = storage.Blob(fname, bucket)
+    plot.seek(0)
+    blob.upload_from_file(plot, content_type=r'image/png', size=len(plot.getvalue()))
     
-    # now we need some
-    print plot
-    blob.upload_from_file(plot.getvalue(), content_type='image/png', size=len(plot.getvalue()), client=client)
-    
-    # TODO do we neeed this if we only access app wide?
-    blob.make_public()
 
+    blob.make_public()
     return blob.public_url
 
 def show_plot(rpt_content, item, title):
+    '''
     series = TimeSeries(rpt_content) 
     seriesData = series.getSeries(item)
     plot = Plot()
     plot.setTimeData(seriesData[0])
     plot.setSeries(title, seriesData[1])
     plot_data = plot.savePlot()
+    '''
+    plot_data = tmpplots.plot_data()
     img_url = upload_plot(plot_data, item + '.png')
     # upload to bucket
     return AnalysisResults("Plot generated.", img_url)
     
+
 def show_plot_pressure(rpt_content):
     return show_plot(rpt_content, 'FPR', 'Pressure')
+
 
 # map supported queries to functions
 SUPPORTED_ANALYSIS = {
