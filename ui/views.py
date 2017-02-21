@@ -54,12 +54,6 @@ def rpt_upload_plain(request):
         # this is an https://docs.djangoproject.com/en/1.10/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile
         rpt_file = request.FILES[key_name]
 
-        '''
-        blob_name = rpt_file.name
-        dst_uri = boto.storage_uri(PRT_BUCKET + '/' + blob_name, GOOGLE_STORAGE)
-        dst_uri.new_key().set_contents_from_string(rpt_file.read())
-        '''
-
         
         # https://googlecloudplatform.github.io/google-cloud-python/stable/storage-client.html
 

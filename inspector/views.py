@@ -38,17 +38,16 @@ def request(request, format=None):
         # check for inspector errors, ie empty query
 
         # post the query to analyzer     
-        #analyzer_request = internal_requests.post(r'/analyzer/query/', data = {'query':matched_query, 'url_rpt':request_entry.url_rpt})
+        analyzer_request = internal_requests.post(r'/analyzer/query/', data = {'query':matched_query, 'url_rpt':request_entry.url_rpt})
         
         # TODO check 202
         # make response result of analyzer query
-        #analyzer_request = analyzer_request.json()
-        #response = analyzer_request['result']
+        analyzer_request = analyzer_request.json()
+        response = analyzer_request['result']
         
 
         # TODO for now, the response text is the posted rpt url
-        #response_entry = request_entry.response_set.create(response=response, transcript=transcript)
-        response_entry = request_entry.response_set.create(response='', transcript=transcript)
+        response_entry = request_entry.response_set.create(response=response, transcript=transcript)
 
         # here we call a function that modifies  response_entry - it wil have access to request_entry
 
