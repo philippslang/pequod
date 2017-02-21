@@ -2,7 +2,7 @@ import queries
 import requests
 
 import re
-
+import sys
 
 # TODO this should be curried so that we have one for error, warning and info
 def error_count(rpt_content):
@@ -23,6 +23,31 @@ def warning_count(rpt_content):
         return 'There are {} warning(s).'.format(count)
     return 'Warning count pattern could not be matched in file.'
 
+def run_time(rpt_content):
+    p = re.compile(r'Simulation complete.*\.')
+    m = p.findall(rpt_content)
+    if m:
+        start_date = m[0].split()[0]
+    
+    return 'Run time could not be determined from the file.'
+    
+def simulation_time(rpt_content):
+    start_date = None
+    stop_date = None
+    duration = None
+    p = re.compile(r'SECTION\s*Starting the simulation on (.+)\.')
+    m = p.findall(rpt_content)
+    if m:
+        start_date = m[0].split()[0]
+    
+    p = re.compile(r'SECTION\s*The simulation has reached (\d.*\d) (\d+) d\.')
+    for m in p.finditer(rpt_content):
+        stop_date = m.group(1)
+        duration = m.group(2)
+    
+    if duration is not None:
+        return "The simulation is for {} days starting on {} and ending on {}.".format(duration, start_date, stop_date)
+    return 'Simulation time could not be determined from the file.'
 
 # TODO this should be curried so that we have one for error, warning and info
 def cell_count(rpt_content):
@@ -33,20 +58,76 @@ def cell_count(rpt_content):
         return 'There are {} cells in this model.'.format(count)
     return 'Cell count pattern could not be matched in file.'
 
-
-
 def finished_normally(rpt_content):
     normal = 'finished normally' in rpt_content
     if normal:
         return 'The run finshed normally.'
+    return 'The run did not finish normally.'
 
-    return 'The run finshed abnormally.'
+def processor_count(rpt_content):
+    p = re.compile(r'Run Type\s+:\s*(.*)')
+    occ = p.findall(rpt_content)
+    if occ:
+        count = 1       ## Default is serial
+        p = re.compile(r'Parallel with (\d+) processes')
+        occ = p.match(occ[0])
+        if occ:
+            count = occ.group(1)
+            return 'There were {} processors used for this model.'.format(count)
+        else:
+            return 'There was a single processor used for this model.'
+    return 'Processor count pattern could not be matched in file.'
 
+def fluid_in_place(rpt_content, phase='oil', time=0.0):
+    p = re.compile(r"REPORT\s*Surface fluids in place .* 'RESERVOIR' .* time (\d+)\s*d:")
+    start = -1
+    min_diff = 1E20
+    for m in p.finditer(rpt_content):
+        diff = abs(time - float(m.group(1)))
+        if diff < min_diff:
+            min_diff = diff
+            start = m.start()
 
+    fip = None
+    if start > 0:
+        end = start + 600       ## This number of characters should be enough 
+        lines = rpt_content[start:end].split('\n')
+        for line in lines:
+            if 'RESERVOIR' in line and 'Surface' not in line:
+                columns = line.split('|')
+                if phase=='gas':
+                    fip = float(columns[4])
+                elif phase=='water':
+                    fip = float(columns[5])
+                else:
+                    fip = float(columns[3])
+                break
+    if fip is not None:
+        return "The {} in place at time {} days is {}.".format(phase, time, fip)
+    return 'Failed to find fluid in place from file.'
+
+def oil_in_place(rpt_content, time=0.0):
+    return fluid_in_place(rpt_content, 'oil', time)
+
+def gas_in_place(rpt_content, time=0.0):
+    return fluid_in_place(rpt_content, 'gas', time)
+
+def water_in_place(rpt_content, time=0.0):
+    return fluid_in_place(rpt_content, 'water', time)
 
 # map supported queries to functions
-SUPPORTED_ANALYSIS = {'error_count':error_count, 'warning_count':warning_count, 'finished_normally':finished_normally, 'cell_count':cell_count}
-
+SUPPORTED_ANALYSIS = {
+    'error_count'       : error_count,
+    'warning_count'     : warning_count,
+    'finished_normally' : finished_normally,
+    'cell_count'        : cell_count,
+    'processor_count'   : processor_count,
+    'oil_in_place'      : oil_in_place,
+    'gas_in_place'      : gas_in_place,
+    'water_in_place'    : water_in_place,
+    'simulation_time'   : simulation_time,
+    'run_time'          : run_time,
+    }
 
 def analyze(supported_query, url_rpt):
     """
@@ -63,3 +144,11 @@ def analyze(supported_query, url_rpt):
         bail_out_result = 'Analysis ' + supported_query + ' not supported, trying ' + url_rpt + '.'
  
     return bail_out_result
+
+def main(supported_query, prt_file_name):
+    content = open(prt_file_name).read()        ## No error checking whatsoever
+    print SUPPORTED_ANALYSIS[supported_query](content)
+
+if __name__ == "__main__":
+    if len(sys.argv) > 2:
+        main(sys.argv[1], sys.argv[2])

@@ -116,14 +116,14 @@ def interpret(base64_audio, supported_queries):
                 for alternative in result['alternatives']:
                     interpretation['transcript'] = alternative['transcript']
                     print alternative['transcript']
-	'''
+	
         for query in supported_queries:
             for result in speech_response.get('results', []):
                 for alternative in result['alternatives']:
                     intersection = set(trivial_singulars(alternative['transcript'].split())).intersection(query['query'].split('_'))            
                     if intersection:
                         return {'matched query':query['query'], 'transcript':alternative['transcript']}
-	'''
+	
     return interpretation
 
 
