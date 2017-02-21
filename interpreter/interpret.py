@@ -110,7 +110,7 @@ def interpret(base64_audio, supported_queries):
 
     if base64_audio:
         speech_response = google_speech_json_response_pcm(base64_audio, hints)
-        print 'Interpreter got Google Speech response: ', speech_response
+        print 'Google Speech response: ', speech_response
         if speech_response:
             for result in speech_response.get('results', []):
                 for alternative in result['alternatives']:
