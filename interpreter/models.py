@@ -23,3 +23,21 @@ class Response(models.Model):
 
     class Meta:
         ordering = ('request',)
+
+
+class RequestFly(models.Model):
+    # this expects and address for a get call that returns a list of accepted queries
+    url_analyzer = models.CharField(max_length=250, blank=False)
+    base64_audio = models.TextField(blank=True, default='')
+
+    class Meta:
+        ordering = ('url_analyzer',)
+
+
+
+class ResponseFly(models.Model):
+    transcript = models.CharField(max_length=200, blank=True, default='na')
+    query = models.CharField(max_length=200, blank=True, default='na')
+
+    class Meta:
+        ordering = ('query',)

@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from .serializers import RequestFlySerializer, ResponseFlySerializer
 from .serializers import RequestSerializer, ResponseSerializer
 
 import models
@@ -22,12 +23,14 @@ def request(request, format=None):
     Processes the inspection request.
     """
 
-    serializer = RequestSerializer(data=request.data)
+    #serializer = RequestSerializer(data=request.data)
+    serializer = RequestFlySerializer(data=request.data)
     
 
     if serializer.is_valid():
-        request_entry = serializer.save()        
-
+        #request_entry = serializer.save()        
+        request_entry = serializer.create(request.data)        
+    
         
         # post to interpreter, and the use receiver query here
         interpreter_request = internal_requests.post(r'/interpreter/request/', data = {'base64_audio':request_entry.base64_audio, 'url_analyzer':internal_requests.absolute_path(r'/analyzer/queries/')})
@@ -38,6 +41,7 @@ def request(request, format=None):
         # check for inspector errors, ie empty query
 
         # post the query to analyzer     
+        '''
         print 'Inspector gets file ' + request_entry.url_rpt
         analyzer_request = internal_requests.post(r'/analyzer/query/', data = {'query':matched_query, 'url_rpt':request_entry.url_rpt})
         
@@ -49,13 +53,15 @@ def request(request, format=None):
         except KeyError:
             response = 'Analyzer could not resolve query ' + matched_query
         
-
+        '''
+        response = 'none'
         # TODO for now, the response text is the posted rpt url
-        response_entry = request_entry.response_set.create(response=response, transcript=transcript)
+        #response_entry = request_entry.response_set.create(response=response, transcript=transcript)
+        response_entry = models.ResponseFly(response=response, transcript=transcript)
 
         # here we call a function that modifies  response_entry - it wil have access to request_entry
 
-        response_serializer = ResponseSerializer(response_entry)
+        response_serializer = ResponseFlySerializer(response_entry)
         return Response(response_serializer.data, status=status.HTTP_202_ACCEPTED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -69,6 +75,17 @@ def request_list(request):
 
     requests = models.Request.objects.all()
     serializer = RequestSerializer(requests, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def requestfly_list(request):
+    """
+    List all temp requests processed so far, should be empty.
+    """
+
+    requests = models.RequestFly.objects.all()
+    serializer = RequestFlySerializer(requests, many=True)
     return Response(serializer.data)
 
 

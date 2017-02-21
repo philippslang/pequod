@@ -82,7 +82,7 @@ def google_speech_json_response_pcm(base64_audio, hints, max_alternatives=1):
     # TODO we can also use raw here, see https://goo.gl/KPZn97    
     #print 'google_speech_json_response_flac got ', base64_audio
     google_speech = get_speech_service()
-    
+
     speech_request = google_speech.speech().syncrecognize(
         body={
             # https://cloud.google.com/speech/reference/rest/v1beta1/RecognitionConfig

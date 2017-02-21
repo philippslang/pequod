@@ -24,3 +24,13 @@ class Response(models.Model):
 
     class Meta:
         ordering = ('request',)
+
+
+class RequestFly(models.Model):
+    url_rpt = models.CharField(max_length=200, blank=True, default='')
+    base64_audio = models.TextField(blank=True, default='')
+
+
+class ResponseFly(models.Model):
+    response = models.CharField(max_length=200, blank=True, default='')
+    transcript = models.CharField(max_length=200, blank=True, default='')

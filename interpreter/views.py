@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .serializers import RequestSerializer, ResponseSerializer
+from .serializers import RequestFlySerializer, ResponseFlySerializer
 
 import models
 
@@ -20,18 +21,21 @@ def request(request, format=None):
     Processes the inspection request.
     """
 
-    serializer = RequestSerializer(data=request.data)
+    serializer = RequestFlySerializer(data=request.data)
 
     if serializer.is_valid():
-        request_entry = serializer.save()
+        request_entry = serializer.create(request.data)
+        
 
         # x) get list of accepted queries
         # x) provide list and received utterance to interpret()
         # x) return result
-
+        
         # post the query and get json repr of possible matches TODO check 200
+        # dont know why we started needing this when I put the fly stuff in
         supported_queries = requests.get(request_entry.url_analyzer)
-        print supported_queries
+
+        
         supported_queries = supported_queries.json()       
        
         
@@ -39,8 +43,11 @@ def request(request, format=None):
         iterpretation_results = interpret(request_entry.base64_audio, supported_queries)
 
         # if matched query empty, needs to be handled at caller level
-        response_entry = request_entry.response_set.create(query=iterpretation_results['matched query'], transcript=iterpretation_results['transcript'])        
-        response_serializer = ResponseSerializer(response_entry)
+        response_entry = models.ResponseFly(query=iterpretation_results['matched query'], transcript=iterpretation_results['transcript'])       
+        
+        #response_entry = models.ResponseFly(query='cell_count', transcript='none from int')       
+
+        response_serializer = ResponseFlySerializer(response_entry)
 
         return Response(response_serializer.data, status=status.HTTP_202_ACCEPTED)
 
@@ -55,6 +62,17 @@ def request_list(request, format=None):
 
     requests = models.Request.objects.all()
     serializer = RequestSerializer(requests, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def requestfly_list(request, format=None):
+    """
+    List all requests processed so far.
+    """
+
+    requests = models.RequestFly.objects.all()
+    serializer = RequestFlySerializer(requests, many=True)
     return Response(serializer.data)
 
 
