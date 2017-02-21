@@ -17,4 +17,4 @@ class QuerySerializer(serializers.ModelSerializer):
 class ResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = Result
-        fields = ('query', 'result')
+        fields = ('query', 'result', 'url_image',)

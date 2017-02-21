@@ -52,10 +52,17 @@ def request(request, format=None):
             response = analyzer_request['result']
         except KeyError:
             response = 'Analyzer could not resolve query ' + matched_query
-        
+        try:
+            url_image = analyzer_request['url_image']
+        except KeyError:
+            # TODO make empty            
+            url_image = r'na'
+
+        url_image = r'https://storage.googleapis.com/pequod/sample_plot.png'
+
         # TODO for now, the response text is the posted rpt url
         #response_entry = request_entry.response_set.create(response=response, transcript=transcript)
-        response_entry = models.ResponseFly(response=response, transcript=transcript)
+        response_entry = models.ResponseFly(response=response, transcript=transcript, url_image=url_image)
 
         # here we call a function that modifies  response_entry - it wil have access to request_entry
 

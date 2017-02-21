@@ -108,7 +108,7 @@ def interpret(base64_audio, supported_queries):
     hints = supported_queries_words_flattened(supported_queries)    
 
     interpretation = {'matched query':'cell_count', 'transcript':'no transcript 0'}
-
+    
     if base64_audio:
         speech_response = google_speech_json_response_pcm(base64_audio, hints)
         print 'Google Speech response: ', speech_response
@@ -127,7 +127,7 @@ def interpret(base64_audio, supported_queries):
 
     else:
         print 'Interpreter got empty audio, defaulting to ', interpretation
-
+                
     return interpretation
 
 

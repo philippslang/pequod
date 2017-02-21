@@ -41,10 +41,11 @@ def request(request, format=None):
         # do the thing and find the best match 
         iterpretation_results = interpret(request_entry.base64_audio, supported_queries)
 
+        matched_query = iterpretation_results['matched query']
+        transcript = iterpretation_results['transcript']
+
         # if matched query empty, needs to be handled at caller level
-        response_entry = models.ResponseFly(query=iterpretation_results['matched query'], transcript=iterpretation_results['transcript'])       
-        
-        #response_entry = models.ResponseFly(query='cell_count', transcript='none from int')       
+        response_entry = models.ResponseFly(query=matched_query, transcript=transcript)              
 
         response_serializer = ResponseFlySerializer(response_entry)
 
