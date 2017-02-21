@@ -3,6 +3,7 @@ import requests
 
 import re
 import sys
+from datetime import timedelta
 
 # TODO this should be curried so that we have one for error, warning and info
 def error_count(rpt_content):
@@ -24,11 +25,21 @@ def warning_count(rpt_content):
     return 'Warning count pattern could not be matched in file.'
 
 def run_time(rpt_content):
-    p = re.compile(r'Simulation complete.*\.')
+    p = re.compile(r'Simulation complete.*[=]')
     m = p.findall(rpt_content)
     if m:
-        start_date = m[0].split()[0]
+        secs = int(re.sub(r'\D+', '', m[0].split()[-2]))
+        duration = timedelta(seconds=secs)
+        duration_str = ''
+        if secs >= 3600:
+            duration_str += "{} hours ".format(secs//3600)
+            secs = secs % 3600
+        if secs >= 60:
+            duration_str += "{} minutes ".format(secs//60)
+            secs = secs % 60
+        duration_str += "{} seconds".format(duration.seconds)
     
+        return "The simulation run time was {}.".format(duration_str)
     return 'Run time could not be determined from the file.'
     
 def simulation_time(rpt_content):
@@ -117,17 +128,17 @@ def water_in_place(rpt_content, time=0.0):
 
 # map supported queries to functions
 SUPPORTED_ANALYSIS = {
-    'error_count'       : error_count,
-    'warning_count'     : warning_count,
-    'finished_normally' : finished_normally,
     'cell_count'        : cell_count,
-    'processor_count'   : processor_count,
-    'oil_in_place'      : oil_in_place,
+    'error_count'       : error_count,
+    'finished_normally' : finished_normally,
     'gas_in_place'      : gas_in_place,
-    'water_in_place'    : water_in_place,
-    'simulation_time'   : simulation_time,
+    'oil_in_place'      : oil_in_place,
+    'processor_count'   : processor_count,
     'run_time'          : run_time,
-    }
+    'simulation_time'   : simulation_time,
+    'warning_count'     : warning_count,
+    'water_in_place'    : water_in_place,
+}
 
 def analyze(supported_query, url_rpt):
     """
