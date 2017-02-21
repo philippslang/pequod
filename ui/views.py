@@ -26,8 +26,10 @@ from .serializers import ReportSerializer
 from google.cloud import storage
 
 
-DEFAULT_RPT_FNAME = 'current.PRT'
 PRT_BUCKET = 'pequod'
+CLIENT_ID = r'GOOG74BLYQVRAHAMWICR'
+CLIENT_SECRET = r'grA2iQokVBblvB/WplV7javq0Hi7Qi3JYyeY2EHP'
+GOOGLE_STORAGE = 'gs'
 
 
 def index(request):
@@ -49,29 +51,38 @@ def rpt_upload_plain(request):
         #print 'I am in UI'
         # TODO make this a  MemoryFileUploadHandler or TemporaryFileUploadHandler 
 
+        # this is an https://docs.djangoproject.com/en/1.10/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile
+        rpt_file = request.FILES[key_name]
+
+        '''
+        blob_name = rpt_file.name
+        dst_uri = boto.storage_uri(PRT_BUCKET + '/' + blob_name, GOOGLE_STORAGE)
+        dst_uri.new_key().set_contents_from_string(rpt_file.read())
+        '''
+
+        
         # https://googlecloudplatform.github.io/google-cloud-python/stable/storage-client.html
 
         # TODO fetch an app wide available encryption key
         client = storage.Client()
         bucket_name = PRT_BUCKET
-        #bucket = client.get_bucket(bucket_name)
+        bucket = client.get_bucket(bucket_name)       
         
-        
-        # this is an https://docs.djangoproject.com/en/1.10/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile
-        #rpt_file = request.FILES[key_name]
 
-        #blob_name = rpt_file.name
-        #blob = storage.Blob(blob_name, bucket)
+        blob_name = rpt_file.name
+        blob = storage.Blob(blob_name, bucket)
 
         # TODO for proper type/encoding, check for good response
 
         # TODO transfer in chunks or create a handler as described above
-        #blob.upload_from_string(rpt_file.read(), content_type='text/plain', client=client)
+        blob.upload_from_string(rpt_file.read(), content_type='text/plain', client=client)
         
         # TODO do we neeed this if we only access app wide?
-        #blob.make_public()
+        blob.make_public()
 
-        #report = Report(public_url=blob.public_url, file_name=blob_name)
+        report = Report(public_url=blob.public_url, file_name=blob_name)
+        
+
         report = Report(public_url="", file_name="")
         report.save()
         report_serializer = ReportSerializer(report)
