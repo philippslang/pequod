@@ -259,6 +259,24 @@ function downsampleToTarget(flts32){
 }
 
 
+// mono out of stereo by simple mean
+function averageStereo(buffers){
+
+  buffer0 = buffers[0];
+  buffer1 = buffers[1];
+  
+  if(glevel > 2){
+    __logdyn('Averaging stereo to mono');
+  }  
+  
+  for (i = 0; i < buffer0.length; i++) {
+    buffer0[i] = (buffer0[i]+buffer1[i])/2.0;
+  }
+  
+  return buffer0;
+}
+
+
 // TODO  (before 32->16) x) interleave(and adjust sample rate) 
 // interleave: https://github.com/daaain/JSSoundRecorder
 function postProcessRecording(){
@@ -266,9 +284,13 @@ function postProcessRecording(){
     // for now, we use first channel only
     var buffer = buffers[0];
     
+    if(buffers.length == 2){
+      buffer = averageStereo(buffers);
+    }
+    
     if(downsample && buffer.length != 0){
       buffer = downsampleToTarget(buffer);
-    }
+    }            
     
     // we convert the 4 byte floats to 2 byte pcm
     var pcm16_buffer = flt32ToPCM16(buffer);

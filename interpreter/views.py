@@ -32,7 +32,6 @@ def request(request, format=None):
         # x) return result
         
         # post the query and get json repr of possible matches TODO check 200
-        # dont know why we started needing this when I put the fly stuff in
         supported_queries = requests.get(request_entry.url_analyzer)
 
         

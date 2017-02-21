@@ -123,7 +123,7 @@ def interpret(base64_audio, supported_queries):
                     intersection = set(trivial_singulars(alternative['transcript'].split())).intersection(query['query'].split('_'))            
                     if intersection:
                         return {'matched query':query['query'], 'transcript':alternative['transcript']}
-	
+
     return interpretation
 
 
