@@ -1,0 +1,688 @@
+REPORT   Run Specifications
+         
+         XXXXXXXXXX X       XX XXXXXXXXXX XXXXXXXXX XXXXXXXX     XXXXXX   XXXXXXXXX   XXXXXX   XXXXXXXXXX
+         XXXXXXXXXX XX      XX XXXXXXXXXX XXXXXXXXX XXXXXXXXX   XXXXXXXX  XXXXXXXXX  XXXXXXXX  XXXXXXXXXX
+             XX     XXX     XX     XX     XX        XX      XX XX      XX XX        XX      XX     XX    
+             XX     XXXX    XX     XX     XX        XX      XX XX         XX        XX             XX    
+             XX     XX XX   XX     XX     XXXXXX    XXXXXXXXX   XXXXXXX   XXXXXX    XX             XX    
+             XX     XX  XX  XX     XX     XXXXXX    XXXXXXXX     XXXXXXX  XXXXXX    XX             XX    
+             XX     XX   XX XX     XX     XX        XX     XX          XX XX        XX             XX    
+             XX     XX    XXXX     XX     XX        XX      XX         XX XX        XX             XX    
+             XX     XX     XXX     XX     XX        XX      XX XX      XX XX        XX      XX     XX    
+         XXXXXXXXXX XX      XX     XX     XXXXXXXXX XX      XX  XXXXXXXX  XXXXXXXXX  XXXXXXXX      XX    
+         XXXXXXXXXX XX       X     XX     XXXXXXXXX XX      XX   XXXXXX   XXXXXXXXX   XXXXXX       XX    
+                                                                                                         
+                                                                        XXXX    XXXX    XX  XXXXXX    XX 
+                                                                       XX  XX  XX  XX  XXX      XX   XXX 
+                                                                           XX  XX  XX   XX      XX    XX 
+                                                                          XX   XX  XX   XX     XX     XX 
+                                                                         XX    XX  XX   XX     XX     XX 
+                                                                        XX     XX  XX   XX    XX      XX 
+                                                                       XXXXXX   XXXX    XX    XX   X  XX 
+         
+         Version      : 2017.1 DEVELOPER
+         Build Date   : Jan 27 2017 09:31:03
+         Build Type   : DEVELOPER
+         Build Number : 597498
+         Platform     : x64_vs110
+         MPI Library  : Microsoft MPI (Microsoft® Windows® Operating System 7.1.12437.25)
+         MPI LibPath  : C:\WINDOWS\system32\msmpi.dll
+         Input        : sugar_box_simple.afi
+         Run Date     : 02/09/17 14:58:59 GMT Standard Time
+         Run Type     : Serial
+         Threads      : 1
+
+INFO     Sections will report the elapsed time (E), CPU time (C), and memory usage (M).
+INFO     Loading extension: IXFStraightPillarGrid
+INFO     Loading extension: RegionMappingExtension
+INFO     Loading extension: EGRIDReport
+INFO     Loading extension: IXFStraightPillarGrid
+INFO     Loading extension: ix_extensions_restartfileprovider
+WARNING  ********** This is a time limited non-commercial build. The build will expire on 2017-Jul-31. **********
+INFO     Checking for licenses.
+INFO     Successfully checked out 1 license of feature ix_fm.
+INFO     Running simulation using: 'E100_ECL2IX_IX.ixf'.
+INFO     Running simulation using: 'E100_grid.ixf'.
+INFO     Running simulation using: 'E100_ECL2IX_FM.ixf'.
+INFO     Running simulation using: 'E100_fm_edits.ixf'.
+
+=======================================================================================================================+
+SECTION  Processing model definitions.                                      E 2.74798s = 0h00m02s | C 2.52722s | M 80.9M
+=======================================================================================================================-
+
+WARNING  Validation of BlackOilFluidModel['PVTNUM_1']:
+         The minimum saturated pressure for the oil PVT (= 86.8421 bar) is different from the minimum pressure for the 
+         gas PVT (= 80 bar).
+WARNING  Validation of BlackOilFluidModel['PVTNUM_1']:
+         The maximum saturated pressure for the oil PVT (= 300 bar) is different from the maximum pressure for the gas 
+         PVT (= 336.5 bar).
+REPORT   TimeStepSolution - Control of the time-step procedure:
+         +---------------------------------------------------------------------------------------------+
+         |        Parameter         |          Description           |     Value      |    Default     |
+         |                          |                                |                | (if different) |
+         +---------------------------------------------------------------------------------------------+
+         | TimeDiscretizationMethod | Type of discretization in time | FULLY_IMPLICIT |                |
+         +---------------------------------------------------------------------------------------------+
+
+REPORT   TimeStepSizingControls - Parameters controlling time-step selection:
+         +---------------------------------------------------------------------------------------------------------------------------------+
+         |          Parameter          |                            Description                             |    Value    |    Default     |
+         |                             |                                                                    |             | (if different) |
+         +---------------------------------------------------------------------------------------------------------------------------------+
+         | CflLimit                    | Maximum permissible CFL number                                     |           1 |                |
+         | InitialTimeStep             | Initial time step at start of simulation or restart                |         1 d |                |
+         | MaxIncreaseFactor           | Maximum increase factor                                            |           3 |                |
+         | MaxTimeStep                 | Maximum time step                                                  |        50 d |                |
+         | MaxTimeStepCuts             | Maximum number of contiguous timestep cuts before simulation stops |          10 |                |
+         | MinDecreaseFactor           | Minimum decrease factor                                            |           0 |                |
+         | MinTimeStep                 | Minimum time step                                                  |     1e-06 d |                |
+         | SolutionChangeScalingFactor | Damping factor for solution change targets                         |           0 |                |
+         | TargetCellPressureChange    | Target cell pressure change for the time step selector             | 137.895 bar |                |
+         | TargetGasSaturationChange   | Target gas saturation change for the time step selector            |         0.4 |                |
+         | TargetOilSaturationChange   | Target oil saturation change for the time step selector            |         0.2 |                |
+         | TargetTimeTruncationError   | Maximum permissible time truncation error                          |         0.1 |                |
+         | TargetWaterSaturationChange | Target water saturation change for the time step selector          |         0.2 |                |
+         | TimeStepCutDecreaseFactor   | Decrease factor applied after a time step cut                      |       0.125 |                |
+         | VerbosityLevel              | Quantity of output messages about time-stepping                    |           1 |                |
+         +---------------------------------------------------------------------------------------------------------------------------------+
+
+REPORT   Convergence - Parameters controlling nonlinear convergence:
+         +-----------------------------------------------------------------------------------------------------------------------------------+
+         |           Parameter           |                            Description                            |    Value     |    Default     |
+         |                               |                                                                   |              | (if different) |
+         +-----------------------------------------------------------------------------------------------------------------------------------+
+         | MaxCellPressureChange         | Tolerance on pressure change                                      | 0.103421 bar |                |
+         | MaxCellTemperatureChange      | Tolerance on temperature change                                   | 5.55556 degC |                |
+         | MaxMoleFractionChange         | Tolerance on mole fraction change                                 |         0.01 |                |
+         | MaxNewtons                    | Maximum number of nonlinear iterations                            |           12 |                |
+         | MaxReservoirComponentResidual | Tolerance on component mass balance residual for entire reservoir |        1e-06 |                |
+         | MaxSaturationChange           | Tolerance on saturation change                                    |         0.01 |                |
+         | MaxWellPressureChange         | Tolerance on well bore pressure change                            | 0.172369 bar |                |
+         | MinNewtons                    | Minimum number of nonlinear iterations                            |            1 |                |
+         | NumberTopConvergenceCells     | Number of worst converging cells tracked for reporting            |            0 |                |
+         | VerbosityLevel                | Quantity of output messages about non-linear convergence          |            1 |                |
+         +-----------------------------------------------------------------------------------------------------------------------------------+
+
+REPORT   SolutionUpdaters - Selection of non-linear updater and solution scaling parameters:
+         +-----------------------------------------------------------------------------------------------------------------------------------------------------+
+         |                  Parameter                  |                              Description                               |    Value    |    Default     |
+         |                                             |                                                                        |             | (if different) |
+         +-----------------------------------------------------------------------------------------------------------------------------------------------------+
+         | MaxMoleFractionChange                       | Maximum mole fraction change in a nonlinear update                     |         0.2 |                |
+         | MaxPressureChange                           | Maximum pressure change in a nonlinear update                          | 68.9476 bar |                |
+         | MaxSaturationChange                         | Maximum saturation change in a nonlinear update                        |         0.2 |                |
+         | PreventSaturationChangePassingMaxSaturation | Limit changes in saturation to avoid passing the maximum saturation.   |       False |                |
+         | PreventSaturationChangePassingMobilityLimit | Limit changes in saturation to avoid passing the mobility limit        |        True |                |
+         | ScaleOnBHPLimitViolation                    | Scales the solution update should an updated well BHP break its limit. |       False |                |
+         | UpdateWellVariables                         | Update well variables from linear solve.                               |        True |                |
+         +-----------------------------------------------------------------------------------------------------------------------------------------------------+
+
+INFO     Performing internal adjacency calculation for grid CoarseGrid.
+INFO     Performing external adjacency calculation.
+INFO     Cell volume not provided as a cell property. Calculating from geometry.
+INFO     Cell center coordinate not provided as a cell property for 3 axis directions. Calculating from geometry.
+INFO     Cell depths not provided. Calculating from geometry.
+INFO     Using depth calc method: top_depth = min(top), bottom_depth = max(bottom)
+INFO     Pore volume not provided as a cell property. Calculating from cell volume and porosity.
+INFO     Reordering local cells.
+INFO     RegionMappingExtension has created the following regions for region family EQUILMODEL_REGION
+         +------------------------------------------------------------------------------+
+         | Index |       Name        |       Combined regions        | Grid | Requested |
+         +------------------------------------------------------------------------------+
+         |     0 | EQLNUM_1_PVTNUM_1 | EQUILIBRATION_REGION.EQLNUM_1 |  *   |           |
+         |       |                   | PVT_REGION.PVTNUM_1           |      |           |
+         +------------------------------------------------------------------------------+
+
+INFO     RegionMappingExtension has created the following regions for region family FLUIDMODEL_REGION
+         +-----------------------------------------------------------+
+         | Index |   Name   |  Combined regions   | Grid | Requested |
+         +-----------------------------------------------------------+
+         |     0 | PVTNUM_1 | PVT_REGION.PVTNUM_1 |  *   |     *     |
+         +-----------------------------------------------------------+
+
+INFO     RegionMappingExtension has created the following regions for region family ROCKMODEL_REGION
+         +------------------------------------------------------------------------------------------------+
+         | Index |        Name        |                Combined regions                | Grid | Requested |
+         +------------------------------------------------------------------------------------------------+
+         |     0 | ROCKNUM_1_SATNUM_1 | ROCK_COMPACTION_REGION.ROCKNUM_1               |  *   |     *     |
+         |       |                    | SATURATION_FUNCTION_DRAINAGE_TABLE_NO.SATNUM_1 |      |           |
+         +------------------------------------------------------------------------------------------------+
+
+INFO     RegionMappingExtension has created the mapping EQUILIBRIUM using region family EQUILMODEL_REGION
+         +---------------------------------------+
+         |    Region name    |    Model name     |
+         +---------------------------------------+
+         | EQLNUM_1_PVTNUM_1 | EQLNUM_1_PVTNUM_1 |
+         +---------------------------------------+
+
+INFO     RegionMappingExtension has created the mapping FLUID using region family FLUIDMODEL_REGION
+         +--------------------------+
+         | Region name | Model name |
+         +--------------------------+
+         | PVTNUM_1    | PVTNUM_1   |
+         +--------------------------+
+
+INFO     RegionMappingExtension has created the mapping ROCK using region family ROCKMODEL_REGION
+         +-----------------------------------------+
+         |    Region name     |     Model name     |
+         +-----------------------------------------+
+         | ROCKNUM_1_SATNUM_1 | ROCKNUM_1_SATNUM_1 |
+         +-----------------------------------------+
+
+INFO     Rock models will be associated with reservoir cells using the RegionFamily ROCKMODEL_REGION.
+INFO     Fluid models will be associated with reservoir cells using the RegionFamily FLUIDMODEL_REGION.
+INFO     Equilibration models will be associated with reservoir cells using the RegionFamily EQUILMODEL_REGION.
+INFO     RegionMappingExtension has created the following fluid models
+         +----------+
+         | PVTNUM_1 |
+         +----------+
+
+INFO     RegionMappingExtension has created the following equilibrium models
+         +-------------------+
+         | EQLNUM_1_PVTNUM_1 |
+         +-------------------+
+
+INFO     Validating node 'Equilibrium['EQLNUM_1_PVTNUM_1']' created from node 'Equilibrium['EQLNUM_1']'.
+INFO     RegionMappingExtension has created the following rock models
+         +--------------------+
+         | ROCKNUM_1_SATNUM_1 |
+         +--------------------+
+
+REPORT   Summary of fluid properties:
+         +-----------------------------------------------+
+         | Fluid model             | Blackoil isothermal |
+         | Phases present          | Oil Gas Water       |
+         | Surface tension options | Inactive            |
+         +-----------------------------------------------+
+
+REPORT   Summary of rock properties and saturation functions:
+         +---------------------------------------------------------------------------+
+         | Three phase relative permeability model                | Restricted Baker |
+         | End-point scaling options                              | Inactive         |
+         | Temperature-dependent end-point scaling                | Inactive         |
+         | Hysteresis options                                     | Inactive         |
+         | Capillary number dependent relative permeability model | Inactive         |
+         | Miscibility options                                    | Inactive         |
+         | Rock model                                             | Compressible     |
+         | Non-Darcy flow                                         | Inactive         |
+         +---------------------------------------------------------------------------+
+
+INFO     Successfully loaded the grid.
+INFO     The selected restart bulk data file format is HDF5.
+REPORT   Grid statistics:
+                                 +-------+
+                                 | Total |
+         +-------------------------------+
+         | Number of Cells       |   500 |
+         | Number of Connections |  1300 |
+         +-------------------------------+
+
+INFO     Equilibrium fluid type for 'EQLNUM_1_PVTNUM_1' is not set. It will be recalculated.
+INFO     Equilibration fluid type for 'EQLNUM_1_PVTNUM_1' with top=0 m, bottom=100 m, datum=0 m, goc=0 m, woc=100 m is 
+         set to 'BUBBLE_POINT'.
+INFO     Equilibration mode based on mobile phases in reservoir=WOG, gas=DRY, rsvd/pbvd=NO, rvvd/pdvd=NO, 
+         datum_vs_goc=EQUAL.
+INFO     Setting unspecified temperature for equilibrium model 'EQLNUM_1_PVTNUM_1' to standard conditions (15.5556 degC).
+REPORT   Equilibration data:
+         +------------------------------------------------------------------------------------------------------------------+
+         | Equilibrium model |  Fluid type  | Independent/  |   Data honored/   |    Transition    |   Fine   | Fluid model |
+         |                   |              | Referenced to | Communication via |    adjustment    |  scale   |             |
+         +------------------------------------------------------------------------------------------------------------------+
+         | EQLNUM_1_PVTNUM_1 | BUBBLE_POINT | Independent   | DATUM_PLUS_GOC    | DEPTH_ADJUSTMENT | Inactive | PVTNUM_1    |
+         +------------------------------------------------------------------------------------------------------------------+
+         +-----------------------------------------------------------------------------------------------+
+         | Equilibrium model | Top | Bottom | Datum depth | Datum pressure | GOC | Pc@GOC | OWC | Pc@OWC |
+         |                   |  m  |   m    |      m      |      bar       |  m  |  bar   |  m  |  bar   |
+         +-----------------------------------------------------------------------------------------------+
+         | EQLNUM_1_PVTNUM_1 |   0 |    100 |           0 |            100 |   0 |      0 | 100 |      0 |
+         +-----------------------------------------------------------------------------------------------+
+
+REPORT   LinearControls - Linear solver control parameters:
+         +--------------------------------------------------------------------------------------------------------------------------------------+
+         |               Parameter               |                       Description                       |       Value       |    Default     |
+         |                                       |                                                         |                   | (if different) |
+         +--------------------------------------------------------------------------------------------------------------------------------------+
+         | BlockPreconditioner                   | Second stage preconditioner for CPR                     |              ILU0 |                |
+         | BlockPreconditionerOrdering           | Ordering of second stage preconditioner for CPR         | ORIGINAL_ORDERING |                |
+         | DynamicLineUp                         | Dynamic selection of secondary variables                |             False |                |
+         | FullSystemPreconditioner              | Full system preconditioner                              |    TRUE_IMPES_CPR |                |
+         | LaggedRelativeNorm                    | Lag the relative residual norm                          |              True |                |
+         | LinearSolver                          | LinearSolver                                            |            FGMRES |                |
+         | MaxIters                              | Maximum number of linear iterations                     |                20 |                |
+         | MaxPressurePreconditionerIters        | Maximum number of iterations for pressure system        |                10 |                |
+         | MaxRelativeResidualNorm               | Tolerance on relative residual norm                     |             0.001 |                |
+         | NumberOrthogonalizationVectors        | Stack size for the iterative method                     |                20 |                |
+         | PressurePreconditioner                | First stage preconditioner for CPR pressure system      |  SINGLE_CYCLE_AMG |                |
+         | PressurePreconditionerSetupHeuristics | Control frequency of set-up in multigrid                |              True |                |
+         | PressurePreconditionerTolerance       | Tolerance on relative residual norm for pressure system |              0.01 |                |
+         | VerbosityLevel                        | Quantity of message output from linear solver           |                 1 |                |
+         | WeightErrorsByPoreVolume              | Pore volume weighted norms                              |             False |                |
+         +--------------------------------------------------------------------------------------------------------------------------------------+
+
+WARNING  There are porosity values greater than 0.5 on 1 core(s).
+INFO     The oil gas transition adjustment has been applied to the equilibrium model 'EQLNUM_1_PVTNUM_1'.
+REPORT   Debug flags utilized:
+         +------------------------+
+         |      Flag      | Level |
+         +------------------------+
+         | global_timings |     2 |
+         +------------------------+
+
+REPORT   Pre-release Features:
+         +-------------------------------------------------------+
+         |        Feature        | Runtime Option | Toggle State |
+         +-------------------------------------------------------+
+         | ex1_default           | yes            | on           |
+         | ex2_early_development | yes            | off          |
+         | ex3_early_release     | no             | on           |
+         | ex4_released          | no             | on           |
+         | report_features       | yes            | on           |
+         +-------------------------------------------------------+
+
+REPORT   Initial state properties at time 0 d:
+         +--------------------------------------------------------------------+
+         |       Property        |   Minimum    |   Maximum    |   Average    |
+         +--------------------------------------------------------------------+
+         | PRESSURE              |  100.683 bar |  106.148 bar |  103.415 bar |
+         | TEMPERATURE           | 15.5556 degC | 15.5556 degC | 15.5556 degC |
+         | OIL_SATURATION        |          0.8 |          0.8 |          0.8 |
+         | GAS_SATURATION        |            0 |            0 |            0 |
+         | WATER_SATURATION      |          0.2 |          0.2 |          0.2 |
+         | MOLE_FRACTION_LIQ OIL |     0.740136 |     0.740136 |     0.740136 |
+         | MOLE_FRACTION_LIQ GAS |     0.259864 |     0.259864 |     0.259864 |
+         +--------------------------------------------------------------------+
+
+REPORT   Required static properties at time 0 d:
+         +----------------------------------------------------------+
+         |     Property      |  Minimum   |  Maximum   |  Average   |
+         +----------------------------------------------------------+
+         | PORE_VOLUME       | 200000 rm3 | 200000 rm3 | 200000 rm3 |
+         | CELL_BOTTOM_DEPTH |       20 m |      100 m |       60 m |
+         | CELL_TOP_DEPTH    |        0 m |       80 m |       40 m |
+         +----------------------------------------------------------+
+
+REPORT   Regions:
+         +-------------------------------------------------------------------------+
+         |              Region family              | Min region id | Max region id |
+         +-------------------------------------------------------------------------+
+         | ROCKMODEL_REGION                        |             0 |             0 |
+         | FLUIDMODEL_REGION                       |             0 |             0 |
+         | EQUILMODEL_REGION                       |             0 |             0 |
+         | FLUID_IN_PLACE_REGION                   |             0 |             0 |
+         | FLUX_REGION                             |             1 |             1 |
+         | PVT_REGION                              |             0 |             0 |
+         | EQUATION_OF_STATE_REGION                |             0 |             0 |
+         | EQUILIBRATION_REGION                    |             0 |             0 |
+         | SATURATION_FUNCTION_DRAINAGE_TABLE_NO   |             1 |             1 |
+         | SATURATION_FUNCTION_IMBIBITION_TABLE_NO |             1 |             1 |
+         | ROCK_COMPACTION_REGION                  |             0 |             0 |
+         +-------------------------------------------------------------------------+
+
+REPORT   Optional properties (not required, but used if supplied) at time 0 d:
+         +-----------------------------------------------------------------------+
+         |                Property                 | Minimum | Maximum | Average |
+         +-----------------------------------------------------------------------+
+         | PERM_I                                  |   20 mD |   20 mD |   20 mD |
+         | PERM_J                                  |   20 mD |   20 mD |   20 mD |
+         | PERM_K                                  |    2 mD |    2 mD |    2 mD |
+         | TRANSMISSIBILITY_MULTIPLIER_I           |       1 |       1 |       1 |
+         | TRANSMISSIBILITY_MULTIPLIER_J           |       1 |       1 |       1 |
+         | TRANSMISSIBILITY_MULTIPLIER_K           |       1 |       1 |       1 |
+         | TRANSMISSIBILITY_MULTIPLIER_I_M         |       1 |       1 |       1 |
+         | TRANSMISSIBILITY_MULTIPLIER_J_M         |       1 |       1 |       1 |
+         | TRANSMISSIBILITY_MULTIPLIER_K_M         |       1 |       1 |       1 |
+         | NET_TO_GROSS_RATIO                      |       1 |       1 |       1 |
+         | PORE_VOLUME_MULTIPLIER                  |       1 |       1 |       1 |
+         | SATURATION_FUNCTION_DRAINAGE_TABLE_NO   |       1 |       1 |       1 |
+         | SATURATION_FUNCTION_IMBIBITION_TABLE_NO |       1 |       1 |       1 |
+         | POROSITY                                | 1 m3/m3 | 1 m3/m3 | 1 m3/m3 |
+         +-----------------------------------------------------------------------+
+
+REPORT   Pore volume and transmissibility cumulative distribution:
+         +-------------------------------------------------------------------------------------+
+         |   Percentile    | Pore volume |     Trans X     |     Trans Y     |     Trans Z     |
+         | (% cells below) |     rm3     | (cP.m3)/(d.bar) | (cP.m3)/(d.bar) | (cP.m3)/(d.bar) |
+         +-------------------------------------------------------------------------------------+
+         |               5 |      200000 |               0 |               0 |               0 |
+         |              10 |      200000 |               0 |               0 |               0 |
+         |              15 |      200000 |         3.41081 |         3.41081 |               0 |
+         |              20 |      200000 |         3.41081 |         3.41081 |               0 |
+         |              25 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              30 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              35 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              40 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              45 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              50 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              55 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              60 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              65 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              70 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              75 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              80 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              85 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              90 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |              95 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         |             100 |      200000 |         3.41081 |         3.41081 |         8.52702 |
+         +-------------------------------------------------------------------------------------+
+
+REPORT   Volume detailed statistics:
+         +--------------------------------------------------------------------------------+
+         |  Property   |  Max   |  Max  |  Min   |  Min  | Nonzero min | Nz min |  Ratio  |
+         |             |  rm3   |  loc  |  rm3   |  loc  |     rm3     |  loc   | max/min |
+         +--------------------------------------------------------------------------------+
+         | Pore volume | 200000 | 1,1,5 | 200000 | 1,1,4 |      200000 | 1,1,4  |       1 |
+         +--------------------------------------------------------------------------------+
+
+REPORT   Transmissibility detailed statistics:
+         +----------------------------------------------------------------------------------------------------+
+         | Property |       Max       |  Max  |       Min       |  Min   |   Nonzero min   | Nz min |  Ratio  |
+         |          | (cP.m3)/(d.bar) |  loc  | (cP.m3)/(d.bar) |  loc   | (cP.m3)/(d.bar) |  loc   | max/min |
+         +----------------------------------------------------------------------------------------------------+
+         | Trans X  |         3.41081 | 1,1,5 |               0 | 10,1,1 |         3.41081 | 1,1,4  |       1 |
+         | Trans Y  |         3.41081 | 1,1,5 |               0 | 1,10,1 |         3.41081 | 1,1,4  |       1 |
+         | Trans Z  |         8.52702 | 1,1,3 |               0 | 1,1,5  |         8.52702 | 1,1,2  |       1 |
+         +----------------------------------------------------------------------------------------------------+
+
+INFO     Checking for licenses.
+INFO     Successfully checked out 1 license of feature ix_base.
+
+=======================================================================================================================+
+SECTION  Starting the simulation on 01-Jan-2016.                            E 3.4224s = 0h00m03s | C 2.85482s | M 102.7M
+=======================================================================================================================-
+
+REPORT   Key to time step selection codes appearing in this output as LOG messages:
+         +---------------------------------------------------------------+
+         | Code |             Reason time step was selected              |
+         +---------------------------------------------------------------+
+         | Init | The initial time step for a simulation run             |
+         | MIF  | The maximum increase factor between time steps         |
+         | MDF  | The maximum decrease factor between time steps         |
+         | Min  | The minimum allowed time step                          |
+         | Max  | The maximum allowed time step                          |
+         | Rep  | Time step required to synchronize with a report date   |
+         | HRep | Time step required to get half way to a report date    |
+         | Chop | Time step chopped due to previous convergence problems |
+         | CFL  | Time step selected to maintain CFL stability           |
+         | SCT  | Time step selected on solution change criteria         |
+         | TTE  | Time step selected on time truncation error criteria   |
+         | Mn*  | Time step * selected but limited by minimum time step  |
+         +---------------------------------------------------------------+
+
+INFO     Total number of time steps = 0, nonlinear iterations = 0, linear iterations = 0
+
+REPORT   Grid property statistics at time 0 d:
+         +----------------------------------------------------------------------+
+         |        Property         |   Minimum    |   Maximum    |   Average    |
+         +----------------------------------------------------------------------+
+         | PRESSURE                |  100.683 bar |  106.148 bar |  103.415 bar |
+         | TEMPERATURE             | 15.5556 degC | 15.5556 degC | 15.5556 degC |
+         | OIL_SATURATION          |          0.8 |          0.8 |          0.8 |
+         | GAS_SATURATION          |            0 |            0 |            0 |
+         | WATER_SATURATION        |          0.2 |          0.2 |          0.2 |
+         | MOLE_FRACTION_LIQ OIL   |     0.740136 |     0.740136 |     0.740136 |
+         | MOLE_FRACTION_LIQ GAS   |     0.259864 |     0.259864 |     0.259864 |
+         | MOLE_FRACTION_WAT WATER |            1 |            1 |            1 |
+         +----------------------------------------------------------------------+
+
+INFO     Writing RESTART to 'sugar_box_simple.0000' Time 0.0 Date 01-JAN-2016.
+WARNING  Command save_restart on Reservoir with usage internal used.
+INFO     Calculating next time-step to be stored to restart.
+INFO     Selected time step is 1 d.
+INFO     RESTART written.
+REPORT   State for region family 'RESERVOIR' at time 0 d:
+                     +------------------------------------------------------------------------------+
+                     | Dyn Pore Vol | Avg Pres | Avg Temp | Avg Oil Sat | Avg Gas Sat | Avg Wat Sat |
+                     |     rm3      |   bar    |   degC   |             |             |             |
+         +------------------------------------------------------------------------------------------+
+         | RESERVOIR |  9.95787e+07 |  103.415 |  15.5556 |         0.8 |           0 |         0.2 |
+         +------------------------------------------------------------------------------------------+
+
+REPORT   Moles in place for region family 'RESERVOIR' at time 0 d:
+         +-----------------------------------------------------+
+         |  Region   |     OIL     |     GAS     |    WATER    |
+         |           |   kg-mole   |   kg-mole   |   kg-mole   |
+         +-----------------------------------------------------+
+         | RESERVOIR | 4.30936e+08 | 1.51303e+08 | 1.10832e+09 |
+         +-----------------------------------------------------+
+
+REPORT   Surface fluids in place for region family 'RESERVOIR' at time 0 d:
+         +--------------------------------------------------------------------+
+         |  Region   |  Separator   |     Oil     |     Gas     |    Water    |
+         |           |              |     sm3     |     sm3     |     sm3     |
+         +--------------------------------------------------------------------+
+         | RESERVOIR | Default (1)* | 6.45670e+07 | 4.65994e+09 | 1.95692e+07 |
+         +--------------------------------------------------------------------+
+         (* The number of fluid models used by a separator with defaulted fluid model)
+
+REPORT   Reservoir fluids in place for region family 'RESERVOIR' at time 0 d:
+         +----------------------------------------------------------+
+         |  Region   | Oil in place | Gas in place | Water in place |
+         |           |     rm3      |     rm3      |      rm3       |
+         +----------------------------------------------------------+
+         | RESERVOIR |  7.96630e+07 |  0.00000e+00 |    1.99157e+07 |
+         +----------------------------------------------------------+
+
+WARNING  Validation of BlackOilFluidModel['PVTNUM_1']:
+         The minimum saturated pressure for the oil PVT (= 86.8421 bar) is different from the minimum pressure for the 
+         gas PVT (= 80 bar).
+WARNING  Validation of BlackOilFluidModel['PVTNUM_1']:
+         The maximum saturated pressure for the oil PVT (= 300 bar) is different from the maximum pressure for the gas 
+         PVT (= 336.5 bar).
+REPORT   Flow entity count for Reservoir:E100:
+         +-------------------+
+         | Wells        |  0 |
+         | Completions  |  0 |
+         | Region Lists | 12 |
+         | Regions      | 22 |
+         +-------------------+
+
+REPORT   Flow entities of Reservoir:E100:
+         +----------------------------------------------------------------------------------------------------------------+
+         | Wells   | -                                                                                                    |
+         +----------------------------------------------------------------------------------------------------------------+
+         | Regions | RESERVOIR.RESERVOIR FLUID_IN_PLACE_REGION.FIPNUM_1 FLUX_REGION.FLUXNUM_0 FLUX_REGION.FLUXNUM_1       |
+         |         | FLUX_REGION.FLUXNUM_2 FLUX_REGION.FLUXNUM_3 FLUX_REGION.FLUXNUM_4 FLUX_REGION.FLUXNUM_5 FLUX_REGION. |
+         |         | FLUXNUM_6 FLUX_REGION.FLUXNUM_7 FLUX_REGION.FLUXNUM_8 FLUX_REGION.FLUXNUM_9 FLUX_REGION.FLUXNUM_10   |
+         |         | PVT_REGION.PVTNUM_1 EQUATION_OF_STATE_REGION.EOSNUM_1 EQUILIBRATION_REGION.EQLNUM_1                  |
+         |         | SATURATION_FUNCTION_DRAINAGE_TABLE_NO.SATNUM_1 SATURATION_FUNCTION_IMBIBITION_TABLE_NO.IMBNUM_1      |
+         |         | ROCK_COMPACTION_REGION.ROCKNUM_1 EQUILMODEL_REGION.EQLNUM_1_PVTNUM_1 FLUIDMODEL_REGION.PVTNUM_1      |
+         |         | ROCKMODEL_REGION.ROCKNUM_1_SATNUM_1                                                                  |
+         +----------------------------------------------------------------------------------------------------------------+
+
+REPORT   Groups:
+         +---------------------------------+
+         | Groups | FIELD FM_FIELD GROUP 1 |
+         +---------------------------------+
+
+INFO     Group hierarchy:
+           FM_FIELD
+           . FIELD
+           . . GROUP 1
+
+LOG                    TIME  TSTEP       GOR      WCT      OPR      WPR      GPR      FPR      WIR      GIR  ITER  IMPL 
+                          d      d   sm3/sm3  sm3/sm3    sm3/d    sm3/d    sm3/d      bar    sm3/d    sm3/d           % 
+         -------------------------------------------------------------------------------------------------------------- 
+          Init   ;    1.000  1.000         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+WARNING  Command get_properties_for_wells on ReservoirMgr with usage internal used.
+          MIF    ;    4.000  3.000         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          MIF    ;   13.000  9.000         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          MIF    ;   40.000  27.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;   90.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;  140.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;  190.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;  240.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;  290.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;  340.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;  390.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;  440.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;  490.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;  540.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;  590.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Max    ;  640.000  50.00         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          HRep   ;  685.500  45.50         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+          Rep    ;  731.000  45.50         0    0.000    0.000    0.000    0.000  103.415    0.000    0.000     1   100
+REPORT   Group properties at 731 d
+         +---------------------------------------------------------------------------------------+
+         |  Group   | Injection  |  OPR  |  WPR  |  GPR  |  VPR  |  WIR  |  GIR  |  OIR  |  VIR  |
+         |          |   stream   | sm3/d | sm3/d | sm3/d | rm3/d | sm3/d | sm3/d | sm3/d | rm3/d |
+         +---------------------------------------------------------------------------------------+
+         | FM_FIELD | UNASSIGNED |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |
+         | GROUP 1  | UNASSIGNED |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |
+         | FIELD    | UNASSIGNED |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |  0.00 |
+         +---------------------------------------------------------------------------------------+
+
+INFO     Writing RESTART to 'sugar_box_simple.0024' Time 731.0 Date 01-JAN-2018.
+INFO     Calculating next time-step to be stored to restart.
+INFO     Selected time step is 4.55e+06 d.
+INFO     RESTART written.
+
+=======================================================================================================================+
+SECTION  The simulation has reached 01-Jan-2018 731 d.                     E 4.59717s = 0h00m04s | C 3.91563s | M 147.1M
+=======================================================================================================================-
+
+INFO     Total number of time steps = 18, nonlinear iterations = 18, linear iterations = 37
+
+REPORT   State for region family 'RESERVOIR' at time 731 d:
+                     +------------------------------------------------------------------------------+
+                     | Dyn Pore Vol | Avg Pres | Avg Temp | Avg Oil Sat | Avg Gas Sat | Avg Wat Sat |
+                     |     rm3      |   bar    |   degC   |             |             |             |
+         +------------------------------------------------------------------------------------------+
+         | RESERVOIR |  9.95787e+07 |  103.415 |  15.5556 |         0.8 |           0 |         0.2 |
+         +------------------------------------------------------------------------------------------+
+
+REPORT   Moles in place for region family 'RESERVOIR' at time 731 d:
+         +-----------------------------------------------------+
+         |  Region   |     OIL     |     GAS     |    WATER    |
+         |           |   kg-mole   |   kg-mole   |   kg-mole   |
+         +-----------------------------------------------------+
+         | RESERVOIR | 4.30936e+08 | 1.51303e+08 | 1.10832e+09 |
+         +-----------------------------------------------------+
+
+REPORT   Surface fluids in place for region family 'RESERVOIR' at time 731 d:
+         +--------------------------------------------------------------------+
+         |  Region   |  Separator   |     Oil     |     Gas     |    Water    |
+         |           |              |     sm3     |     sm3     |     sm3     |
+         +--------------------------------------------------------------------+
+         | RESERVOIR | Default (1)* | 6.45670e+07 | 4.65994e+09 | 1.95692e+07 |
+         +--------------------------------------------------------------------+
+         (* The number of fluid models used by a separator with defaulted fluid model)
+
+REPORT   Oil recovery efficiency for region family 'RESERVOIR' at time 731 d:
+         +-------------------------+
+         |  Region   |             |
+         +-------------------------+
+         | RESERVOIR | 2.96472e-14 |
+         +-------------------------+
+
+REPORT   Reservoir fluids in place for region family 'RESERVOIR' at time 731 d:
+         +----------------------------------------------------------+
+         |  Region   | Oil in place | Gas in place | Water in place |
+         |           |     rm3      |     rm3      |      rm3       |
+         +----------------------------------------------------------+
+         | RESERVOIR |  7.96630e+07 |  0.00000e+00 |    1.99157e+07 |
+         +----------------------------------------------------------+
+
+REPORT   Material balance error (fraction of in-place total moles) for region family 'RESERVOIR' at time 731 d:
+         +-----------------------------------------------------+
+         |  Region   |     OIL     |     GAS     |    WATER    |
+         +-----------------------------------------------------+
+         | RESERVOIR | 7.58042e-15 | 1.37535e-15 | 1.27939e-16 |
+         +-----------------------------------------------------+
+
+
+=======================================================================================================================+
+SECTION  Simulation complete.                                              E 4.61351s = 0h00m04s | C 3.93123s | M 147.3M
+=======================================================================================================================-
+
+INFO     Total number of time steps = 18, nonlinear iterations = 18, linear iterations = 37
+
+REPORT   CPU time breakdown:
+         +-------------------------------------------+
+         |             Component             | CPU s |
+         +-------------------------------------------+
+         | IXF reader                        |   0.1 |
+         | Grid and property loading         |   0.1 |
+         | Initialize model                  |   0.0 |
+         | Property calculation              |   0.0 |
+         | Construct reservoir equations     |   0.0 |
+         | Construct well equations          |   0.0 |
+         | Construct miscellaneous equations |   0.0 |
+         | Linear solver                     |   0.0 |
+         | Nonlinear update                  |   0.0 |
+         | Convergence test                  |   0.0 |
+         | Field management                  |   0.2 |
+         | Reporting                         |   0.3 |
+         | Restart writer                    |   0.1 |
+         | Licensing                         |   0.0 |
+         | Untagged                          |   3.0 |
+         | Total                             |   3.9 |
+         +-------------------------------------------+
+
+REPORT   Elapsed and parallel time breakdown:
+         +----------------------------------------------------------+
+         |             Component             | Elapsed s | Thread % |
+         +----------------------------------------------------------+
+         | IXF reader                        |       0.1 |        0 |
+         | Grid and property loading         |       0.1 |     0.01 |
+         | Initialize model                  |       0.0 |     0.24 |
+         | Property calculation              |       0.0 |        0 |
+         | Construct reservoir equations     |       0.1 |        0 |
+         | Construct well equations          |       0.0 |        0 |
+         | Construct miscellaneous equations |       0.0 |        0 |
+         | Linear solver                     |       0.1 |    46.12 |
+         | Nonlinear update                  |       0.0 |     4.05 |
+         | Convergence test                  |       0.0 |        0 |
+         | Field management                  |       0.2 |        0 |
+         | Reporting                         |       0.3 |        0 |
+         | Restart writer                    |       0.1 |        0 |
+         | Licensing                         |       0.3 |        0 |
+         | Untagged                          |       3.2 |     0.00 |
+         | Total                             |       4.6 |     0.79 |
+         +----------------------------------------------------------+
+
+INFO     For more frequent reports on component CPU and memory set Simulation:ProcessInformation > 2.
+INFO     Checked in license feature ix_base
+INFO     Total FM coupled newtons 54
+REPORT   Flow entity count for Reservoir:E100:
+         +-------------------+
+         | Wells        |  0 |
+         | Completions  |  0 |
+         | Region Lists | 12 |
+         | Regions      | 22 |
+         +-------------------+
+
+REPORT   Flow entities of Reservoir:E100:
+         +----------------------------------------------------------------------------------------------------------------+
+         | Wells   | -                                                                                                    |
+         +----------------------------------------------------------------------------------------------------------------+
+         | Regions | RESERVOIR.RESERVOIR FLUID_IN_PLACE_REGION.FIPNUM_1 FLUX_REGION.FLUXNUM_0 FLUX_REGION.FLUXNUM_1       |
+         |         | FLUX_REGION.FLUXNUM_2 FLUX_REGION.FLUXNUM_3 FLUX_REGION.FLUXNUM_4 FLUX_REGION.FLUXNUM_5 FLUX_REGION. |
+         |         | FLUXNUM_6 FLUX_REGION.FLUXNUM_7 FLUX_REGION.FLUXNUM_8 FLUX_REGION.FLUXNUM_9 FLUX_REGION.FLUXNUM_10   |
+         |         | PVT_REGION.PVTNUM_1 EQUATION_OF_STATE_REGION.EOSNUM_1 EQUILIBRATION_REGION.EQLNUM_1                  |
+         |         | SATURATION_FUNCTION_DRAINAGE_TABLE_NO.SATNUM_1 SATURATION_FUNCTION_IMBIBITION_TABLE_NO.IMBNUM_1      |
+         |         | ROCK_COMPACTION_REGION.ROCKNUM_1 EQUILMODEL_REGION.EQLNUM_1_PVTNUM_1 FLUIDMODEL_REGION.PVTNUM_1      |
+         |         | ROCKMODEL_REGION.ROCKNUM_1_SATNUM_1                                                                  |
+         +----------------------------------------------------------------------------------------------------------------+
+
+REPORT   Groups:
+         +---------------------------------+
+         | Groups | FIELD FM_FIELD GROUP 1 |
+         +---------------------------------+
+
+INFO     Group hierarchy:
+           FM_FIELD
+           . FIELD
+           . . GROUP 1
+
+INFO     Time stepping stats: number of HRep = 1, Init = 1, MIF = 3, Max = 12, Rep = 1, total = 18.
+INFO     Checked in license feature ix_fm
+REPORT   Message summary:
+         +---------------------------+
+         | Message level | Frequency |
+         +---------------------------+
+         | INFO          |        60 |
+         | WARNING       |         8 |
+         | ERROR         |         0 |
+         +---------------------------+
+
+INFO     Run finished normally.
