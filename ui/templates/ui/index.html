@@ -207,9 +207,14 @@ function startRecording() {
 
 
 
-function stopRecording() {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function stopRecording() {
 	recorder && recorder.stop();
   
+  await sleep(500);
   
   if(glevel > 2){
     __logdyn('Stopped recording.');
@@ -222,7 +227,9 @@ function stopRecording() {
   forwardRecording();
   
   // wav conversion in here
-  showRecording();	
+  if(glevel > 2){
+    showRecording();	
+    }
 	
 	recorder.clear();
 }
@@ -329,9 +336,14 @@ function showRecording() {
 		au.src = url;
 		hf.href = url;
 		hf.download = new Date().toISOString() + '.wav';
-		hf.innerHTML = hf.download;
+		//hf.innerHTML = hf.download;
 		li.appendChild(au);
 		li.appendChild(hf);
+		
+    while(recordingslist.firstChild){
+      		recordingslist.removeChild(recordingslist.firstChild);
+    }
+
 		recordingslist.appendChild(li);
 	});
 }
