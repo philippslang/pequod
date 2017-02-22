@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import uuid
 
 from django.http import HttpResponse
 from django.template import loader
@@ -25,8 +26,9 @@ from .serializers import ReportSerializer
 
 from google.cloud import storage
 
+import mysite.dispatch as internal_request
 
-PRT_BUCKET = 'pequod'
+
 CLIENT_ID = r'GOOG74BLYQVRAHAMWICR'
 CLIENT_SECRET = r'grA2iQokVBblvB/WplV7javq0Hi7Qi3JYyeY2EHP'
 GOOGLE_STORAGE = 'gs'
@@ -59,16 +61,19 @@ def rpt_upload_plain(request):
 
         # TODO fetch an app wide available encryption key
         client = storage.Client()
-        bucket_name = PRT_BUCKET
+        bucket_name = internal_request.TEMP_TXT_BUCKET
         bucket = client.get_bucket(bucket_name)       
         
 
-        blob_name = rpt_file.name
+        #blob_name = rpt_file.name
+        blob_name = str(uuid.uuid1())+'.txt'
         blob = storage.Blob(blob_name, bucket)
 
         # TODO for proper type/encoding, check for good response
 
         # TODO transfer in chunks or create a handler as described above
+        if (blob.exists(client=client)):
+            blob.delete(client=client)
         blob.upload_from_string(rpt_file.read(), content_type='text/plain', client=client)
         
         # TODO do we neeed this if we only access app wide?

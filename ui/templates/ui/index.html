@@ -4,6 +4,8 @@
 <!-- STYLE -->
 
 <link rel="stylesheet" type="text/css" href="{% static 'ui/style.css' %}" />
+<!-- jQuery -->
+<script type="text/javascript" src="{% static 'ui/jquery-3.1.1.min.js' %}"></script>
 
 <style>
 .dropzone {
@@ -25,6 +27,15 @@ p.results {
 ul { list-style: none; }
 
 #recordingslist audio { display: block; margin-bottom: 10px; }
+
+.pequod-visible {
+    display: block;
+}
+
+.pequod-hidden {
+    display: none;
+}
+
 </style>
 
 
@@ -49,7 +60,7 @@ ul { list-style: none; }
 <!-- debugging -->
 <button type="button" id="gpost" onclick="process_request()">Post with current buffers</button>
 <!-- -->
-
+<div id="loading-icon" class="pequod-hidden"><img alt="Loading..." src="{% static 'ui/spin.svg' %}" /></div>
 <p id="status" class="results"></p>
 
 <p id="response" class="results"></p>
@@ -149,7 +160,8 @@ function process_request() {
     return;
   }
   
-  
+  var loadingIcon = $('#loading-icon');
+  loadingIcon.removeClass("pequod-hidden");
   __status("Posting request.");
   
   var xhttp = new XMLHttpRequest();
@@ -168,6 +180,7 @@ function process_request() {
         display_text = responseJSON["transcript"];
         __transcript(display_text);
         }
+      loadingIcon.addClass("pequod-hidden");        
     }
   };
   xhttp.open("POST", "/inspector/request/", true);
