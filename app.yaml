@@ -21,7 +21,7 @@ libraries:
 - name: matplotlib
   version: latest
 - name: numpy
-  verion: latest 
+  version: latest 
 # [END django_app]
 
 # Google App Engine limits application deployments to 10,000 uploaded files per
