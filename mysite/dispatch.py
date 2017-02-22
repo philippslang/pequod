@@ -4,7 +4,7 @@ import requests
 # TODO rename internal call dispatch or something
 
 LIVE_ADDRESS = r'https://djangorest-157719.appspot.com'
-
+BAD_VALUE = r'na'
 
 def local_host():
     """

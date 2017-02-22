@@ -32,17 +32,17 @@ def query(request, format=None):
     """
 
     serializer = QuerySerializer(data=request.data)
-    print request.data
+
     if serializer.is_valid():
         query_entry = serializer.save()
 
-        print 'Analyzer gets: ' + query_entry.query
+        print 'ANALYZER::views::query: Request for ',  query_entry.query
 
         # TODO for now, the result text is dummy
         result = 'Inspection ' + query_entry.query + ' not possible for ' + query_entry.url_rpt + '.'
-        result = analyze(query_entry.query, query_entry.url_rpt)
+        result, url_image = analyze(query_entry.query, query_entry.url_rpt)
 
-        result_entry = query_entry.result_set.create(result=result)
+        result_entry = query_entry.result_set.create(result=result, url_image=url_image)
 
         result_serializer = ResultSerializer(result_entry)
         return Response(result_serializer.data, status=status.HTTP_202_ACCEPTED)

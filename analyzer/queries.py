@@ -7,6 +7,7 @@ SUPPORTED_QUERIES = [
     ('oil_in_place', 'oil-in-place'),
     ('processor_count', 'number of processors'),
     ('run_time', 'running time'),
+    ('show_plot_pressure', 'show plot pressure'),
     ('simulation_time', 'simulation duration'),
     ('warning_count', 'warning count'),
     ('water_in_place', 'water-in-place'),
