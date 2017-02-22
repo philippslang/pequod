@@ -26,15 +26,8 @@ def request(request, format=None):
     if serializer.is_valid():
         request_entry = serializer.create(request.data)
         
-
-        # x) get list of accepted queries
-        # x) provide list and received utterance to interpret()
-        # x) return result
-        
         # post the query and get json repr of possible matches TODO check 200
-        supported_queries = requests.get(request_entry.url_analyzer)
-
-        
+        supported_queries = requests.get(request_entry.url_analyzer)        
         supported_queries = supported_queries.json()       
        
         
@@ -43,6 +36,8 @@ def request(request, format=None):
 
         matched_query = iterpretation_results['matched query']
         transcript = iterpretation_results['transcript']
+
+        transcript = 'interpreter'
 
         # if matched query empty, needs to be handled at caller level
         response_entry = models.ResponseFly(query=matched_query, transcript=transcript)              

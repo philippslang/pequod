@@ -14,6 +14,7 @@ import mysite.dispatch as internal_requests
 import requests
 
 import json
+import uuid
 
 
 # TODO implement GET
@@ -33,10 +34,15 @@ def request(request, format=None):
     
         
         # post to interpreter, and the use receiver query here
-        interpreter_request = internal_requests.post(r'/interpreter/request/', data = {'base64_audio':request_entry.base64_audio, 'url_analyzer':internal_requests.absolute_path(r'/analyzer/queries/')})
-        interpreter_request = interpreter_request.json()
-        transcript = interpreter_request['transcript']
-        matched_query = interpreter_request['query']
+        interpreter_request = internal_requests.post(r'/interpreter/request/', data = {'base64_audio':request_entry.base64_audio, 'url_analyzer':internal_requests.absolute_path(r'/analyzer/queries/'), 'cachekiller':str(uuid.uuid1())})
+        try:
+            interpreter_request = interpreter_request.json()
+            transcript = interpreter_request['transcript']
+            matched_query = interpreter_request['query']
+        except:
+            transcript = internal_requests.BAD_VALUE
+            matched_query = internal_requests.BAD_VALUE
+
 
         # default query for now in case of bad interpreter result
         if matched_query == internal_requests.BAD_VALUE:
@@ -62,6 +68,7 @@ def request(request, format=None):
         except KeyError:
             # TODO make empty            
             url_image = internal_requests.BAD_VALUE
+
 
         # TODO for now, the response text is the posted rpt url
         #response_entry = request_entry.response_set.create(response=response, transcript=transcript)

@@ -1,2 +1,3 @@
 javascript is lighntning fast
 google cloud storage high latency on file update and public link update --> create uuid temp files instead
+caching of responses make it appear as if new files aren't active. delete memcache or use uuid as dummy field to kill caching

@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.db import models
 
 from .queries import SUPPORTED_QUERIES
+from mysite.dispatch import BAD_VALUE
+
 
 # Create your models here.
 
@@ -17,7 +19,7 @@ class SupportedQuery(models.Model):
 
 class Query(models.Model):
     query = models.CharField(choices=SUPPORTED_QUERIES, max_length=200, blank=False)
-    url_rpt = models.CharField(max_length=200, blank=False)
+    url_rpt = models.CharField(max_length=200, blank=False, default=BAD_VALUE)
 
     class Meta:
         ordering = ('url_rpt',)
@@ -27,8 +29,8 @@ class Query(models.Model):
 # take care of means of displying, ie number, text, percentage etc...
 class Result(models.Model):
     query = models.ForeignKey(Query, on_delete=models.CASCADE)
-    result = models.CharField(max_length=200, blank=True, default='none')
-    url_image = models.CharField(max_length=250, blank=True, default='na')
+    result = models.CharField(max_length=200, blank=True, default=BAD_VALUE)
+    url_image = models.CharField(max_length=250, blank=True, default=BAD_VALUE)
 
 
     class Meta:

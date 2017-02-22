@@ -1,4 +1,5 @@
 # [START django_app]
+service: live
 runtime: python27
 api_version: 1
 threadsafe: yes
