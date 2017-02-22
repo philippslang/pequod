@@ -13,6 +13,8 @@ import requests
 
 from .interpret import interpret
 
+import logging
+
 
 # TODO implement GET
 @api_view(['POST'])
@@ -28,8 +30,7 @@ def request(request, format=None):
         
         # post the query and get json repr of possible matches TODO check 200
         supported_queries = requests.get(request_entry.url_analyzer)        
-        supported_queries = supported_queries.json()       
-       
+        supported_queries = supported_queries.json()              
         
         # do the thing and find the best match 
         iterpretation_results = interpret(request_entry.base64_audio, supported_queries)
@@ -37,13 +38,10 @@ def request(request, format=None):
         matched_query = iterpretation_results['matched query']
         transcript = iterpretation_results['transcript']
 
-        transcript = 'interpreter'
-
         # if matched query empty, needs to be handled at caller level
         response_entry = models.ResponseFly(query=matched_query, transcript=transcript)              
 
         response_serializer = ResponseFlySerializer(response_entry)
-
         return Response(response_serializer.data, status=status.HTTP_202_ACCEPTED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

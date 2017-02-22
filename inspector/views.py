@@ -45,8 +45,10 @@ def request(request, format=None):
 
 
         # default query for now in case of bad interpreter result
+        interpreter_match = True
         if matched_query == internal_requests.BAD_VALUE:
             matched_query = 'show_plot_pressure'
+            interpreter_match = False
 
         # check for inspector errors, ie empty query
 
@@ -69,6 +71,14 @@ def request(request, format=None):
             # TODO make empty            
             url_image = internal_requests.BAD_VALUE
 
+        if not interpreter_match:
+            # TODO list supported queries
+            response_queries = ''
+            supported_queries = internal_requests.get(r'/analyzer/queries/')   
+            supported_queries = supported_queries.json() 
+            for query in supported_queries:
+                response_queries += ' '.join(query['query'].split('_')) + '; '
+            response = 'Query not recognized. Supported are: ' + response_queries
 
         # TODO for now, the response text is the posted rpt url
         #response_entry = request_entry.response_set.create(response=response, transcript=transcript)
