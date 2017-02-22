@@ -6,11 +6,10 @@ from plots import Plot
 
 from google.cloud import storage
 
-import re
+import re, uuid
 
 import mysite.dispatch as internal_requests
 
-PRT_BUCKET = 'pequod'
 
 class AnalysisResults():
     def __init__(self, result, url_image=internal_requests.BAD_VALUE):
@@ -139,29 +138,30 @@ def water_in_place(rpt_content, time=0.0):
     return fluid_in_place(rpt_content, 'water', time)
     
 
-def upload_plot_google_storage(plot_io, fname):
+def upload_plot_google_storage(plot_io):
     """
     Returns public url to image, or raises EnvironmentError if not able to upload.
     """
     client = storage.Client()
-    bucket_name = PRT_BUCKET
+    bucket_name = internal_requests.TEMP_IMG_BUCKET
+    file_name = str(uuid.uuid1())+'.png'
     bucket = client.get_bucket(bucket_name)    
-    blob = storage.Blob(fname, bucket)
+    blob = storage.Blob(file_name, bucket)
     
     try:
         plot_io.seek(0)
         blob.upload_from_file(plot_io, content_type=r'image/png', size=len(plot_io.getvalue()))
         blob.make_public()        
-        print 'ANALYZER::analysis::upload_plot: Uploaded {0} to bucket {1}'.format(fname, bucket_name)
+        print 'ANALYZER::analysis::upload_plot: Uploaded {0} to bucket {1}'.format(file_name, bucket_name)
         return blob.public_url
     except ValueError:
-        print 'ANALYZER::analysis::upload_plot: Could not upload {0} to bucket {1}'.format(fname, bucket_name)
-        raise EnvironmentError('Could not upload to Google Storage, trying to move {0} to bucket {1}'.format(fname, bucket_name))
+        print 'ANALYZER::analysis::upload_plot: Could not upload {0} to bucket {1}'.format(file_name, bucket_name)
+        raise EnvironmentError('Could not upload to Google Storage, trying to move {0} to bucket {1}'.format(file_name, bucket_name))
 
 
-def upload_plot(plot_io, file_name):
+def upload_plot(plot_io):
     try:
-        img_url = upload_plot_google_storage(plot_io, file_name)
+        img_url = upload_plot_google_storage(plot_io)
         return AnalysisResults("Plot generated.", img_url)
     except EnvironmentError:
         return AnalysisResults("Plot upload failed.", internal_requests.BAD_VALUE)
@@ -179,8 +179,7 @@ def generate_plot(rpt_content, series, item, title):
 def show_plot(rpt_content, item, title):
     series = TimeSeries(rpt_content) 
     plot_io = generate_plot(rpt_content, series, item, title)
-    file_name = series.getCaseName() + '_' + item + '.png'
-    return upload_plot(plot_io, file_name)
+    return upload_plot(plot_io)
     
 def show_plot_pressure(rpt_content):
     return show_plot(rpt_content, 'FPR', 'Pressure')

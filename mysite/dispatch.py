@@ -4,6 +4,9 @@ import requests
 # TODO rename internal call dispatch or something
 
 LIVE_ADDRESS = r'https://djangorest-157719.appspot.com'
+DEFAULT_BUCKET = r'pequod'
+TEMP_TXT_BUCKET = r'pequodtexttmp'
+TEMP_IMG_BUCKET = r'pequodimgtmp'
 BAD_VALUE = r'na'
 
 def local_host():
