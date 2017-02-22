@@ -8,6 +8,7 @@ from googleapiclient import discovery
 import httplib2
 from oauth2client.client import GoogleCredentials
 
+import mysite.dispatch as internal_requests
 
 # [START authenticating]
 DISCOVERY_URL = ('https://{api}.googleapis.com/$discovery/rest?'
@@ -81,7 +82,7 @@ def google_speech_json_response_pcm(base64_audio, hints, max_alternatives=1):
 def interpret(base64_audio, supported_queries):
     hints = supported_queries_words_flattened(supported_queries)    
 
-    interpretation = {'matched query':'cell_count', 'transcript':'no transcript 0'}
+    interpretation = {'matched query':internal_requests.BAD_VALUE, 'transcript':internal_requests.BAD_VALUE}
     
     if base64_audio:
         speech_response = google_speech_json_response_pcm(base64_audio, hints)
@@ -89,8 +90,7 @@ def interpret(base64_audio, supported_queries):
         if speech_response:
             for result in speech_response.get('results', []):
                 for alternative in result['alternatives']:
-                    interpretation['transcript'] = alternative['transcript']
-                    
+                    interpretation['transcript'] = alternative['transcript']                    
                     
 	
         for query in supported_queries:
@@ -102,7 +102,5 @@ def interpret(base64_audio, supported_queries):
                         return {'matched query':query['query'], 'transcript':alternative['transcript']}
                         
 
-    else:
-        print 'INTERPRETER::interpret::interpret: Got empty audio, defaulting to ', interpretation
-                
+    print 'INTERPRETER::interpret::interpret: Got empty audio, defaulting to ', interpretation        
     return interpretation

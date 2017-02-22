@@ -11,7 +11,6 @@ class Request(models.Model):
     url_rpt = models.CharField(max_length=200, blank=True, default='')
     base64_audio = models.TextField(blank=True, default='')
 
-
     class Meta:
         ordering = ('requested',)
 
@@ -20,7 +19,6 @@ class Response(models.Model):
     request = models.ForeignKey(Request, on_delete=models.CASCADE)
     response = models.CharField(max_length=200, blank=True, default='')
     transcript = models.CharField(max_length=200, blank=True, default='')
-
 
     class Meta:
         ordering = ('request',)

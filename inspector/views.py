@@ -38,6 +38,10 @@ def request(request, format=None):
         transcript = interpreter_request['transcript']
         matched_query = interpreter_request['query']
 
+        # default query for now in case of bad interpreter result
+        if matched_query == internal_requests.BAD_VALUE:
+            matched_query = 'show_plot_pressure'
+
         # check for inspector errors, ie empty query
 
         # post the query to analyzer     
@@ -57,7 +61,7 @@ def request(request, format=None):
             url_image = analyzer_request['url_image']
         except KeyError:
             # TODO make empty            
-            url_image = r'na'
+            url_image = internal_requests.BAD_VALUE
 
         # TODO for now, the response text is the posted rpt url
         #response_entry = request_entry.response_set.create(response=response, transcript=transcript)

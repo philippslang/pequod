@@ -9,10 +9,13 @@ from google.cloud import storage
 
 import re
 
+import mysite.dispatch as internal_requests
+
+
 PRT_BUCKET = 'pequod'
 
 class AnalysisResults():
-    def __init__(self, result, url_image='na'):
+    def __init__(self, result, url_image=internal_requests.BAD_VALUE):
         self.result = result
         self.url_image = url_image
 
@@ -140,7 +143,7 @@ def water_in_place(rpt_content, time=0.0):
 
 def upload_plot_google_storage(plot_io, fname):
     """
-    Returns public url to image, or 'na' if not successful.
+    Returns public url to image, or raises EnvironmentError if not able to upload.
     """
     client = storage.Client()
     bucket_name = PRT_BUCKET
@@ -163,7 +166,7 @@ def upload_plot(plot_io, item):
         img_url = upload_plot_google_storage(plot_io, item + '.png')
         return AnalysisResults("Plot generated.", img_url)
     except EnvironmentError:
-        return AnalysisResults("Plot upload failed.", r'na')
+        return AnalysisResults("Plot upload failed.", internal_requests.BAD_VALUE)
 
 
 def generate_plot(rpt_content, item, title):
@@ -214,7 +217,7 @@ def analyze(supported_query, url_rpt):
         else:
             result = 'Can\'t access ' + url_rpt +', trying ' + supported_query + '.'
     else:
-        url_image = r'na'
+        url_image = internal_requests.BAD_VALUE
         result = 'Analysis ' + supported_query + ' not supported, trying ' + url_rpt + '.'
  
     return result, url_image
