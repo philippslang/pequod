@@ -2,8 +2,7 @@ import queries
 import requests
 
 from timeseries import TimeSeries
-#from plots import Plot
-import tmpplots
+from plots import Plot
 
 from google.cloud import storage
 
