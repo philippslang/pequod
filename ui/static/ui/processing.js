@@ -80,14 +80,18 @@ function process_request() {
         return;
     }
 
-    var loadingIcon = $('#loading-icon');
-    loadingIcon.removeClass("pequod-hidden");
     __status("Posting request.");
-
+    
+    // TODO alert if empty, or don't do anything, make dummy that's only overwritten if available
+    var url_rpt = localStorage.getItem("url_rpt");
+    
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         //if (this.readyState == 4 && this.status == 202) {
-        if (this.readyState == 4) {
+        if (this.readyState == XMLHttpRequest.OPENED) {
+            $('#loading-icon').removeClass("pequod-hidden");
+        }
+        if (this.readyState == XMLHttpRequest.DONE) {
             __status("Received response.");
 
             var responseJSON = JSON.parse(this.responseText);
@@ -100,20 +104,15 @@ function process_request() {
                 display_text = responseJSON["transcript"];
                 __transcript(display_text);
             }
-            loadingIcon.addClass("pequod-hidden");
+            $('#loading-icon').addClass("pequod-hidden");
         }
     };
     xhttp.open("POST", "/inspector/request/", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-
-    // TODO alert if empty, or don't do anything, make dummy that's only overwritten if available
-    var url_rpt = localStorage.getItem("url_rpt");
-
-
     xhttp.send(JSON.stringify({ url_rpt: url_rpt, base64_audio: pcm16_base64 }));
+    
     __status("Waiting for response.");
 }
-
 
 // All init things go in here
 function initializeDocument() {
