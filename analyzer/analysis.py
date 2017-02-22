@@ -138,18 +138,25 @@ def water_in_place(rpt_content, time=0.0):
     return fluid_in_place(rpt_content, 'water', time)
     
 
-def upload_plot(plot, fname):
+def upload_plot(plot_io, fname):
     # TODO fetch an app wide available encryption key
     client = storage.Client()
     bucket_name = PRT_BUCKET
     bucket = client.get_bucket(bucket_name)    
     blob = storage.Blob(fname, bucket)
-    plot.seek(0)
-    blob.upload_from_file(plot, content_type=r'image/png', size=len(plot.getvalue()))
     
+    try:
+        plot_io.seek(0)
+        blob.upload_from_file(plot_io, content_type=r'image/png', size=len(plot_io.getvalue()))
+        blob.make_public()
+        url_image = blob.public_url
+        print 'ANALYZER::analysis::upload_plot: Uploaded {0} to bucket {1}'.format(fname, bucket_name)
+    except ValueError:
+        url_image = r'na'
+        print 'ANALYZER::analysis::upload_plot: Could not upload to Google Storage, trying to move {0} to bucket {1}'.format(fname, bucket_name)
+    
+    return url_image
 
-    blob.make_public()
-    return blob.public_url
 
 def show_plot(rpt_content, item, title):
     '''
@@ -160,8 +167,8 @@ def show_plot(rpt_content, item, title):
     plot.setSeries(title, seriesData[1])
     plot_data = plot.savePlot()
     '''
-    plot_data = tmpplots.plot_data()
-    img_url = upload_plot(plot_data, item + '.png')
+    plot_io = tmpplots.plot_data()
+    img_url = upload_plot(plot_io, item + '.png')
     # upload to bucket
     return AnalysisResults("Plot generated.", img_url)
     
@@ -189,7 +196,6 @@ def analyze(supported_query, url_rpt):
     """
     Returns formatted text containing the analysis result.
     """
-    url_image = r'na'
     
     if supported_query in SUPPORTED_ANALYSIS:
         rpt_request = requests.get(url_rpt)
@@ -198,8 +204,9 @@ def analyze(supported_query, url_rpt):
             print analysis_results.result, analysis_results.url_image
             return analysis_results.result, analysis_results.url_image
         else:
-            bail_out_result = 'Can\'t access ' + url_rpt +', trying ' + supported_query + '.'
+            result = 'Can\'t access ' + url_rpt +', trying ' + supported_query + '.'
     else:
-        bail_out_result = 'Analysis ' + supported_query + ' not supported, trying ' + url_rpt + '.'
+        url_image = r'na'
+        result = 'Analysis ' + supported_query + ' not supported, trying ' + url_rpt + '.'
  
-    return bail_out_result, url_image
+    return result, url_image
