@@ -1,0 +1,59 @@
+/* Main styling */
+.dropzone {
+    height: 200px;
+    width: 100%;
+    border: dashed 1px red;
+    background-color: lightblue;
+}   
+
+p.results {
+    padding: 0.5cm 0.0cm 0.1cm 1.0cm;
+}
+
+#gpost { 
+    visibility: hidden;
+}
+
+ul {
+    list-style: none;
+}
+
+#recordingslist audio {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.pequod-visible {
+    display: block;
+}
+
+.pequod-hidden {
+    display: none;
+}
+
+#wrapper {
+    width: 100%;
+    display: table;
+}
+
+#contentContainer {
+    width: 600px;
+    border: solid 1px #ccc;
+    display: table-cell;
+}
+
+#debugContainer {
+    border: none;
+    display: table-cell;
+    border: solid 1px #c00;
+    vertical-align: top;
+    padding: 10px;
+}
+
+#loading-icon {
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
