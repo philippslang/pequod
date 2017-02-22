@@ -138,8 +138,10 @@ def water_in_place(rpt_content, time=0.0):
     return fluid_in_place(rpt_content, 'water', time)
     
 
-def upload_plot(plot_io, fname):
-    # TODO fetch an app wide available encryption key
+def upload_plot_google_storage(plot_io, fname):
+    """
+    Returns public url to image, or 'na' if not successful.
+    """
     client = storage.Client()
     bucket_name = PRT_BUCKET
     bucket = client.get_bucket(bucket_name)    
@@ -148,17 +150,23 @@ def upload_plot(plot_io, fname):
     try:
         plot_io.seek(0)
         blob.upload_from_file(plot_io, content_type=r'image/png', size=len(plot_io.getvalue()))
-        blob.make_public()
-        url_image = blob.public_url
+        blob.make_public()        
         print 'ANALYZER::analysis::upload_plot: Uploaded {0} to bucket {1}'.format(fname, bucket_name)
+        return blob.public_url
     except ValueError:
-        url_image = r'na'
-        print 'ANALYZER::analysis::upload_plot: Could not upload to Google Storage, trying to move {0} to bucket {1}'.format(fname, bucket_name)
-    
-    return url_image
+        print 'ANALYZER::analysis::upload_plot: Could not upload {0} to bucket {1}'.format(fname, bucket_name)
+        raise EnvironmentError('Could not upload to Google Storage, trying to move {0} to bucket {1}'.format(fname, bucket_name))
 
 
-def show_plot(rpt_content, item, title):
+def upload_plot(plot_io, item):
+    try:
+        img_url = upload_plot_google_storage(plot_io, item + '.png')
+        return AnalysisResults("Plot generated.", img_url)
+    except EnvironmentError:
+        return AnalysisResults("Plot upload failed.", r'na')
+
+
+def generate_plot(rpt_content, item, title):
     '''
     series = TimeSeries(rpt_content) 
     seriesData = series.getSeries(item)
@@ -168,18 +176,18 @@ def show_plot(rpt_content, item, title):
     plot_data = plot.savePlot()
     '''
     plot_io = tmpplots.plot_data()
-    img_url = upload_plot(plot_io, item + '.png')
-    # upload to bucket
-    return AnalysisResults("Plot generated.", img_url)
+    return plot_io         
     
 
 def show_plot_pressure(rpt_content):
-    return show_plot(rpt_content, 'FPR', 'Pressure')
+    item = 'FPR'
+    plot_io = generate_plot(rpt_content, item, 'Pressure')
+    return upload_plot(plot_io, item)
 
 
 # map supported queries to functions
 SUPPORTED_ANALYSIS = {
-    'cell_count'            : show_plot_pressure,
+    'cell_count'            : cell_count,
     'error_count'           : error_count,
     'finished_normally'     : finished_normally,
     'gas_in_place'          : gas_in_place,
@@ -201,7 +209,7 @@ def analyze(supported_query, url_rpt):
         rpt_request = requests.get(url_rpt)
         if rpt_request.ok:
             analysis_results = SUPPORTED_ANALYSIS[supported_query](rpt_request.content)
-            print analysis_results.result, analysis_results.url_image
+            print 'ANALYZER::analysis::analyze: Successful analysis \"{0}\", \"{1}\"'.format(analysis_results.result, analysis_results.url_image)
             return analysis_results.result, analysis_results.url_image
         else:
             result = 'Can\'t access ' + url_rpt +', trying ' + supported_query + '.'

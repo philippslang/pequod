@@ -42,7 +42,8 @@ def request(request, format=None):
 
         # post the query to analyzer     
         
-        print 'Inspector gets file ' + request_entry.url_rpt
+        print 'INSPECTOR::views::request: Request for analysis of ',  request_entry.url_rpt
+        
         analyzer_request = internal_requests.post(r'/analyzer/query/', data = {'query':matched_query, 'url_rpt':request_entry.url_rpt})
         
         # TODO check 202
