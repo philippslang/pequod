@@ -4,7 +4,11 @@ import re
 
 class TimeSeries:
     def __init__(self, prt_content):
+        self._case_name = ''
         self._all_data = self._parse_prt_file(prt_content)
+    
+    def getCaseName(self):
+        return self._case_name
         
     def getSeries(self, seriesName='FPR'):
         if (seriesName not in self._all_data):
@@ -12,6 +16,10 @@ class TimeSeries:
         return (self._all_data['TIME'], self._all_data[seriesName])
         
     def _parse_prt_file(self, prt_content):
+        p = re.compile(r'Input\s*:\s*(.*)')
+        m = p.findall(prt_content)
+        if m:
+            self._case_name = re.sub(r'\..*$', '', m[0])
         p = re.compile(r'.+\;.+')
         data = {}
         '''

@@ -2,17 +2,14 @@ import queries
 import requests
 
 from timeseries import TimeSeries
-#from plots import Plot
-import tmpplots
+from plots import Plot
 
 from google.cloud import storage
 
-import re
+import re, uuid
 
 import mysite.dispatch as internal_requests
 
-
-PRT_BUCKET = 'pequod'
 
 class AnalysisResults():
     def __init__(self, result, url_image=internal_requests.BAD_VALUE):
@@ -141,66 +138,81 @@ def water_in_place(rpt_content, time=0.0):
     return fluid_in_place(rpt_content, 'water', time)
     
 
-def upload_plot_google_storage(plot_io, fname):
+def upload_plot_google_storage(plot_io):
     """
     Returns public url to image, or raises EnvironmentError if not able to upload.
     """
     client = storage.Client()
-    bucket_name = PRT_BUCKET
+    bucket_name = internal_requests.TEMP_IMG_BUCKET
+    file_name = str(uuid.uuid1())+'.png'
     bucket = client.get_bucket(bucket_name)    
-    blob = storage.Blob(fname, bucket)
+    blob = storage.Blob(file_name, bucket)
     
     try:
         plot_io.seek(0)
         blob.upload_from_file(plot_io, content_type=r'image/png', size=len(plot_io.getvalue()))
         blob.make_public()        
-        print 'ANALYZER::analysis::upload_plot: Uploaded {0} to bucket {1}'.format(fname, bucket_name)
+        print 'ANALYZER::analysis::upload_plot: Uploaded {0} to bucket {1}'.format(file_name, bucket_name)
         return blob.public_url
     except ValueError:
-        print 'ANALYZER::analysis::upload_plot: Could not upload {0} to bucket {1}'.format(fname, bucket_name)
-        raise EnvironmentError('Could not upload to Google Storage, trying to move {0} to bucket {1}'.format(fname, bucket_name))
+        print 'ANALYZER::analysis::upload_plot: Could not upload {0} to bucket {1}'.format(file_name, bucket_name)
+        raise EnvironmentError('Could not upload to Google Storage, trying to move {0} to bucket {1}'.format(file_name, bucket_name))
 
 
-def upload_plot(plot_io, item):
+def upload_plot(plot_io):
     try:
-        img_url = upload_plot_google_storage(plot_io, item + '.png')
+        img_url = upload_plot_google_storage(plot_io)
         return AnalysisResults("Plot generated.", img_url)
     except EnvironmentError:
         return AnalysisResults("Plot upload failed.", internal_requests.BAD_VALUE)
 
 
-def generate_plot(rpt_content, item, title):
-    '''
-    series = TimeSeries(rpt_content) 
+def generate_plot(rpt_content, series, item, title):
     seriesData = series.getSeries(item)
     plot = Plot()
-    plot.setTimeData(seriesData[0])
-    plot.setSeries(title, seriesData[1])
-    plot_data = plot.savePlot()
-    '''
-    plot_io = tmpplots.plot_data()
-    return plot_io         
-    
+    plot.setXData(seriesData[0])
+    plot.setYData(seriesData[1], title)
+    plot.setTitle(series.getCaseName() + ' - ' + title)
+    plot_io = plot.getPlotImage()
+    return plot_io
 
+def show_plot(rpt_content, item, title):
+    series = TimeSeries(rpt_content) 
+    plot_io = generate_plot(rpt_content, series, item, title)
+    return upload_plot(plot_io)
+    
 def show_plot_pressure(rpt_content):
-    item = 'FPR'
-    plot_io = generate_plot(rpt_content, item, 'Pressure')
-    return upload_plot(plot_io, item)
+    return show_plot(rpt_content, 'FPR', 'Pressure')
+def show_plot_oil_production(rpt_content):
+    return show_plot(rpt_content, 'OPR', 'Oil production rate')
+def show_plot_gas_production(rpt_content):
+    return show_plot(rpt_content, 'GPR', 'Gas production rate')
+def show_plot_water_production(rpt_content):
+    return show_plot(rpt_content, 'WPR', 'Water production rate')
+def show_plot_water_cut(rpt_content):
+    return show_plot(rpt_content, 'WCT', 'Water-cut')
+def show_plot_gas_oil_ratio(rpt_content):
+    return show_plot(rpt_content, 'GOR', 'Gas-oil-ratio')
 
 
 # map supported queries to functions
 SUPPORTED_ANALYSIS = {
-    'cell_count'            : cell_count,
-    'error_count'           : error_count,
-    'finished_normally'     : finished_normally,
-    'gas_in_place'          : gas_in_place,
-    'oil_in_place'          : oil_in_place,
-    'processor_count'       : processor_count,
-    'run_time'              : run_time,
-    'show_plot_pressure'    : show_plot_pressure,
-    'simulation_time'       : simulation_time,
-    'warning_count'         : warning_count,
-    'water_in_place'        : water_in_place,
+    'cell_count'                    : cell_count,
+    'error_count'                   : error_count,
+    'finished_normally'             : finished_normally,
+    'gas_in_place'                  : gas_in_place,
+    'oil_in_place'                  : oil_in_place,
+    'processor_count'               : processor_count,
+    'run_time'                      : run_time,
+    'show_plot_pressure'            : show_plot_pressure,
+    'show_plot_oil_production'      : show_plot_oil_production,
+    'show_plot_gas_production'      : show_plot_gas_production,
+    'show_plot_water_production'    : show_plot_water_production,
+    'show_plot_water_cut'           : show_plot_water_cut,
+    'show_plot_gas_oil_ratio'       : show_plot_gas_oil_ratio,
+    'simulation_time'               : simulation_time,
+    'warning_count'                 : warning_count,
+    'water_in_place'                : water_in_place,
 }
 
 def analyze(supported_query, url_rpt):
