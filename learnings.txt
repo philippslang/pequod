@@ -1,0 +1,2 @@
+javascript is lighntning fast
+google cloud storage high latency on file update and public link update --> create uuid temp files instead

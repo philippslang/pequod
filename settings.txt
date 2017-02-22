@@ -1,0 +1,11 @@
+abtc-hackathon-004:us-east1:pequod
+cloud_sql_proxy -instances="abtc-hackathon-004:us-east1:pequod"=tcp:3305
+
+gcloud auth application-default login
+
+"C:\Program Files\MySQL\MySQL Server 5.7\bin\mysql.exe" -h 127.0.0.1 -u root -p --port:3305
+
+
+https://abtc-hackathon-004.appspot.com/
+
+gcloud app deploy
