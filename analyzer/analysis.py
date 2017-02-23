@@ -162,7 +162,7 @@ def upload_plot_google_storage(plot_io):
 def upload_plot(plot_io):
     try:
         img_url = upload_plot_google_storage(plot_io)
-        return AnalysisResults("Plot generated.", img_url)
+        return AnalysisResults("Here is a plot for this.", img_url)
     except EnvironmentError:
         return AnalysisResults("Plot upload failed.", internal_requests.BAD_VALUE)
 
