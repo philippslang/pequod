@@ -83,8 +83,8 @@ def cell_count(rpt_content):
 def finished_normally(rpt_content):
     normal = 'finished normally' in rpt_content
     if normal:
-        return 'The run finshed normally.'
-    return 'The run did not finish normally.'
+        return AnalysisResults('The run finshed normally.')
+    return AnalysisResults('The run did not finish normally.')
 
 def processor_count(rpt_content):
     p = re.compile(r'Run Type\s+:\s*(.*)')
