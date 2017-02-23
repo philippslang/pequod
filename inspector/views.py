@@ -51,12 +51,13 @@ def request(request, format=None):
         # default query for now in case of bad interpreter result
         interpreter_match = True
         if matched_query == internal_requests.BAD_VALUE:
-            matched_query = 'show_plot_pressure'
+            #matched_query = 'show_plot_pressure'
             interpreter_match = False
-
-        # post the query to analyzer             
-        print 'INSPECTOR::views::request: Request for analysis of ',  request_entry.url_rpt        
-        analyzer_request = internal_requests.post(r'/analyzer/query/', data = {'query':matched_query, 'url_rpt':request_entry.url_rpt})
+            analyzer_request = {}
+        else:
+            # post the query to analyzer             
+            print 'INSPECTOR::views::request: Request for analysis of ',  request_entry.url_rpt        
+            analyzer_request = internal_requests.post(r'/analyzer/query/', data = {'query':matched_query, 'url_rpt':request_entry.url_rpt}).json()
         
 
         # make response result of analyzer query
@@ -68,7 +69,6 @@ def request(request, format=None):
         # everything worked, only response (from analyzer), info is transcript and matched_query, url is set
         # if available and items remain empty
         info = 'Matched your \'' + transcript + '\' to \'' + matched_query + '\''
-        analyzer_request = analyzer_request.json()
         try:
             response = analyzer_request['result']            
         except KeyError:
@@ -97,8 +97,6 @@ def request(request, format=None):
                 items += [' '.join(query['query'].split('_'))]
             items = ';'.join(items)
             
-        print info
-        print items
         # TODO for now, the response text is the posted rpt url
         #response_entry = request_entry.response_set.create(response=response, transcript=transcript)
         response_entry = models.ResponseFly(response=response, transcript=transcript, url_image=url_image, info=info, items=items)
