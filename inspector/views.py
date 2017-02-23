@@ -7,6 +7,8 @@ from .serializers import RequestSerializer, ResponseSerializer
 
 import models
 
+from interpreter.views import request_impl as interpret
+
 from django.utils import timezone
 
 import mysite.dispatch as internal_requests
@@ -34,7 +36,9 @@ def request(request, format=None):
     
         
         # post to interpreter, and the use receiver query here
-        interpreter_request = internal_requests.post(r'/interpreter/request/', data = {'base64_audio':request_entry.base64_audio, 'url_analyzer':internal_requests.absolute_path(r'/analyzer/queries/'), 'cachekiller':str(uuid.uuid1())})
+        #interpreter_request = internal_requests.post(r'/interpreter/request/', data = {'base64_audio':request_entry.base64_audio, 'url_analyzer':internal_requests.absolute_path(r'/analyzer/queries/'), 'cachekiller':str(uuid.uuid1())})
+        interpreter_request = interpret(internal_requests.absolute_path(r'/analyzer/queries/'), request_entry.base64_audio)
+
         try:
             interpreter_request = interpreter_request.json()
             transcript = interpreter_request['transcript']

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Request, Response
+from .models import Request, Response, Result
 from .models import RequestFly, ResponseFly
 
 
@@ -13,6 +13,12 @@ class ResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Response
         fields = ('query', 'transcript')
+
+
+class ResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Result
+        fields = ('resulted', 'query', 'transcript')
 
 
 class RequestFlySerializer(serializers.ModelSerializer):
