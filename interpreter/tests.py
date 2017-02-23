@@ -21,9 +21,7 @@ class InterpreterTestCase(TestCase):
     def setUp(self):
         pass
 
-  
 
-        
     def test_wrapper(self):
         query_list=['error count','cell count','oil place','gas','gas rate','gas place','water place','oil recovery factor','gas recovery factor','water recovery factor','production rate','pressure','gas oil ratio','error','finished normally','rate','plot','show']
        
@@ -51,10 +49,28 @@ class InterpreterTestCase(TestCase):
         sentence = 'island place'
         expected = 'oil place'
         self.assertEqual(interpret.matchquery(query_list, sentence),expected)
-
-
+        sentence = 'hydrocarbons in place '
+        expected = 'oil place'
+        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
+  
 
 """
+    def test_keyword(self):
+        #query_list=['error count','cell count','oil place','gas place','water place','oil recovery factor','gas recovery factor','water recovery factor','production rate','pressure','gas oil ratio','error','finish','rate','plot','show']
+        query_list=['error','error count']
+        sent_tokens = ['error', 'count']
+        expected = 'error count'
+        #self.assertEqual(interpret.keywordmatch(query_list,sent_tokens), expected) 
+        query_list=['error','error count']
+        sent_tokens = ['error', 'count']
+        expected = 'error count'
+        self.assertEqual(interpret.keywordmatch(query_list,sent_tokens), expected)
+        sent_tokens = ['mistake', 'count']
+        expected = 'error count'
+        self.assertEqual(interpret.keywordmatch(query_list,sent_tokens), expected)
+
+
+
     def test_autocorrect(self):
         #sentence = ['what', 'is', 'the', 'castrate']
         #expected = ['what' ,'is', 'the', 'gas', 'rate']
@@ -99,16 +115,6 @@ class InterpreterTestCase(TestCase):
 
  
         
-    def test_keyword(self):
-        #query_list=['error count','cell count','oil place','gas place','water place','oil recovery factor','gas recovery factor','water recovery factor','production rate','pressure','gas oil ratio','error','finish','rate','plot','show']
-        query_list=['error','error count']
-        sent_tokens = ['error', 'count']
-        expected = 'error count'
-        #self.assertEqual(interpret.keywordmatch(query_list,sent_tokens), expected) 
-        query_list=['error','error count']
-        sent_tokens = ['mistake']
-        expected = 'error'
-        #self.assertEqual(interpret.keywordmatch(query_list,sent_tokens), expected)
 """
 
       
