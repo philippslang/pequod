@@ -1,7 +1,7 @@
 /* Processing */
 
 var glevel = 3; // debug level: 0 (production) - 3 (all output)
-var autosend = true; // if true, successful recording is always posted, if false depends on debug level (ie only when glevel == 0)
+var autosend = false; // if true, successful recording is always posted, if false depends on debug level (ie only when glevel == 0)
 var pcm16_base64 = '';
 var TARGET_SAMPLE_RATE = 16000;
 var downsample = true;
