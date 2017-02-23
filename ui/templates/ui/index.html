@@ -36,11 +36,9 @@
       {% csrf_token %}
     </form>
     {% endblock %}
-    <div id="uploaded-file">
-        No file uploaded. Using default file <a><b></b></a>.
-    </div>
     <div id="record-instruction-container">
-        Hold down any key to record a command.
+        <div id="microphone-icon" class="icon-mc-off"></div>
+        <div>Hold down any key to record a command.</div>
     </div>
     <div id="loading-icon">
         <img alt="Loading..." src="{% static 'ui/spin.svg' %}" />

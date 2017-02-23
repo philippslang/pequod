@@ -22,7 +22,6 @@ ul {
 #uploaded-file {
     width: 100%;
     padding-left: 10px;
-    text-align: left;
 }
 
 #recordingslist audio {
@@ -65,19 +64,27 @@ ul {
 }
 
 #record-instruction-container {
-    display: table-cell;
-    width: 100%;
-    text-align: left;
+    display: table;
     vertical-align: middle;
-    padding-left: 60px;
-    height: 48px;
+    margin: 3px;
 }
-
-.mic-background {
-    background-image: url('mic.gif');
+#record-instruction-container  > div {
+    display: table-cell;
+    vertical-align: middle;
+    height: 24px;
+    margin: 0px;
+}
+#microphone-icon {
+    width: 30px;
     background-repeat: no-repeat;
-    background-position: left top; 
-    background-size: 48px 48px;
+    background-position: center center;
+    background-size: 24px 24px;
+}
+.icon-mc-off {
+    background-image: url('mic-icon-off.png');
+}
+.icon-mc-on {
+    background-image: url('mic-icon-on.png');
 }
 
 #contentContainer h1 {

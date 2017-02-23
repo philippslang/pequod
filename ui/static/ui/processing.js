@@ -1,12 +1,12 @@
 /* Processing */
 
-var glevel = 3; // debug level: 0 (production) - 3 (all output)
+var glevel = 0; // debug level: 0 (production) - 3 (all output)
 var autosend = false; // if true, successful recording is always posted, if false depends on debug level (ie only when glevel == 0)
 var pcm16_base64 = '';
 var TARGET_SAMPLE_RATE = 16000;
 var downsample = true;
 var demofile = 'https://storage.googleapis.com/pequod/demo.PRT';
-
+var fileNameNode = null;
 
 function __log(e, data) {
     logpersistent.innerHTML += "\n" + e + " " + (data || '');
@@ -55,6 +55,9 @@ Dropzone.options.rptdropzone = {
             this.removeAllFiles();
             this.addFile(file);
         });
+        this.on("sending", function (file, responseText) {
+            $('#uploaded-file').remove();
+        });
         this.on("success", function (file, responseText) {
             // TODO check if good? no, because this only happens on success
             localStorage.setItem("url_rpt", responseText["public_url"]);
@@ -63,8 +66,6 @@ Dropzone.options.rptdropzone = {
             }
 
             file.previewTemplate.appendChild(document.createTextNode(responseText["public_url"]));
-            
-            $('#uploaded-file').css({ visibility: 'hidden' });
         });
     }
 };
@@ -163,16 +164,20 @@ function initializeDocument() {
     localStorage.setItem("url_rpt", "");
 
     document.body.onkeydown = function (e) {
-        $('#record-instruction-container').addClass('mic-background');
+        $('#microphone-icon').addClass('icon-mc-on');
         startRecording();
     };
     document.body.onkeyup = function (e) {
         stopRecording();
-        $('#record-instruction-container').removeClass('mic-background');
+        $('#microphone-icon').removeClass('icon-mc-on');
     };
 
     var basename = demofile.split('/').reverse()[0];
-    $('#uploaded-file').children('a').attr('href', demofile).children('b').text(basename);
+    
+    $('#rptdropzone').append('<div id="uploaded-file" style="margin-top: 60px;">' +
+        'No file uploaded. Using default file <a href="' + demofile + '"><b>' +
+        basename + '</b></a>.' +
+        '<div>');
     
     // enable debug elements
     if (glevel > 0) {
@@ -189,7 +194,7 @@ function initializeDocument() {
             __log('Autosend successful recording disabled');
         }
     } else {
-        $('#debugContainer').addClass('pequod-hidden');
+        $('#debugContainer').css({ display: 'none' });
     }
 
     try {
@@ -210,9 +215,9 @@ function initializeDocument() {
         document.getElementById('contentContainer').innerHTML =
             '<div style="text-align: left; margin-left: 100px; margin-top: 10px">' +
             'No web audio support in this browser. ' +
-            'The pequod is recommended for Google Chrome or Firefox.' +
+            'Google Chrome or Firefox is recommended for The Pequod.' +
             '</div>';
-        return;       
+        return;
     }
 
     if (navigator.getUserMedia){
