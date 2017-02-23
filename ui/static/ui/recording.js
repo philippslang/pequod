@@ -28,7 +28,7 @@ function startUserMedia(stream) {
 
 
 function startRecording() {
-  __clearlogdyn()
+  __clearlogdyn();
 
   if(is_recording == false) {
     recorder && recorder.record();
@@ -46,10 +46,9 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function stopRecording() {
+function stopRecording() {
 	recorder && recorder.stop();
   
-  await sleep(500);
   
   if(glevel > 2){
     __logdyn('Stopped recording.');
@@ -57,14 +56,13 @@ async function stopRecording() {
     
 	is_recording = false;
   
-  // for buffers to catch up?
-
-  forwardRecording();
-  
   // wav conversion in here
   if(glevel > 2){
     showRecording();	
     }
+  
+  forwardRecording(); 
+  
 	
 	recorder.clear();
 }
@@ -132,8 +130,8 @@ function averageStereo(buffers){
 }
 
 
-// TODO  (before 32->16) x) interleave(and adjust sample rate) 
-// interleave: https://github.com/daaain/JSSoundRecorder
+
+//  https://github.com/daaain/JSSoundRecorder
 function postProcessRecording(){
   recorder && recorder.getBuffer(function(buffers) {
     // for now, we use first channel only

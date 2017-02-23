@@ -14,6 +14,7 @@ import mysite.dispatch as internal_requests
 import requests
 
 import json
+import uuid
 
 
 # TODO implement GET
@@ -33,14 +34,21 @@ def request(request, format=None):
     
         
         # post to interpreter, and the use receiver query here
-        interpreter_request = internal_requests.post(r'/interpreter/request/', data = {'base64_audio':request_entry.base64_audio, 'url_analyzer':internal_requests.absolute_path(r'/analyzer/queries/')})
-        interpreter_request = interpreter_request.json()
-        transcript = interpreter_request['transcript']
-        matched_query = interpreter_request['query']
+        interpreter_request = internal_requests.post(r'/interpreter/request/', data = {'base64_audio':request_entry.base64_audio, 'url_analyzer':internal_requests.absolute_path(r'/analyzer/queries/'), 'cachekiller':str(uuid.uuid1())})
+        try:
+            interpreter_request = interpreter_request.json()
+            transcript = interpreter_request['transcript']
+            matched_query = interpreter_request['query']
+        except:
+            transcript = internal_requests.BAD_VALUE
+            matched_query = internal_requests.BAD_VALUE
+
 
         # default query for now in case of bad interpreter result
+        interpreter_match = True
         if matched_query == internal_requests.BAD_VALUE:
             matched_query = 'show_plot_pressure'
+            interpreter_match = False
 
         # check for inspector errors, ie empty query
 
@@ -62,6 +70,21 @@ def request(request, format=None):
         except KeyError:
             # TODO make empty            
             url_image = internal_requests.BAD_VALUE
+
+        if not interpreter_match:
+            # TODO list supported queries
+            response_queries = ''
+            supported_queries = internal_requests.get(r'/analyzer/queries/')   
+            supported_queries = supported_queries.json() 
+            for query in supported_queries:
+                response_queries += ' '.join(query['query'].split('_')) + ', '
+            displayed_transcript = transcript
+            if displayed_transcript == internal_requests.BAD_VALUE:
+                displayed_transcript = 'empty'
+            response = 'Wasn\'t able to resolve your query: \'' + displayed_transcript +'\'. This is what you can ask for: ' \
+                       + response_queries[:-2] + '.    Let me show you a pressure summary instead:'
+        else:
+            response += ' (matched your \'' + transcript + '\' to \'' + matched_query + '\')'
 
         # TODO for now, the response text is the posted rpt url
         #response_entry = request_entry.response_set.create(response=response, transcript=transcript)

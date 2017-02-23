@@ -13,6 +13,8 @@ import requests
 
 from .interpret import interpret
 
+import logging
+
 
 # TODO implement GET
 @api_view(['POST'])
@@ -26,17 +28,9 @@ def request(request, format=None):
     if serializer.is_valid():
         request_entry = serializer.create(request.data)
         
-
-        # x) get list of accepted queries
-        # x) provide list and received utterance to interpret()
-        # x) return result
-        
         # post the query and get json repr of possible matches TODO check 200
-        supported_queries = requests.get(request_entry.url_analyzer)
-
-        
-        supported_queries = supported_queries.json()       
-       
+        supported_queries = requests.get(request_entry.url_analyzer)        
+        supported_queries = supported_queries.json()              
         
         # do the thing and find the best match 
         iterpretation_results = interpret(request_entry.base64_audio, supported_queries)
@@ -48,7 +42,6 @@ def request(request, format=None):
         response_entry = models.ResponseFly(query=matched_query, transcript=transcript)              
 
         response_serializer = ResponseFlySerializer(response_entry)
-
         return Response(response_serializer.data, status=status.HTTP_202_ACCEPTED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

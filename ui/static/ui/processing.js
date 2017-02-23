@@ -5,6 +5,7 @@ var autosend = false; // if true, successful recording is always posted, if fals
 var pcm16_base64 = '';
 var TARGET_SAMPLE_RATE = 16000;
 var downsample = true;
+var demofile = 'https://storage.googleapis.com/pequod/demo.PRT';
 
 
 function __log(e, data) {
@@ -76,8 +77,11 @@ Dropzone.options.rptdropzone = {
 
 function process_request() {
     if (localStorage.getItem("url_rpt") == "") {
-        __status("No file has been uploaded.");
-        return;
+        __response("No file provided, using demo.");
+        __logdyn("No file provided, using demo ", demofile);
+        localStorage.setItem("url_rpt", demofile);
+        //__status("No file has been uploaded.");
+        //return;
     }
 
     __status("Posting request.");
