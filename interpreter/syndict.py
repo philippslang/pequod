@@ -12,6 +12,6 @@ synonym_dict['plot']=[u'plot',  u'diagram',   u'graph', u'figure']
 
 synonym_dict['show']=[u'show', u'display', u'appearance', u'demo', u'exhibit', u'present', u'demonstrate', u'prove', u'establish', u'shew', u'testify', u'bear_witness', u'evidence', u'picture', u'depict', u'render', u'express', u'evince', u'indicate', u'point', u'designate', u'show_up', u'read', u'register', u'record', u'usher']
 
-synonym_dict['hydrocarbon']=[u'oil']
+synonym_dict['oil']=[u'hydrocarbons',u'weather']
 
-#synonym_dict['normally']=
+#synonym_dict['normally']=[u'succesfully']
