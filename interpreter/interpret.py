@@ -13,6 +13,8 @@ import googleapiclient.discovery
 from autocorrectdict import context_correct_dict
 from syndict import synonym_dict
 
+from hints import get_speech_hints
+
 # [START authenticating]
 DISCOVERY_URL = ('https://{api}.googleapis.com/$discovery/rest?'
                  'version={apiVersion}')
@@ -37,25 +39,6 @@ def get_native_encoding_type():
     else:
         return 'UTF32'
         
-
-def supported_queries_words(supported_queries):
-    """
-    In here we depend on the convention that query commands have
-    underscore delimeters. Also depends on analyzer GET object.
-    Returns a nested list with all words for each supported query.
-    """
-
-    return [query['query'].split('_') for query in supported_queries]
-
-
-def supported_queries_words_flattened(supported_queries):    
-    """
-    Flattened list of all words occuring in the supported queries.
-    """
-
-    return list(itertools.chain(*supported_queries_words(supported_queries)))
-
-
 def trivial_singulars(words):
     """
     Finds plural words by looking at last index == 's'
@@ -79,7 +62,10 @@ def google_speech_json_response_pcm(base64_audio, hints, max_alternatives=1):
                 'maxAlternatives': max_alternatives,  
                 # See http://g.co/cloud/speech/docs/languages for a list of
                 # supported languages.
-                'languageCode': 'en-US'
+                'languageCode': 'en-US',
+                'speech_context': {
+                    'phrases': hints
+                }
             },
             # https://cloud.google.com/speech/reference/rest/v1beta1/RecognitionAudio
             'audio': {
@@ -99,7 +85,7 @@ def queries_json_to_lists(supported_queries):
         
         
 def interpret(base64_audio, supported_queries):
-    hints = supported_queries_words_flattened(supported_queries)    
+    hints = get_speech_hints(supported_queries)    
 
     interpretation = {'matched query':internal_requests.BAD_VALUE, 'transcript':internal_requests.BAD_VALUE}
     
