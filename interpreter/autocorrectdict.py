@@ -10,6 +10,7 @@ context_correct_dict['grass']='gas'
 context_correct_dict['glass']='gas'
 context_correct_dict['guess']='gas'
 context_correct_dict['us']='gas'
+context_correct_dict['orlando']='gas'
 
 context_correct_dict['mould']='mole'
 
@@ -33,6 +34,7 @@ context_correct_dict['buys']='place'
 context_correct_dict['reduction']='production'
 context_correct_dict['restaurant']='restore'
 context_correct_dict['ring']='rate'
+context_correct_dict['resume']='reservoir'
 
 context_correct_dict['sedation']='saturation'
 context_correct_dict['service']='surface'

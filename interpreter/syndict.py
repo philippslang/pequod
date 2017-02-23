@@ -14,4 +14,7 @@ synonym_dict['show']=[u'show', u'display', u'appearance', u'demo', u'exhibit', u
 
 synonym_dict['oil']=[u'hydrocarbons',u'weather']
 
-#synonym_dict['normally']=[u'succesfully']
+synonym_dict['hydrocarbons']=[u'oil',u'weather']
+
+synonym_dict['normally']=[u'success', u'achiever', u'winner', u'succeeder',u'normally', u'usually', u'unremarkably', u'commonly', u'ordinarily',u'usual']
+
