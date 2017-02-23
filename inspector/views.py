@@ -36,8 +36,8 @@ def request(request, format=None):
     
         
         # post to interpreter, and the use receiver query here
-        #interpreter_request = internal_requests.post(r'/interpreter/request/', data = {'base64_audio':request_entry.base64_audio, 'url_analyzer':internal_requests.absolute_path(r'/analyzer/queries/'), 'cachekiller':str(uuid.uuid1())})
-        interpreter_request = interpret(internal_requests.absolute_path(r'/analyzer/queries/'), request_entry.base64_audio)
+        interpreter_request = internal_requests.post(r'/interpreter/request/', data = {'base64_audio':request_entry.base64_audio, 'url_analyzer':internal_requests.absolute_path(r'/analyzer/queries/'), 'cachekiller':str(uuid.uuid1())})
+        #interpreter_request = interpret(internal_requests.absolute_path(r'/analyzer/queries/'), request_entry.base64_audio)
 
         try:
             interpreter_request = interpreter_request.json()
