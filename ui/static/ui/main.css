@@ -2,8 +2,9 @@
 .dropzone {
     height: 200px;
     width: 100%;
-    border: dashed 1px red;
+    border: none;
     background-color: lightblue;
+    border-radius: 20px;
 }   
 
 p.results {
@@ -23,12 +24,8 @@ ul {
     margin-bottom: 10px;
 }
 
-.pequod-visible {
-    display: block;
-}
-
 .pequod-hidden {
-    display: none;
+    visibility: hidden;
 }
 
 #wrapper {
@@ -40,6 +37,9 @@ ul {
     width: 600px;
     border: solid 1px #ccc;
     display: table-cell;
+    border-radius: 20px;
+    padding: 0;
+    text-align: center;
 }
 
 #debugContainer {
@@ -51,9 +51,26 @@ ul {
 }
 
 #loading-icon {
-    text-align: center;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+    position: absolute;
+    visibility: hidden; 
+}
+
+#record-instruction-container {
+    display: table;
+    width: 100%;
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 10px;
+    height: 48px;
+}
+
+#record-instruction-container p,
+#record-instruction-container img {
+    display: table-cell;
+    height: 48px;
+}
+
+#record-instruction-container img {
+    width: 48px;
 }
 

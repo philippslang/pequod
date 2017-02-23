@@ -15,6 +15,8 @@ re_terms = [
     'in place',
     'show plot',
     'show graph',
+    'reservoir',
+    'injection rate',
 ]
 
 def get_speech_hints(supported_queries):    

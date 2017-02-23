@@ -74,6 +74,22 @@ Dropzone.options.rptdropzone = {
     }
 };
 
+function showLoadingIcon(state){
+    var loadingPanel = $('#loading-icon');
+    if (state){
+        var contentContainer = $('#contentContainer');
+        var pos = contentContainer.position();
+        var x = pos.left + Math.floor(0.5*(contentContainer.width() - loadingPanel.width()));
+        var y = pos.top + 100;
+        loadingPanel.css({
+            visibility: 'visible',
+            top: y,
+            left: x
+        });
+    } else {
+        loadingPanel.css({ visibility: 'hidden' });
+    }
+}
 
 function process_request() {
     if (localStorage.getItem("url_rpt") == "") {
@@ -93,7 +109,7 @@ function process_request() {
     xhttp.onreadystatechange = function () {
         //if (this.readyState == 4 && this.status == 202) {
         if (this.readyState == XMLHttpRequest.OPENED) {
-            $('#loading-icon').removeClass("pequod-hidden");
+            showLoadingIcon(true);
         }
         if (this.readyState == XMLHttpRequest.DONE) {
             __status("Received response.");
@@ -108,7 +124,7 @@ function process_request() {
                 display_text = responseJSON["transcript"];
                 __transcript(display_text);
             }
-            $('#loading-icon').addClass("pequod-hidden");
+            showLoadingIcon(false);
         }
     };
     xhttp.open("POST", "/inspector/request/", true);
