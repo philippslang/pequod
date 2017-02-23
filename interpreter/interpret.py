@@ -1,5 +1,6 @@
 
 import itertools
+from .hints import get_suggested_words
 
 # something is wrong with the app engine support here, calls unavailable subprocess
 #from google.cloud import speech as google_speech
@@ -27,24 +28,6 @@ def get_speech_service():
 # [END authenticating]
 
 
-def supported_queries_words(supported_queries):
-    """
-    In here we depend on the convention that query commands have
-    underscore delimeters. Also depends on analyzer GET object.
-    Returns a nested list with all words for each supported query.
-    """
-
-    return [query['query'].split('_') for query in supported_queries]
-
-
-def supported_queries_words_flattened(supported_queries):    
-    """
-    Flattened list of all words occuring in the supported queries.
-    """
-
-    return list(itertools.chain(*supported_queries_words(supported_queries)))
-
-
 def trivial_singulars(words):
     """
     Finds plural words by looking at last index == 's'
@@ -52,7 +35,6 @@ def trivial_singulars(words):
     """
 
     return [word if word[-1] != 's' else word[:-1] for word in words]
-
 
 def google_speech_json_response_pcm(base64_audio, hints, max_alternatives=1):
     # TODO we can also use raw here, see https://goo.gl/KPZn97    
@@ -68,7 +50,10 @@ def google_speech_json_response_pcm(base64_audio, hints, max_alternatives=1):
                 'maxAlternatives': max_alternatives,  
                 # See http://g.co/cloud/speech/docs/languages for a list of
                 # supported languages.
-                'languageCode': 'en-US'
+                'languageCode': 'en-US',
+                'speech_context': {
+                    'phrases': hints
+                }
             },
             # https://cloud.google.com/speech/reference/rest/v1beta1/RecognitionAudio
             'audio': {
@@ -80,7 +65,7 @@ def google_speech_json_response_pcm(base64_audio, hints, max_alternatives=1):
 
 
 def interpret(base64_audio, supported_queries):
-    hints = supported_queries_words_flattened(supported_queries)    
+    hints = get_suggested_words(supported_queries)
 
     interpretation = {'matched query':internal_requests.BAD_VALUE, 'transcript':internal_requests.BAD_VALUE}
     

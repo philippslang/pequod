@@ -2,8 +2,9 @@
 .dropzone {
     height: 200px;
     width: 100%;
-    border: dashed 1px red;
+    border: solid 1px white;
     background-color: lightblue;
+    border-radius: 20px;
 }   
 
 p.results {
@@ -40,6 +41,7 @@ ul {
     width: 600px;
     border: solid 1px #ccc;
     display: table-cell;
+    border-radius: 20px;
 }
 
 #debugContainer {
