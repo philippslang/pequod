@@ -21,6 +21,52 @@ class InterpreterTestCase(TestCase):
     def setUp(self):
         pass
 
+  
+
+        
+    def test_wrapper(self):
+        query_list=['error count','cell count','oil place','gas','gas rate','gas place','water place','oil recovery factor','gas recovery factor','water recovery factor','production rate','pressure','gas oil ratio','error','finished normally','rate','plot','show']
+       
+        sentence = 'what is the cell count'
+        expected = 'cell count'
+        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
+        sentence = 'what is the average pressure'
+        expected = 'pressure'
+        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
+        sentence = 'has the run finished'
+        expected = 'finished normally'
+        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
+        sentence = 'bla bla'
+        expected = internal_requests.BAD_VALUE
+        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
+        sentence = ''
+        expected = internal_requests.BAD_VALUE
+        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
+        sentence = 'bus'
+        expected = 'gas'
+        self.assertEqual(interpret.matchquery(query_list, sentence),expected) 
+        sentence = 'bus'
+        expected = 'gas'
+        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
+        sentence = 'island place'
+        expected = 'oil place'
+        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
+
+
+
+"""
+    def test_autocorrect(self):
+        #sentence = ['what', 'is', 'the', 'castrate']
+        #expected = ['what' ,'is', 'the', 'gas', 'rate']
+        sentence = ['castrate']
+        expected = ['gas','rate']
+        self.assertEqual(interpret.autocorrect(sentence), expected) 
+        sentence = ['bus']
+        expected = ['gas']
+        self.assertEqual(interpret.autocorrect(sentence), expected) 
+        sentence = ['island']
+        expected = ['oil', 'in']
+        self.assertEqual(interpret.autocorrect(sentence), expected) 
 
 
     def test_convertbasic(self):
@@ -43,29 +89,7 @@ class InterpreterTestCase(TestCase):
         #self.assertEqual(1,1)
         
         
-    def test_wrapper(self):
-        query_list=['error count','cell count','oil place','gas place','water place','oil recovery factor','gas recovery factor','water recovery factor','production rate','pressure','gas oil ratio','error','finished normally','rate','plot','show']
-       
-        sentence = 'what is the cell count'
-        expected = 'cell count'
-        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
-        sentence = 'what is the average pressure'
-        expected = 'pressure'
-        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
-        sentence = 'did the run finish'
-        expected = 'finished'
-        #self.assertEqual(interpret.matchquery(query_list, sentence),expected)
-     
-        sentence = 'has the run finished'
-        expected = 'finished normally'
-        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
-        sentence = 'bla bla'
-        expected = internal_requests.BAD_VALUE
-        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
-        sentence = ''
-        expected = internal_requests.BAD_VALUE
-        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
-       
+      
 
         
     def test_removestopwords(self):
@@ -73,10 +97,7 @@ class InterpreterTestCase(TestCase):
         expected = ['number', 'errors']
         self.assertEqual(interpret.rmvstopwords(sentence), expected)     
 
-    def test_autocorrect(self):
-        sentence = ['plays', 'bus','rate','guess']
-        expected = ['place', 'gas','rate','gas']
-        self.assertEqual(interpret.autocorrect(sentence), expected) 
+ 
         
     def test_keyword(self):
         #query_list=['error count','cell count','oil place','gas place','water place','oil recovery factor','gas recovery factor','water recovery factor','production rate','pressure','gas oil ratio','error','finish','rate','plot','show']
@@ -88,7 +109,7 @@ class InterpreterTestCase(TestCase):
         sent_tokens = ['mistake']
         expected = 'error'
         #self.assertEqual(interpret.keywordmatch(query_list,sent_tokens), expected)
-
+"""
 
       
 

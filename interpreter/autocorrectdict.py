@@ -2,6 +2,8 @@ context_correct_dict={}
 
 # keep in alphabetic order
 
+context_correct_dict['castrate']='gas rate'
+
 context_correct_dict['bus']='gas'
 context_correct_dict['becuase']='gas'
 context_correct_dict['grass']='gas'
@@ -14,6 +16,7 @@ context_correct_dict['mould']='mole'
 context_correct_dict['boil']='oil'
 context_correct_dict['coil']='oil'
 context_correct_dict['foil']='oil'
+context_correct_dict['island']='oil in'
 
 context_correct_dict['face']='place'
 context_correct_dict['race']='place'
