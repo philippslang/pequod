@@ -187,6 +187,10 @@ def show_plot_oil_production(rpt_content):
     return show_plot(rpt_content, 'OPR', 'Oil production rate')
 def show_plot_gas_production(rpt_content):
     return show_plot(rpt_content, 'GPR', 'Gas production rate')
+def show_plot_gas_injection(rpt_content):
+    return show_plot(rpt_content, 'GIR', 'Gas injection rate')
+def show_plot_water_injection(rpt_content):
+    return show_plot(rpt_content, 'WIR', 'Water injection rate')
 def show_plot_water_production(rpt_content):
     return show_plot(rpt_content, 'WPR', 'Water production rate')
 def show_plot_water_cut(rpt_content):
@@ -208,6 +212,8 @@ SUPPORTED_ANALYSIS = {
     'show_plot_oil_production'      : show_plot_oil_production,
     'show_plot_gas_production'      : show_plot_gas_production,
     'show_plot_water_production'    : show_plot_water_production,
+    'show_plot_gas_injection'       : show_plot_gas_injection,
+    'show_plot_water_injection'     : show_plot_water_injection,
     'show_plot_water_cut'           : show_plot_water_cut,
     'show_plot_gas_oil_ratio'       : show_plot_gas_oil_ratio,
     'simulation_time'               : simulation_time,

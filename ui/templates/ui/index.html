@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+
 <title>The Pequod</title>
 
 {% load static %}
@@ -29,11 +33,13 @@
       {% csrf_token %}
     </form>
     {% endblock %}
-    <p id="record-instruction" class="pequod-hidden">Hold down any key to record a command.</p>
-    <div id="mic-icon" class="pequod-hidden">
-        <img src="{% static 'ui/mic.gif' %}" alt="Recording ..." class="pequod-hidden" />
+    <div id="record-instruction-container">
+        <img id="mic-icon" src="{% static 'ui/mic.gif' %}" alt="Recording ..." class="pequod-hidden" />
+        <p id="record-instruction">Hold down any key to record a command.</p>
     </div>
-    <div id="loading-icon" class="pequod-hidden"><img alt="Loading..." src="{% static 'ui/spin.svg' %}" /></div>
+    <div id="loading-icon">
+        <img alt="Loading..." src="{% static 'ui/spin.svg' %}" />
+    </div>
     <p id="response" class="results"></p>
    
     <img id="resultsimg" src="{% static 'ui/placeholder.png' %}" alt="Results (optional)">

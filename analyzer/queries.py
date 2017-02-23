@@ -10,6 +10,8 @@ SUPPORTED_QUERIES = [
     ('show_plot_pressure', 'show plot pressure'),
     ('show_plot_oil_production', 'show plot oil production'),
     ('show_plot_gas_production', 'show plot gas production'),
+    ('show_plot_gas_injection', 'show plot gas injection'),
+    ('show_plot_water_injection', 'show plot water injection'),
     ('show_plot_water_production', 'show plot water production'),
     ('show_plot_water_cut', 'show plot water cut'),
     ('show_plot_gas_oil_ratio', 'show plot gas oil ratio'),
