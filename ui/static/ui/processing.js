@@ -27,13 +27,8 @@ function __status(e) {
     document.getElementById("status").innerHTML = e;
 }
 function __image(e) {
-    var rimg = document.getElementById("resultsimg");
-
     if (e == "na") {
-        document.getElementById('resultsimg').style.visibility = 'hidden';
-
         if (glevel > 2) {
-            rimg.src = "{% static 'ui/placeholder.png' %}";
             __logdyn("Received no image to display");
         }
         return;
@@ -42,10 +37,6 @@ function __image(e) {
     if (glevel > 2) {
         __logdyn("Received image to be displayed", e);
     }
-
-    rimg.src = e;
-    rimg.height = 400;
-    document.getElementById('resultsimg').style.visibility = 'visible';
 }
 
 
@@ -67,9 +58,8 @@ Dropzone.options.rptdropzone = {
             }
 
             file.previewTemplate.appendChild(document.createTextNode(responseText["public_url"]));
-            $('#record-instruction').removeClass('pequod-hidden');
-            var loadingIcon = $('#mic-icon');
-            loadingIcon.children('img').removeClass('pequod-hidden');
+            
+            $('#uploaded-file').css({ visibility: 'hidden' });
         });
     }
 };
@@ -96,8 +86,6 @@ function process_request() {
         __response("No file provided, using demo.");
         __logdyn("No file provided, using demo ", demofile);
         localStorage.setItem("url_rpt", demofile);
-        //__status("No file has been uploaded.");
-        //return;
     }
 
     __status("Posting request.");
@@ -109,22 +97,50 @@ function process_request() {
     xhttp.onreadystatechange = function () {
         //if (this.readyState == 4 && this.status == 202) {
         if (this.readyState == XMLHttpRequest.OPENED) {
+            $('.query-view').css({ visibility: 'hidden'} );
+            $('.response-view').css({ visibility: 'hidden'} );
+            $('.info-view').css({ display: 'none'} );
+            $('.list-view').css({ display: 'none'} );
+            $('#response-image').css({ display: 'none'} );
             showLoadingIcon(true);
         }
         if (this.readyState == XMLHttpRequest.DONE) {
             __status("Received response.");
-
+            showLoadingIcon(false);
+            
             var responseJSON = JSON.parse(this.responseText);
             var display_text = responseJSON["response"];
             __response(display_text);
-            display_text = responseJSON["url_image"];
-            __image(display_text);
-
-            if (glevel > 2) {
-                display_text = responseJSON["transcript"];
-                __transcript(display_text);
+            $('#response-text').text(display_text);
+            $('.response-view').css({ visibility: 'visible'} );
+            
+            var transcript = responseJSON["transcript"];
+            __transcript(transcript);
+            $('#query-text').text('"' + transcript + '"');
+            $('.query-view').css({ visibility: 'visible'} );
+            
+            var info_text = responseJSON["info"];
+            $('#info-text').text(info_text);
+            $('.info-view').css({ display: 'block'} );
+            
+            var item_text = responseJSON["items"];
+            if (item_text != "na") {
+                var item_list = item_text.split(';');
+                var listItems = $('#list-items');
+                listItems.empty();
+                for (var item of item_list){
+                    var txt = '<li>' + item + '</li>';
+                    listItems.append(txt);
+                }
+                $('.list-view').css({ display: 'block'} );
             }
-            showLoadingIcon(false);
+            
+            var image_url = responseJSON["url_image"];
+            if (image_url != "na") {
+                __image(image_url);
+                $('#resultsimg').attr('src', image_url);
+                $('#response-image').css({ display: 'block'} );
+            }
         }
     };
     xhttp.open("POST", "/inspector/request/", true);
@@ -140,16 +156,16 @@ function initializeDocument() {
     localStorage.setItem("url_rpt", "");
 
     document.body.onkeydown = function (e) {
-        $('#mic-icon').removeClass('pequod-hidden');
+        $('#record-instruction-container').addClass('mic-background');
         startRecording();
     };
     document.body.onkeyup = function (e) {
         stopRecording();
-        $('#mic-icon').addClass('pequod-hidden');
+        $('#record-instruction-container').removeClass('mic-background');
     };
 
-    document.getElementById('resultsimg').style.visibility = 'hidden';
-
+    $('#uploaded-file').children('b').text(demofile);
+    
     // enable debug elements
     if (glevel > 0) {
 

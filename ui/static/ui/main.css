@@ -19,6 +19,12 @@ ul {
     list-style: none;
 }
 
+#uploaded-file {
+    width: 100%;
+    padding-left: 10px;
+    text-align: left;
+}
+
 #recordingslist audio {
     display: block;
     margin-bottom: 10px;
@@ -56,21 +62,57 @@ ul {
 }
 
 #record-instruction-container {
-    display: table;
+    display: table-cell;
     width: 100%;
     text-align: left;
     vertical-align: middle;
-    padding-left: 10px;
+    padding-left: 60px;
     height: 48px;
 }
 
-#record-instruction-container p,
-#record-instruction-container img {
-    display: table-cell;
-    height: 48px;
+.mic-background {
+    background-image: url('mic.gif');
+    background-repeat: no-repeat;
+    background-position: left top; 
+    background-size: 48px 48px;
 }
 
-#record-instruction-container img {
-    width: 48px;
+#contentContainer h1 {
+    font-size: 16pt;
+    margin: 1px;
+    padding: 2px;
+}
+
+#contentContainer h2 {
+    font-size: 14pt;
+    margin: 1px;
+    padding: 2px;
+}
+
+#contentContainer dl {
+    text-align: left;
+    margin-left: 5px;
+    line-height: 1.5em;
+}
+
+#contentContainer dl dt {
+    font-weight: bold;
+}
+
+#response-text {
+    color: RoyalBlue;
+    font-weight: bold;
+}
+
+#resultsimg {
+    height: 400px;
+}
+
+.query-view, .response-view {
+    visibility: hidden;
+}
+      
+.info-view, .list-view, #response-image {
+    display: none;
 }
 

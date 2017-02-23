@@ -28,27 +28,51 @@
 <body onload="initializeDocument()">
 <div id="wrapper">
 <div id="contentContainer">
+    <h1>The Pequod</h1>
+    <h2>Voice controlled results inspection</h2>
     {% block content %}
     <form method="post" action="/upload/" enctype="multipart/form-data" class="dropzone" id="rptdropzone">
       {% csrf_token %}
     </form>
     {% endblock %}
+    <div id="uploaded-file">
+        No file uploaded. Using default file <b></b>.
+    </div>
     <div id="record-instruction-container">
-        <img id="mic-icon" src="{% static 'ui/mic.gif' %}" alt="Recording ..." class="pequod-hidden" />
-        <p id="record-instruction">Hold down any key to record a command.</p>
+        Hold down any key to record a command.
     </div>
     <div id="loading-icon">
         <img alt="Loading..." src="{% static 'ui/spin.svg' %}" />
     </div>
-    <p id="response" class="results"></p>
-   
-    <img id="resultsimg" src="{% static 'ui/placeholder.png' %}" alt="Results (optional)">
+    <dl>
+      <dt class="query-view">Query</dt>
+      <dd id="query-text" class="query-view">Can you please plot the water cut</dd>
+      <dt class="response-view">Response</dt>
+      <dd class="response-view" id="response-text" >
+        Not sure what you meant
+      </dd>
+      <dd id="response-image">        
+        <img id="resultsimg" src="{% static 'ui/placeholder.png' %}" alt="Results (optional)">
+      </dd>
+      <dt class="info-view">Info</dt>
+      <dd id="info-text" class="info-view"></dd>
+      <dt class="list-view">List</dt>
+      <dd id="list-text" class="list-view">
+        <ul id="list-items">
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+            <li>Item 4</li>
+        </ul>
+      </dd>
+    </dl>
 </div>
 <div id="debugContainer">
     <ul id="recordingslist"></ul>
     <pre id="logpersistent"></pre>
     <!-- debugging -->
     <button type="button" id="gpost" onclick="process_request()">Post with current buffers</button>
+    <p id="response" class="results"></p>
     <p id="status" class="results"></p>
     <p id="transcript" class="results"></p>
     <pre id="logdynamic"></pre>

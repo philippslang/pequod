@@ -17,6 +17,8 @@ re_terms = [
     'show graph',
     'reservoir',
     'injection rate',
+    'cumulative',
+    'field',
 ]
 
 def get_speech_hints(supported_queries):    
