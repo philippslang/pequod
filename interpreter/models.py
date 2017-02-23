@@ -43,3 +43,12 @@ class ResponseFly(models.Model):
 
     class Meta:
         ordering = ('query',)
+
+
+class Result(models.Model):
+    resulted = models.DateTimeField('date requested', default=future_time_requested.now)
+    transcript = models.CharField(max_length=200, blank=True, default=BAD_VALUE)
+    query = models.CharField(max_length=200, blank=True, default=BAD_VALUE)
+
+    class Meta:
+        ordering = ('resulted',)
