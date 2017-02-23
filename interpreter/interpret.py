@@ -90,6 +90,14 @@ def google_speech_json_response_pcm(base64_audio, hints, max_alternatives=1):
     return speech_request.execute()
 
 
+def queries_json_to_lists(supported_queries):
+    clean_list, raw_list = [], []
+    for query in supported_queries:
+        clean_list += [query['query'].replace('_', ' ')]
+        raw_list += [query['query']]
+    return clean_list, raw_list
+        
+        
 def interpret(base64_audio, supported_queries):
     hints = supported_queries_words_flattened(supported_queries)    
 
@@ -98,12 +106,28 @@ def interpret(base64_audio, supported_queries):
     if base64_audio:
         speech_response = google_speech_json_response_pcm(base64_audio, hints)
         print 'INTERPRETER::interpret::interpret: Google Speech response ', speech_response
+        
+        if speech_response == {}:
+            print 'INTERPRETER::interpret::interpret: Got no speech resonse from Google, defaulting to ', interpretation        
+            return interpretation
+        
+        # effectively, we just take the first alternative
         if speech_response:
             for result in speech_response.get('results', []):
                 for alternative in result['alternatives']:
                     interpretation['transcript'] = alternative['transcript']                    
-                    
-	
+                 
+        if interpretation['transcript'] == internal_requests.BAD_VALUE:
+            print 'INTERPRETER::interpret::interpret: Got no interpretation, defaulting to ', interpretation        
+            return interpretation
+        
+        clean_list, raw_list = queries_json_to_lists(supported_queries)
+        matched_query = matchquery(clean_list, interpretation['transcript'])
+        if matched_query != internal_requests.BAD_VALUE:
+            interpretation['matched query'] = raw_list[clean_list.index(matched_query)]
+        
+        
+        """
         for query in supported_queries:
             for result in speech_response.get('results', []):
                 for alternative in result['alternatives']:
@@ -112,11 +136,25 @@ def interpret(base64_audio, supported_queries):
                         print 'INTERPRETER::interpret::interpret: Matched query ', query['query']
                         return {'matched query':query['query'], 'transcript':alternative['transcript']}
                         
+        """
+                        
 
     print 'INTERPRETER::interpret::interpret: Got empty audio, defaulting to ', interpretation        
     return interpretation
 
 
+def matchquery(query_list, sentence):
+    #sentecebasic=nouns(sentence)
+    #print sentecebasic
+    tokens_basic_form=convertbasic(sentence)
+    print tokens_basic_form
+    tokens_nostop=rmvstopwords2(tokens_basic_form)
+    print tokens_nostop
+    tokens_autocorrect=autocorrect(tokens_nostop)
+    output_match=keywordmatch(query_list,tokens_autocorrect)
+    print(output_match)
+    return output_match
+    
 def keywordmatch(query_list,tokens):
     
     """
@@ -128,23 +166,29 @@ def keywordmatch(query_list,tokens):
     best_ix=-1
     for ii,stand_query in enumerate(query_list):
         querytoken=stand_query.split()
+        print(querytoken, tokens,maxlen,len(set(tokens).intersection(querytoken)),ii)
         if len(set(tokens).intersection(querytoken))>maxlen:
             best_ix=ii
             maxlen=len(set(tokens).intersection(querytoken))
-            print(querytoken, tokens,maxlen,best_ix)
+            #print(querytoken, tokens,maxlen,best_ix)
             
     print(maxlen,best_ix,query_list[best_ix])       
-    print('End of popular query list')
+    #print('End of popular query list')
     
     if best_ix == -1 :
         #match with synonym   , if availablle
         for ii,stand_query in enumerate(query_list):
             querytoken=stand_query.split()
+            print(querytoken)
+            print('Synonyms available for')
+            print(synonym_dict.keys())
             if querytoken in synonym_dict.keys() :
                 for synonyms in synonym_dict[querytoken]:
                     if len(set(tokens).intersection(synonyms))>maxlen:
                         best_ix=ii
                         maxlen=len(set(tokens).intersection(synonyms))
+    print('Sending.....')
+    print(maxlen,best_ix,query_list[best_ix])
     if best_ix==-1:
         return internal_requests.BAD_VALUE
     else:
@@ -176,6 +220,22 @@ def rmvstopwords(sentence2):
     
     tokens=sentence.split()
 
+    filtered_words = [word for word in tokens if word not in (mystopwords+redundantwds+interrogativewords)]
+    return filtered_words
+
+def rmvstopwords2(tokens):
+    """
+    >>rmvstopwords('This is a test with an error')
+    ['error']
+    """
+   
+    mystopwords=[u'all', u'just', u'being', u'over', u'both', u'through', u'yourselves', u'its', u'before', u'o', u'hadn', u'herself', u'll', u'had', u'should', u'to', u'only', u'won', u'under', u'ours', u'has', u'do', u'them', u'his', u'very', u'they', u'not', u'during',
+ u'now', u'him', u'nor', u'd', u'did', u'didn', u'this', u'she', u'each', u'further', u'where', u'few', u'because', u'doing', u'some', u'hasn', u'are', u'our', u'ourselves', u'out', u'what', u'for', u'while', u're', u'does', u'above', u'between', u'mustn', u't', u'be', u'we', u'who', u'were', u'here', u'shouldn', u'hers', u'by', u'on', u'about', u'couldn', u'of', u'against', u's', u'isn', u'or', u'own', u'into', u'yourself', u'down', u'mightn', u'wasn', u'your', u'from', u'her', u'their', u'aren', u'there', u'been', u'whom', u'too', u'wouldn', u'themselves', u'weren', u'was', u'until', u'more', u'himself', u'that', u'but', u'don', u'with', u'than', u'those', u'he', u'me', u'myself', u'ma', u'these', u'up', u'will', u'below', u'ain', u'can', u'theirs', u'my', u'and', u've', u'then', u'is', u'am', u'it', u'doesn', u'an', u'as', u'itself', u'at', u'have', u'in', u'any', u'if', u'again', u'no', u'when', u'same', u'how', u'other', u'which', u'you', u'shan', u'needn', u'haven', u'after', u'most', u'such', u'why', u'a', u'off', u'i', u'm', u'yours', u'so', u'y', u'the', u'having', u'once']
+ 
+    redundantwds=['simulation','code','file','test']
+    interrogativewords=['did','how','when','which','why','where']
+    
+   
     filtered_words = [word for word in tokens if word not in (mystopwords+redundantwds+interrogativewords)]
     return filtered_words
 
@@ -255,6 +315,6 @@ def nouns(sentence):
     #for ii in range(4):
     #    print response['tokens'][ii]['lemma']
     #print len(response['tokens'][0])#['lemma']
-    print json.dumps(response, indent=4, sort_keys=True)
+    #print json.dumps(response, indent=4, sort_keys=True)
     
     return sentence[0]
