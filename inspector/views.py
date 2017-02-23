@@ -77,8 +77,11 @@ def request(request, format=None):
             supported_queries = internal_requests.get(r'/analyzer/queries/')   
             supported_queries = supported_queries.json() 
             for query in supported_queries:
-                response_queries += ' '.join(query['query'].split('_')) + '; '
-            response = 'Query not recognized. Supported are: ' + response_queries
+                response_queries += ' '.join(query['query'].split('_')) + ', '
+            displayed_transcript = transcript
+            if displayed_transcript == internal_requests.BAD_VALUE:
+                displayed_transcript = 'empty'
+            response = 'Wasn\'t able to resolve your query: \'' + displayed_transcript +'\'. This is what you can ask for: ' + response_queries + '    Let me show you a pressure summary:'
 
         # TODO for now, the response text is the posted rpt url
         #response_entry = request_entry.response_set.create(response=response, transcript=transcript)

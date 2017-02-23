@@ -85,6 +85,7 @@ def interpret(base64_audio, supported_queries):
     interpretation = {'matched query':internal_requests.BAD_VALUE, 'transcript':internal_requests.BAD_VALUE}
     
     if base64_audio:
+        print 'INTERPRETER::interpret::interpret: Speech base64 length ', len(base64_audio)
         speech_response = google_speech_json_response_pcm(base64_audio, hints)
         print 'INTERPRETER::interpret::interpret: Google Speech response ', speech_response
         if speech_response:
