@@ -28,7 +28,7 @@ function startUserMedia(stream) {
 
 
 function startRecording() {
-  __clearlogdyn()
+  __clearlogdyn();
 
   if(is_recording == false) {
     recorder && recorder.record();
@@ -46,11 +46,9 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function stopRecording() {
+function stopRecording() {
 	recorder && recorder.stop();
   
-  // for buffers to catch up?
-  await sleep(500);
   
   if(glevel > 2){
     __logdyn('Stopped recording.');
@@ -63,9 +61,7 @@ async function stopRecording() {
     showRecording();	
     }
   
-
-  forwardRecording();
-  
+  forwardRecording(); 
   
 	
 	recorder.clear();

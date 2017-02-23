@@ -82,7 +82,9 @@ def request(request, format=None):
             if displayed_transcript == internal_requests.BAD_VALUE:
                 displayed_transcript = 'empty'
             response = 'Wasn\'t able to resolve your query: \'' + displayed_transcript +'\'. This is what you can ask for: ' \
-                       + response_queries + '.    Let me show you a pressure summary instead:'
+                       + response_queries[:-2] + '.    Let me show you a pressure summary instead:'
+        else:
+            response += ' (matched your \'' + transcript + '\' to \'' + matched_query + '\')'
 
         # TODO for now, the response text is the posted rpt url
         #response_entry = request_entry.response_set.create(response=response, transcript=transcript)

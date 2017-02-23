@@ -1,7 +1,7 @@
 /* Processing */
 
 var glevel = 3; // debug level: 0 (production) - 3 (all output)
-var autosend = true; // if true, successful recording is always posted, if false depends on debug level (ie only when glevel == 0)
+var autosend = false; // if true, successful recording is always posted, if false depends on debug level (ie only when glevel == 0)
 var pcm16_base64 = '';
 var TARGET_SAMPLE_RATE = 16000;
 var downsample = true;
@@ -77,7 +77,8 @@ Dropzone.options.rptdropzone = {
 
 function process_request() {
     if (localStorage.getItem("url_rpt") == "") {
-        __response("No file provided, using demo.")
+        __response("No file provided, using demo.");
+        __logdyn("No file provided, using demo ", demofile);
         localStorage.setItem("url_rpt", demofile);
         //__status("No file has been uploaded.");
         //return;
