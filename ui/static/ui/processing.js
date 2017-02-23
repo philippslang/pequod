@@ -1,7 +1,7 @@
 /* Processing */
 
 var glevel = 3; // debug level: 0 (production) - 3 (all output)
-var autosend = false; // if true, successful recording is always posted, if false depends on debug level (ie only when glevel == 0)
+var autosend = true; // if true, successful recording is always posted, if false depends on debug level (ie only when glevel == 0)
 var pcm16_base64 = '';
 var TARGET_SAMPLE_RATE = 16000;
 var downsample = true;
@@ -39,6 +39,11 @@ function __image(e) {
     }
 }
 
+function isMSIE() {
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+    return (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./));  // If Internet Explorer, return version number
+}
 
 Dropzone.options.rptdropzone = {
     paramName: "rptfile",
@@ -130,8 +135,8 @@ function process_request() {
                 var item_list = item_text.split(';');
                 var listItems = $('#list-items');
                 listItems.empty();
-                for (var item of item_list){
-                    var txt = '<li>' + item + '</li>';
+                for (var i = 0; i < item_list.length; i++){
+                    var txt = '<li>' + item_list[i] + '</li>';
                     listItems.append(txt);
                 }
                 $('.list-view').css({ display: 'block'} );
@@ -166,7 +171,8 @@ function initializeDocument() {
         $('#record-instruction-container').removeClass('mic-background');
     };
 
-    $('#uploaded-file').children('b').text(demofile);
+    var basename = demofile.split('/').reverse()[0];
+    $('#uploaded-file').children('a').attr('href', demofile).children('b').text(basename);
     
     // enable debug elements
     if (glevel > 0) {
@@ -192,15 +198,21 @@ function initializeDocument() {
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
         window.URL = window.URL || window.webkitURL;
         
-        audio_context = new AudioContext;
+        audio_context = new AudioContext();
 
         if (glevel > 1) {
             __log('Audio context set up.');
             __log('JS navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
-            __log('JS navigator.mediaDevices.getUserMedia ' + (navigator.mediaDevices.getUserMedia ? 'available.' : 'not present!'));
+            __log('JS navigator.mediaDevices.getUserMedia ' +
+                    (navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? 'available.' : 'not present!'));
         }
     } catch (e) {
-        alert('No web audio support in this browser!');
+        document.getElementById('contentContainer').innerHTML =
+            '<div style="text-align: left; margin-left: 100px; margin-top: 10px">' +
+            'No web audio support in this browser. ' +
+            'The pequod is recommended for Google Chrome or Firefox.' +
+            '</div>';
+        return;       
     }
 
     if (navigator.getUserMedia){
@@ -209,11 +221,17 @@ function initializeDocument() {
                 __log('No live audio input: ' + e);
             }
         });
-    } else if (navigator.mediaDevices.getUserMedia){
+    } else if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
         navigator.mediaDevices.getUserMedia({ audio: true }).then(startUserMedia).catch(function(e) {
             if (glevel > 1) {
                 __log('No live audio input: ' + e);
             }
         });        
+    } else if (window.getUserMedia){
+        window.getUserMedia({ audio: true, el: 'media-content' }, startUserMedia, function (e) {
+            if (glevel > 1) {
+                __log('No live audio input: ' + e);
+            }
+        });       
     }
 }

@@ -119,3 +119,23 @@ ul {
     display: none;
 }
 
+.dropzone.dz-clickable {
+    background-image: url('cloud-icon.png');
+    background-repeat: no-repeat;
+    background-position: center center; 
+}
+
+.dropzone.dz-clickable.dz-started {
+    background-image: none;
+}
+
+.dropzone .dz-preview.dz-file-preview .dz-image {
+    background-image: url('prt-icon.png');
+    background-size: 60px 60px;
+    background-repeat: no-repeat;
+    background-position: center center; 
+}
+
+#logdynamic {
+    width: 500px;
+}
