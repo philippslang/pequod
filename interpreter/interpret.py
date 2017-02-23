@@ -126,32 +126,20 @@ def interpret(base64_audio, supported_queries):
         matched_query = matchquery(clean_list, interpretation['transcript'])
         if matched_query != internal_requests.BAD_VALUE:
             interpretation['matched query'] = raw_list[clean_list.index(matched_query)]
-        
-        
-        """
-        for query in supported_queries:
-            for result in speech_response.get('results', []):
-                for alternative in result['alternatives']:
-                    intersection = set(trivial_singulars(alternative['transcript'].split())).intersection(query['query'].split('_'))            
-                    if intersection:
-                        print 'INTERPRETER::interpret::interpret: Matched query ', query['query']
-                        return {'matched query':query['query'], 'transcript':alternative['transcript']}
-                        
-        """
+        'INTERPRETER::interpret::interpret: Successfully interpreted ', interpretation 
                         
 
-    print 'INTERPRETER::interpret::interpret: Got empty audio, defaulting to ', interpretation        
+    'INTERPRETER::interpret::interpret: Got empty audio, defaulting to ', interpretation        
     return interpretation
 
 
 def matchquery(query_list, sentence):
-    #sentecebasic=nouns(sentence)
-    #print sentecebasic
     tokens_basic_form=convertbasic(sentence)
     print tokens_basic_form
-    tokens_nostop=rmvstopwords2(tokens_basic_form)
+    tokens_nostop=autocorrect(tokens_basic_form)
     print tokens_nostop
-    tokens_autocorrect=autocorrect(tokens_nostop)
+    tokens_autocorrect=rmvstopwords2(tokens_nostop)
+    print tokens_autocorrect
     output_match=keywordmatch(query_list,tokens_autocorrect)
     print(output_match)
     return output_match
@@ -167,45 +155,74 @@ def keywordmatch(query_list,tokens):
     best_ix=-1
     for ii,stand_query in enumerate(query_list):
         querytoken=stand_query.split()
-        print(querytoken, tokens,maxlen,len(set(tokens).intersection(querytoken)),ii)
+        #print(querytoken, tokens,maxlen,len(set(tokens).intersection(querytoken)),ii)
         if len(set(tokens).intersection(querytoken))>maxlen:
             best_ix=ii
             maxlen=len(set(tokens).intersection(querytoken))
             #print(querytoken, tokens,maxlen,best_ix)
             
-    print(maxlen,best_ix,query_list[best_ix])       
+    #print(maxlen,best_ix,query_list[best_ix])       
     #print('End of popular query list')
     
     if best_ix == -1 :
         #match with synonym   , if availablle
         for ii,stand_query in enumerate(query_list):
             querytoken=stand_query.split()
-            print(querytoken)
-            print('Synonyms available for')
-            print(synonym_dict.keys())
+            #print(querytoken)
+            #print('Synonyms available for')
+            #print(synonym_dict.keys())
             if querytoken in synonym_dict.keys() :
                 for synonyms in synonym_dict[querytoken]:
                     if len(set(tokens).intersection(synonyms))>maxlen:
                         best_ix=ii
                         maxlen=len(set(tokens).intersection(synonyms))
-    print('Sending.....')
-    print(maxlen,best_ix,query_list[best_ix])
+    #print('Sending.....')
+    #print(maxlen,best_ix,query_list[best_ix])
     if best_ix==-1:
         return internal_requests.BAD_VALUE
     else:
         return query_list[best_ix]
-
-
 def autocorrect(list_words):
     """
     >>autocorrect(['face'])
     phase
     """
+    new_list=[]
     for ii,word in enumerate(list_words):
+        #print ("input")
+        #print word
         if word in context_correct_dict.keys():
-            list_words[ii]=context_correct_dict[word]
-                             
-    return list_words
+            replacementvals=context_correct_dict[word].split(" ")
+            for jj in range(len(replacementvals)):
+                print(len(replacementvals))
+                new_list.append(replacementvals[jj])
+        else:
+            new_list.append(word)
+    #print "output"
+    #print new_list                       
+    return new_list
+
+def autocorrect_nw(list_words):
+    """
+    >>autocorrect(['face'])
+    phase
+    """
+    new_list=[]
+    for ii,word in enumerate(list_words):
+        print ("input")
+        print word
+        if word in context_correct_dict.keys():
+            replacementvals=context_correct_dict[word]
+            #print(replacementvals.split("****"))
+            if len(replacementvals) >1 :
+                replacementvals=context_correct_dict[word]
+                for nw in replacementvals:
+                    new_list.append(nw)
+        else:
+            new_list.append(word)
+    print "output"
+    print new_list                       
+    return new_list
     
 def rmvstopwords(sentence2):
     """
