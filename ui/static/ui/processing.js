@@ -116,6 +116,8 @@ function process_request() {
             
             var transcript = responseJSON["transcript"];
             __transcript(transcript);
+            if (transcript == 'na')
+                transcript = '(empty)';
             $('#query-text').text('"' + transcript + '"');
             $('.query-view').css({ visibility: 'visible'} );
             
@@ -189,20 +191,29 @@ function initializeDocument() {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
         window.URL = window.URL || window.webkitURL;
-
+        
         audio_context = new AudioContext;
 
         if (glevel > 1) {
             __log('Audio context set up.');
             __log('JS navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
+            __log('JS navigator.mediaDevices.getUserMedia ' + (navigator.mediaDevices.getUserMedia ? 'available.' : 'not present!'));
         }
     } catch (e) {
         alert('No web audio support in this browser!');
     }
 
-    navigator.getUserMedia({ audio: true }, startUserMedia, function (e) {
-        if (glevel > 1) {
-            __log('No live audio input: ' + e);
-        }
-    });
+    if (navigator.getUserMedia){
+        navigator.getUserMedia({ audio: true }, startUserMedia, function (e) {
+            if (glevel > 1) {
+                __log('No live audio input: ' + e);
+            }
+        });
+    } else if (navigator.mediaDevices.getUserMedia){
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(startUserMedia).catch(function(e) {
+            if (glevel > 1) {
+                __log('No live audio input: ' + e);
+            }
+        });        
+    }
 }

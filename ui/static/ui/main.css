@@ -46,6 +46,9 @@ ul {
     border-radius: 20px;
     padding: 0;
     text-align: center;
+    background-image: url('the-pequod.png');
+    background-size: 80px 60px;
+    background-repeat: no-repeat;
 }
 
 #debugContainer {
