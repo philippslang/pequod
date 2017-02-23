@@ -88,15 +88,17 @@ def request(request, format=None):
             response = 'Unable able to resolve your query.'
 
             # info
-            info ='You: \'' + displayed_transcript + '\'. This is what you can ask for: '
+            info ='You: \'' + trascript_feedback + '\'. This is what you can ask for: '
 
             # items become csv list of supported queries
             supported_queries = internal_requests.get(r'/analyzer/queries/').json()  
-            items = ''
+            items = []
             for query in supported_queries:
-                items += ' '.join(query['query'].split('_')) + ';'
+                items += [' '.join(query['query'].split('_'))]
+            items = ';'.join(items)
             
-
+        print info
+        print items
         # TODO for now, the response text is the posted rpt url
         #response_entry = request_entry.response_set.create(response=response, transcript=transcript)
         response_entry = models.ResponseFly(response=response, transcript=transcript, url_image=url_image, info=info, items=items)
