@@ -20,7 +20,8 @@ class Response(models.Model):
     request = models.ForeignKey(Request, on_delete=models.CASCADE)
     response = models.CharField(max_length=200, blank=True, default=BAD_VALUE)
     transcript = models.CharField(max_length=200, blank=True, default=BAD_VALUE)
-    stringlist = models.CharField(max_length=200, blank=True, default=BAD_VALUE)
+    info = models.CharField(max_length=200, blank=True, default=BAD_VALUE)
+    items = models.CharField(max_length=200, blank=True, default=BAD_VALUE)
 
     class Meta:
         ordering = ('request',)
@@ -35,3 +36,5 @@ class ResponseFly(models.Model):
     response = models.CharField(max_length=200, blank=True, default=BAD_VALUE)
     transcript = models.CharField(max_length=200, blank=True, default=BAD_VALUE)
     url_image = models.CharField(max_length=250, blank=True, default=BAD_VALUE)
+    info = models.CharField(max_length=200, blank=True, default=BAD_VALUE)
+    items = models.CharField(max_length=200, blank=True, default=BAD_VALUE)

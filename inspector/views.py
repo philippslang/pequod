@@ -54,45 +54,54 @@ def request(request, format=None):
             matched_query = 'show_plot_pressure'
             interpreter_match = False
 
-        # check for inspector errors, ie empty query
-
-        # post the query to analyzer     
-        
-        print 'INSPECTOR::views::request: Request for analysis of ',  request_entry.url_rpt
-        
+        # post the query to analyzer             
+        print 'INSPECTOR::views::request: Request for analysis of ',  request_entry.url_rpt        
         analyzer_request = internal_requests.post(r'/analyzer/query/', data = {'query':matched_query, 'url_rpt':request_entry.url_rpt})
         
-        # TODO check 202
+
         # make response result of analyzer query
+        response = internal_requests.BAD_VALUE
+        info = internal_requests.BAD_VALUE
+        items = internal_requests.BAD_VALUE
+        url_image = internal_requests.BAD_VALUE
+
+        # everything worked, only response (from analyzer), info is transcript and matched_query, url is set
+        # if available and items remain empty
+        info = 'Matched your \'' + transcript + '\' to \'' + matched_query + '\''
         analyzer_request = analyzer_request.json()
         try:
-            response = analyzer_request['result']
+            response = analyzer_request['result']            
         except KeyError:
-            response = 'Analyzer could not resolve query ' + matched_query
+            pass
         try:
             url_image = analyzer_request['url_image']
-        except KeyError:
-            # TODO make empty            
-            url_image = internal_requests.BAD_VALUE
+        except KeyError:           
+            pass
+
+        # some feedback on errors
+        trascript_feedback = transcript
+        if trascript_feedback == internal_requests.BAD_VALUE:
+            trascript_feedback = 'empty'
 
         if not interpreter_match:
-            # TODO list supported queries
-            response_queries = ''
-            supported_queries = internal_requests.get(r'/analyzer/queries/')   
-            supported_queries = supported_queries.json() 
-            for query in supported_queries:
-                response_queries += ' '.join(query['query'].split('_')) + ', '
-            displayed_transcript = transcript
-            if displayed_transcript == internal_requests.BAD_VALUE:
-                displayed_transcript = 'empty'
-            response = 'Wasn\'t able to resolve your query: \'' + displayed_transcript +'\'. This is what you can ask for: ' \
-                       + response_queries[:-2] + '.    Let me show you a pressure summary instead:'
-        else:
-            response += ' (matched your \'' + transcript + '\' to \'' + matched_query + '\')'
+            # top level response
+            response = 'Unable able to resolve your query.'
 
+            # info
+            info ='You: \'' + trascript_feedback + '\'. This is what you can ask for: '
+
+            # items become csv list of supported queries
+            supported_queries = internal_requests.get(r'/analyzer/queries/').json()  
+            items = []
+            for query in supported_queries:
+                items += [' '.join(query['query'].split('_'))]
+            items = ';'.join(items)
+            
+        print info
+        print items
         # TODO for now, the response text is the posted rpt url
         #response_entry = request_entry.response_set.create(response=response, transcript=transcript)
-        response_entry = models.ResponseFly(response=response, transcript=transcript, url_image=url_image)
+        response_entry = models.ResponseFly(response=response, transcript=transcript, url_image=url_image, info=info, items=items)
 
         # here we call a function that modifies  response_entry - it wil have access to request_entry
 

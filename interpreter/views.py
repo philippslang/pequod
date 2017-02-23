@@ -13,7 +13,6 @@ import requests
 
 from .interpret import interpret
 
-import logging
 
 
 # TODO implement GET
