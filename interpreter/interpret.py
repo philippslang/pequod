@@ -120,15 +120,14 @@ def interpret(base64_audio, supported_queries):
 
 
 def matchquery(query_list, sentence):
-    tokens_basic_form=convertbasic(sentence)
-    #print tokens_basic_form
-    tokens_nostop=autocorrect(tokens_basic_form)
-    #print tokens_nostop
-    tokens_autocorrect=rmvstopwords2(tokens_nostop)
-    #print tokens_autocorrect
-    output_match=keywordmatch(query_list,tokens_autocorrect)
-    #print(output_match)
-    return output_match
+    if not sentence:
+        return internal_requests.BAD_VALUE
+    else: 
+        tokens_basic_form=convertbasic(sentence)
+        tokens_nostop=autocorrect(tokens_basic_form)
+        tokens_autocorrect=rmvstopwords2(tokens_nostop)
+        output_match=keywordmatch(query_list,tokens_autocorrect)
+        return output_match
     
 def keywordmatch(query_list,tokens):
     
