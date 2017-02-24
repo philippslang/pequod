@@ -144,7 +144,7 @@ def keywordmatch(query_list,tokens):
             best_ix=ii
             maxlen=len(set(tokens).intersection(querytoken))
             
-    #if debug==1 : print tokens
+   
     
     #No match up to now, so look in all synonyms
     if best_ix == -1 :
@@ -154,8 +154,6 @@ def keywordmatch(query_list,tokens):
             if debug==1 : print best_ix
             for ii,stand_query in enumerate(query_list):
                 querytoken=stand_query
-                #querytoken=stand_query.split(" ")
-                #if debug==1 : print querytoken
                 if querytoken in synonym_dict.keys() :
                     for synonyms in synonym_dict[querytoken]:
                         if tokens==synonyms:
@@ -169,79 +167,7 @@ def keywordmatch(query_list,tokens):
         return query_list[best_ix]
 
 
-def keywordmatch3(query_list,tokens):
-    
-    """
-    >>>keywordmatch3(['oil in place','recovery','oil','place'])
-    """
-    debug=1
-    maxlen=0
-    best_ix=-1
-    for ii,stand_query in enumerate(query_list):
-        querytoken=stand_query.split()
-        if len(set(tokens).intersection(querytoken))>maxlen:
-            best_ix=ii
-            maxlen=len(set(tokens).intersection(querytoken))
-            
-    #if debug==1 : print tokens
-    #print synonym_dict.keys()
-    #No match up to now, so look in all synonyms
-    if best_ix == -1 :
-        if debug==1 : print best_ix
-        for ii,stand_query in enumerate(query_list):
-            wordsquerytoken=stand_query.split(" ")
-            for querytoken in wordsquerytoken :
-                if debug==1 : print querytoken
-                if querytoken in synonym_dict.keys() :
-                    #if debug==1 : print "synonyms for"                
-                    #if debug==1 : print querytoken
-                    for synonyms in synonym_dict[querytoken]:
-                        if debug==1 : print synonyms , tokens[0]
-                        if debug==1 : print synonyms , len(set(tokens[0]).intersection(synonyms)), set(tokens[0]).intersection(synonyms), len(tokens[0])
-                        if len(set(tokens[0]).intersection(synonyms))>maxlen:
-                            best_ix=ii
-                            maxlen=len(set(tokens[0]).intersection(synonyms))
-                            if debug==1 : print "new best",synonyms , len(set(tokens[0]).intersection(synonyms)), maxlen,best_ix, query_list[best_ix]
 
-    if best_ix==-1:
-        return internal_requests.BAD_VALUE
-    else:
-        return query_list[best_ix]
-        
-    
-def keywordmatch2(query_list,tokens):
-    
-    """
-    >>>keywordmatch3(['oil in place','recovery','oil','place'])
-    """
-    debug=1
-    maxlen=0
-    best_ix=-1
-    for ii,stand_query in enumerate(query_list):
-        querytoken=stand_query.split()
-        if len(set(tokens).intersection(querytoken))>maxlen:
-            best_ix=ii
-            maxlen=len(set(tokens).intersection(querytoken))
-            
-    #if debug==1 : print tokens
-    
-    #No match up to now, so look in all synonyms
-    if best_ix == -1 :
-        if debug==1 : print best_ix
-        for ii,stand_query in enumerate(query_list):
-            querytoken=stand_query.split(" ")
-            if debug==1 : print querytoken
-            if querytoken in synonym_dict.keys() :
-                for synonyms in synonym_dict[querytoken]:
-                    if debug==1 : print synonyms
-                    if len(set(tokens).intersection(synonyms))>maxlen:
-                        best_ix=ii
-                        maxlen=len(set(tokens).intersection(synonyms))
-
-    if best_ix==-1:
-        return internal_requests.BAD_VALUE
-    else:
-        return query_list[best_ix]
 def autocorrect(list_words):
     """
     >>autocorrect(['face'])
