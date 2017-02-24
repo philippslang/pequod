@@ -48,7 +48,7 @@ function isMSIE() {
 Dropzone.options.rptdropzone = {
     paramName: "rptfile",
     maxFiles: 1,
-    dictDefaultMessage: "Drop PRT file here",
+    dictDefaultMessage: "Drop INTERSECT PRT file here",
     maxFilesize: 5,
     init: function () {
         this.on("maxfilesexceeded", function (file) {
