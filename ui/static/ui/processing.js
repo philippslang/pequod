@@ -1,6 +1,6 @@
 /* Processing */
 
-var glevel = 3; // debug level: 0 (production) - 3 (all output)
+var glevel = 0; // debug level: 0 (production) - 3 (all output)
 var autosend = false; // if true, successful recording is always posted, if false depends on debug level (ie only when glevel == 0)
 var pcm16_base64 = '';
 var TARGET_SAMPLE_RATE = 16000;
@@ -132,7 +132,7 @@ function process_request() {
             $('.info-view').css({ display: 'block'} );
             
             var item_text = responseJSON["items"];
-            if (item_text != "na") {
+            if (item_text && item_text != "na") {
                 var item_list = item_text.split(';');
                 var listItems = $('#list-items');
                 listItems.empty();

@@ -62,7 +62,7 @@ def google_speech_json_response_pcm(base64_audio, hints, max_alternatives=1):
                 'maxAlternatives': max_alternatives,  
                 # See http://g.co/cloud/speech/docs/languages for a list of
                 # supported languages.
-                'languageCode': 'en-US',
+                'languageCode': 'en-GB',
                 'speech_context': {
                     'phrases': hints
                 }
