@@ -36,17 +36,21 @@ def request(request, format=None):
     
         
         # post to interpreter, and the use receiver query here
-        interpreter_request = internal_requests.post(r'/interpreter/request/', data = {'base64_audio':request_entry.base64_audio, 'url_analyzer':internal_requests.absolute_path(r'/analyzer/queries/'), 'cachekiller':str(uuid.uuid1())})
-        #interpreter_request = interpret(internal_requests.absolute_path(r'/analyzer/queries/'), request_entry.base64_audio)
+        if 0:
+            interpreter_request = internal_requests.post(r'/interpreter/request/', data = {'base64_audio':request_entry.base64_audio, 'url_analyzer':internal_requests.absolute_path(r'/analyzer/queries/'), 'cachekiller':str(uuid.uuid1())})
+            
 
-        try:
-            interpreter_request = interpreter_request.json()
-            transcript = interpreter_request['transcript']
-            matched_query = interpreter_request['query']
-        except:
-            transcript = internal_requests.BAD_VALUE
-            matched_query = internal_requests.BAD_VALUE
-
+            try:
+                interpreter_request = interpreter_request.json()
+                transcript = interpreter_request['transcript']
+                matched_query = interpreter_request['query']
+            except:
+                transcript = internal_requests.BAD_VALUE
+                matched_query = internal_requests.BAD_VALUE
+        else:
+            interpreter_request = interpret(internal_requests.absolute_path(r'/analyzer/queries/'), request_entry.base64_audio)
+            transcript = interpreter_request.transcript
+            matched_query = interpreter_request.query
 
         # default query for now in case of bad interpreter result
         interpreter_match = True

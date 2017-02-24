@@ -37,9 +37,6 @@ class InterpreterTestCase(TestCase):
         sentence = 'bla bla'
         expected = internal_requests.BAD_VALUE
         self.assertEqual(interpret.matchquery(query_list, sentence),expected)
-        sentence = ''
-        expected = internal_requests.BAD_VALUE
-        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
         sentence = 'bus'
         expected = 'gas'
         self.assertEqual(interpret.matchquery(query_list, sentence),expected) 
@@ -51,6 +48,9 @@ class InterpreterTestCase(TestCase):
         self.assertEqual(interpret.matchquery(query_list, sentence),expected)
         sentence = 'hydrocarbons in place '
         expected = 'oil place'
+        self.assertEqual(interpret.matchquery(query_list, sentence),expected)
+        sentence = ''
+        expected = internal_requests.BAD_VALUE
         self.assertEqual(interpret.matchquery(query_list, sentence),expected)
   
 
