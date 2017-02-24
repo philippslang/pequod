@@ -1,12 +1,12 @@
 /* Processing */
 
-var glevel = 3; // debug level: 0 (production) - 3 (all output)
+var glevel = 0; // debug level: 0 (production) - 3 (all output)
 var autosend = false; // if true, successful recording is always posted, if false depends on debug level (ie only when glevel == 0)
 var pcm16_base64 = '';
 var TARGET_SAMPLE_RATE = 16000;
 var downsample = true;
 var demofile = 'https://storage.googleapis.com/pequod/demo.PRT';
-
+var fileNameNode = null;
 
 function __log(e, data) {
     logpersistent.innerHTML += "\n" + e + " " + (data || '');
@@ -39,6 +39,11 @@ function __image(e) {
     }
 }
 
+function isMSIE() {
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+    return (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./));  // If Internet Explorer, return version number
+}
 
 Dropzone.options.rptdropzone = {
     paramName: "rptfile",
@@ -50,6 +55,9 @@ Dropzone.options.rptdropzone = {
             this.removeAllFiles();
             this.addFile(file);
         });
+        this.on("sending", function (file, responseText) {
+            $('#uploaded-file').remove();
+        });
         this.on("success", function (file, responseText) {
             // TODO check if good? no, because this only happens on success
             localStorage.setItem("url_rpt", responseText["public_url"]);
@@ -58,8 +66,6 @@ Dropzone.options.rptdropzone = {
             }
 
             file.previewTemplate.appendChild(document.createTextNode(responseText["public_url"]));
-            
-            $('#uploaded-file').css({ visibility: 'hidden' });
         });
     }
 };
@@ -116,6 +122,8 @@ function process_request() {
             
             var transcript = responseJSON["transcript"];
             __transcript(transcript);
+            if (transcript == 'na')
+                transcript = '(empty)';
             $('#query-text').text('"' + transcript + '"');
             $('.query-view').css({ visibility: 'visible'} );
             
@@ -124,12 +132,12 @@ function process_request() {
             $('.info-view').css({ display: 'block'} );
             
             var item_text = responseJSON["items"];
-            if (item_text != "na") {
+            if (item_text && item_text != "na") {
                 var item_list = item_text.split(';');
                 var listItems = $('#list-items');
                 listItems.empty();
-                for (var item of item_list){
-                    var txt = '<li>' + item + '</li>';
+                for (var i = 0; i < item_list.length; i++){
+                    var txt = '<li>' + item_list[i] + '</li>';
                     listItems.append(txt);
                 }
                 $('.list-view').css({ display: 'block'} );
@@ -156,15 +164,20 @@ function initializeDocument() {
     localStorage.setItem("url_rpt", "");
 
     document.body.onkeydown = function (e) {
-        $('#record-instruction-container').addClass('mic-background');
+        $('#microphone-icon').addClass('icon-mc-on');
         startRecording();
     };
     document.body.onkeyup = function (e) {
         stopRecording();
-        $('#record-instruction-container').removeClass('mic-background');
+        $('#microphone-icon').removeClass('icon-mc-on');
     };
 
-    $('#uploaded-file').children('b').text(demofile);
+    var basename = demofile.split('/').reverse()[0];
+    
+    $('#rptdropzone').append('<div id="uploaded-file" style="margin-top: 60px;">' +
+        'No file uploaded. Using default file <a href="' + demofile + '"><b>' +
+        basename + '</b></a>.' +
+        '<div>');
     
     // enable debug elements
     if (glevel > 0) {
@@ -181,7 +194,7 @@ function initializeDocument() {
             __log('Autosend successful recording disabled');
         }
     } else {
-        $('#debugContainer').addClass('pequod-hidden');
+        $('#debugContainer').css({ display: 'none' });
     }
 
     try {
@@ -189,20 +202,41 @@ function initializeDocument() {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
         window.URL = window.URL || window.webkitURL;
-
-        audio_context = new AudioContext;
+        
+        audio_context = new AudioContext();
 
         if (glevel > 1) {
             __log('Audio context set up.');
             __log('JS navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
+            __log('JS navigator.mediaDevices.getUserMedia ' +
+                    (navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? 'available.' : 'not present!'));
         }
     } catch (e) {
-        alert('No web audio support in this browser!');
+        document.getElementById('contentContainer').innerHTML =
+            '<div style="text-align: left; margin-left: 100px; margin-top: 10px">' +
+            'No web audio support in this browser. ' +
+            'Google Chrome or Firefox is recommended for The Pequod.' +
+            '</div>';
+        return;
     }
 
-    navigator.getUserMedia({ audio: true }, startUserMedia, function (e) {
-        if (glevel > 1) {
-            __log('No live audio input: ' + e);
-        }
-    });
+    if (navigator.getUserMedia){
+        navigator.getUserMedia({ audio: true }, startUserMedia, function (e) {
+            if (glevel > 1) {
+                __log('No live audio input: ' + e);
+            }
+        });
+    } else if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(startUserMedia).catch(function(e) {
+            if (glevel > 1) {
+                __log('No live audio input: ' + e);
+            }
+        });        
+    } else if (window.getUserMedia){
+        window.getUserMedia({ audio: true, el: 'media-content' }, startUserMedia, function (e) {
+            if (glevel > 1) {
+                __log('No live audio input: ' + e);
+            }
+        });       
+    }
 }

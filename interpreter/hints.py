@@ -19,6 +19,8 @@ re_terms = [
     'injection rate',
     'cumulative',
     'field',
+    'well',
+    'model',
 ]
 
 def get_speech_hints(supported_queries):    

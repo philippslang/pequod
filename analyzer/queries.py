@@ -18,4 +18,10 @@ SUPPORTED_QUERIES = [
     ('simulation_time', 'simulation duration'),
     ('warning_count', 'warning count'),
     ('water_in_place', 'water-in-place'),
+    ('open_pod_bay_doors', 'open pod bay doors'),
+    ('meaning_of_life', 'meaning of life'),
+    ('completion_count', 'completion count'),
+    ('well_count', 'well count'),
+    ('region_count', 'region count'),
+    ('architecture', 'architecture design'),
 ]

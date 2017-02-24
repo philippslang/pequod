@@ -16,5 +16,7 @@ synonym_dict['oil']=[u'hydrocarbons',u'weather']
 
 synonym_dict['hydrocarbons']=[u'oil',u'weather']
 
+synonym_dict['architecture']=[u'design',u'software',u'app']
+
 synonym_dict['normally']=[u'success', u'achiever', u'winner', u'succeeder',u'normally', u'usually', u'unremarkably', u'commonly', u'ordinarily',u'usual']
 

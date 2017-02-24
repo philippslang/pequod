@@ -19,6 +19,7 @@
 <script src="{% static 'ui/recorder.js' %}"></script>
 <script src="{% static 'ui/dropzone.js' %}"></script>
 <script src="{% static 'ui/baseencoding.js' %}"></script>
+<script type="text/javascript" src="{% static 'ui/getUserMedia.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'ui/recording.js' %}"></script>
 <script type="text/javascript" src="{% static 'ui/processing.js' %}"></script>
 
@@ -35,11 +36,9 @@
       {% csrf_token %}
     </form>
     {% endblock %}
-    <div id="uploaded-file">
-        No file uploaded. Using default file <b></b>.
-    </div>
     <div id="record-instruction-container">
-        Hold down any key to record a command.
+        <div id="microphone-icon" class="icon-mc-off"></div>
+        <div>Hold down any key to record a command. Please use fuller sentences e.g. '<i>Can you tell me the number of wells.</i>'</div>
     </div>
     <div id="loading-icon">
         <img alt="Loading..." src="{% static 'ui/spin.svg' %}" />
@@ -68,6 +67,7 @@
     </dl>
 </div>
 <div id="debugContainer">
+    <div id="media-content"></div>
     <ul id="recordingslist"></ul>
     <pre id="logpersistent"></pre>
     <!-- debugging -->
