@@ -1,5 +1,6 @@
 import queries
 import requests
+from datetime import timedelta
 
 from timeseries import TimeSeries
 from plots import Plot
