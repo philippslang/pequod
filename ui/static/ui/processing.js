@@ -168,6 +168,14 @@ function initializeDocument() {
     if (isMobile) {
         $('#record-prompt').text('Please press and hold the microphone');
         var microphoneIcon = $("#microphone-icon");
+        microphoneIcon.on('touchstart', function(){
+            $('#microphone-icon').addClass('icon-mc-on');
+            startRecording();
+        });
+        microphoneIcon.on('touchend', function(){
+            stopRecording();
+            $('#microphone-icon').removeClass('icon-mc-on');
+        });
     } else {
         document.body.onkeydown = function (e) {
             $('#microphone-icon').addClass('icon-mc-on');
