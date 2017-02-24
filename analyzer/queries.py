@@ -23,4 +23,5 @@ SUPPORTED_QUERIES = [
     ('completion_count', 'completion count'),
     ('well_count', 'well count'),
     ('region_count', 'region count'),
+    ('architecture', 'architecture design'),
 ]

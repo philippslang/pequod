@@ -22,6 +22,9 @@ def open_pod_bay_doors(rpt_content):
 def meaning_of_life(rpt_content):
     return AnalysisResults('42.')
     
+def architecture(rpt_content):
+    return AnalysisResults('Here\'s an illustration of our app\'s architecture.', r'https://storage.googleapis.com/pequod/architecture.svg')
+    
 # TODO this should be curried so that we have one for error, warning and info
 def entity_count(rpt_content, search):
     p = re.compile(r'[|][\s]*' + search + r'[\s,|]*\d+')
@@ -235,6 +238,7 @@ SUPPORTED_ANALYSIS = {
     'completion_count'              : completion_count,
     'well_count'                    : well_count,
     'region_count'                  : region_count,
+    'architecture'                  : architecture,
 }
 
 def analyze(supported_query, url_rpt):
