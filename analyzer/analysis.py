@@ -15,25 +15,36 @@ class AnalysisResults():
     def __init__(self, result, url_image=internal_requests.BAD_VALUE):
         self.result = result
         self.url_image = url_image
-
+        
+def open_pod_bay_doors(rpt_content):
+    return AnalysisResults('I\'m afraid I can\'t do that, Jim.')
+    
+def meaning_of_life(rpt_content):
+    return AnalysisResults('42.')
+    
 # TODO this should be curried so that we have one for error, warning and info
+def entity_count(rpt_content, search):
+    p = re.compile(r'[|][\s]*' + search + r'[\s,|]*\d+')
+    occ = p.findall(rpt_content)
+    if occ:
+        count = int(occ[0].split()[-1])
+        return AnalysisResults('There are {} {}(s).'.format(count, search.lower()))
+    return AnalysisResults('{} count pattern could not be matched in file.'.format(search))
+
 def error_count(rpt_content):
-    p = re.compile(r'[|][\s]*ERROR[\s,|]*\d+')
-    occ = p.findall(rpt_content)
-    if occ:
-        count = int(occ[0].split()[-1])
-        return AnalysisResults('There are {} error(s).'.format(count))
-    return AnalysisResults('Error count pattern could not be matched in file.')
+    return entity_count(rpt_content, 'ERROR')
 
-
-# TODO this should be curried so that we have one for error, warning and info
 def warning_count(rpt_content):
-    p = re.compile(r'[|][\s]*WARNING[\s,|]*\d+')
-    occ = p.findall(rpt_content)
-    if occ:
-        count = int(occ[0].split()[-1])
-        return AnalysisResults('There are {} warning(s).'.format(count))
-    return AnalysisResults('Warning count pattern could not be matched in file.')
+    return entity_count(rpt_content, 'WARNING')
+    
+def completion_count(rpt_content):
+    return entity_count(rpt_content, 'Completions')
+    
+def well_count(rpt_content):
+    return entity_count(rpt_content, 'Wells')
+    
+def region_count(rpt_content):
+    return entity_count(rpt_content, 'Regions')
 
 def run_time(rpt_content):
     p = re.compile(r'Simulation complete.*[=]')
@@ -219,6 +230,11 @@ SUPPORTED_ANALYSIS = {
     'simulation_time'               : simulation_time,
     'warning_count'                 : warning_count,
     'water_in_place'                : water_in_place,
+    'open_pod_bay_doors'            : open_pod_bay_doors,
+    'meaning_of_life'               : meaning_of_life,
+    'completion_count'              : completion_count,
+    'well_count'                    : well_count,
+    'region_count'                  : region_count,
 }
 
 def analyze(supported_query, url_rpt):
