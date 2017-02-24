@@ -162,16 +162,23 @@ function process_request() {
 function initializeDocument() {
     // empty default file name
     localStorage.setItem("url_rpt", "");
-
-    document.body.onkeydown = function (e) {
-        $('#microphone-icon').addClass('icon-mc-on');
-        startRecording();
-    };
-    document.body.onkeyup = function (e) {
-        stopRecording();
-        $('#microphone-icon').removeClass('icon-mc-on');
-    };
-
+    var ua = navigator.userAgent.toLowerCase();
+    console.log('User agant ' + ua);
+    var isMobile = ua.indexOf("mobile") > -1;
+    if (isMobile) {
+        $('#record-prompt').text('Please press and hold the microphone');
+        var microphoneIcon = $("#microphone-icon");
+    } else {
+        document.body.onkeydown = function (e) {
+            $('#microphone-icon').addClass('icon-mc-on');
+            startRecording();
+        };
+        document.body.onkeyup = function (e) {
+            stopRecording();
+            $('#microphone-icon').removeClass('icon-mc-on');
+        };
+    }
+    
     var basename = demofile.split('/').reverse()[0];
     
     $('#rptdropzone').append('<div id="uploaded-file" style="margin-top: 60px;">' +

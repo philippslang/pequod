@@ -85,7 +85,7 @@ def request(request, format=None):
 
         if not interpreter_match:
             # top level response
-            response = 'Unable able to resolve your query.'
+            response = 'Unable to resolve your query.'
 
             # info
             info ='You: \'' + trascript_feedback + '\'. This is what you can ask for: '
