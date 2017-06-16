@@ -9,3 +9,5 @@ gcloud auth application-default login
 https://abtc-hackathon-004.appspot.com/
 
 gcloud app deploy
+
+https://slb-swt.visualstudio.com/Velocitron/_git/the-pequod.git?path=%2FREADME.md&version=GBmaster&_a=contents

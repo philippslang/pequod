@@ -7,6 +7,7 @@ from django.test.runner import DiscoverRunner
 
 import mysite.dispatch as internal_requests
 
+
 class NoDbTestRunner(DiscoverRunner):
     """ A test runner to test without database creation/deletion """
 
